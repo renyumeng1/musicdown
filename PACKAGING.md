@@ -38,6 +38,8 @@ macOS (`.app` bundle):
 uv run python -m nuitka \
   --mode=app \
   --enable-plugin=pyside6 \
+  --macos-app-name=musicdown \
+  --output-filename=musicdown \
   --include-data-dir=ui=ui \
   --output-dir=build \
   main.py
@@ -47,6 +49,7 @@ Notes:
 - You can't build a Windows `.exe` from Linux/WSL. Use GitHub Actions or run the Windows build on Windows.
 - For macOS app icon, Nuitka supports `--macos-app-icon=icon.png` / `icon.icns` (PNG/ICNS).
 - `--include-data-dir=ui=ui` is required to ship `ui/theme.qss` and `ui/icons/*.svg`.
+- Compiled app logs are written to `~/.musicdown/logs/` by default.
 
 ## Windows: create an installer (`.exe`) with Inno Setup
 

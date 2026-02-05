@@ -102,7 +102,57 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         shell: bash
         run: |
-          uv run python -m nuitka --mode=app --enable-plugin=pyside6 --assume-yes-for-downloads --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
+          python - <<'PY'
+          from pathlib import Path
+
+          from PIL import Image
+
+          src = Path("ui/icon.ico")
+          dst = Path("ui/icon.png")
+
+          if src.exists():
+              img = Image.open(src)
+              # Choose the largest frame if the ICO contains multiple sizes.
+              try:
+                  largest_index = 0
+                  largest_area = 0
+                  for i in range(getattr(img, "n_frames", 1)):
+                      img.seek(i)
+                      w, h = img.size
+                      area = w * h
+                      if area > largest_area:
+                          largest_area = area
+                          largest_index = i
+                  img.seek(largest_index)
+              except Exception:
+                  pass
+
+              img = img.convert("RGBA")
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              img.save(dst)
+              print(f"Generated macOS icon: {dst}")
+          else:
+              print("ui/icon.ico not found; macOS app icon will be default.")
+          PY
+
+          ICON_ARG=""
+          if [[ -f ui/icon.png ]]; then
+            ICON_ARG="--macos-app-icon=ui/icon.png"
+          fi
+
+          uv run python -m nuitka \
+            --mode=app \
+            --enable-plugin=pyside6 \
+            --assume-yes-for-downloads \
+            --product-name=musicdown \
+            --macos-app-name=musicdown \
+            --output-filename=musicdown \
+            ${ICON_ARG} \
+            --file-version=${{ steps.info.outputs.version }} \
+            --product-version=${{ steps.info.outputs.version }} \
+            --include-data-dir=ui=ui \
+            --output-dir=build \
+            main.py
 
       - name: Codesign app (macOS)
         if: ${{ runner.os == 'macOS' }}
@@ -113,6 +163,12 @@ jobs:
             echo "No .app produced under build/"
             ls -la build
             exit 1
+          fi
+          TARGET_PATH="build/musicdown.app"
+          if [[ "${APP_PATH}" != "${TARGET_PATH}" ]]; then
+            rm -rf "${TARGET_PATH}"
+            mv "${APP_PATH}" "${TARGET_PATH}"
+            APP_PATH="${TARGET_PATH}"
           fi
           echo "Runner arch: $(uname -m)"
           echo "App path: ${APP_PATH}"
@@ -149,7 +205,10 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         shell: bash
         run: |
-          APP_PATH="$(ls -d build/*.app | head -n 1)"
+          APP_PATH="build/musicdown.app"
+          if [[ ! -d "${APP_PATH}" ]]; then
+            APP_PATH="$(ls -d build/*.app | head -n 1)"
+          fi
           if [[ -z "${APP_PATH}" ]]; then
             echo "No .app produced under build/"
             ls -la build
