@@ -138,6 +138,8 @@ jobs:
           ICON_ARG=""
           if [[ -f ui/icon.png ]]; then
             ICON_ARG="--macos-app-icon=ui/icon.png"
+            # Nuitka needs imageio to convert PNG to native macOS ICNS internally.
+            uv pip install imageio
           fi
 
           uv run python -m nuitka \
