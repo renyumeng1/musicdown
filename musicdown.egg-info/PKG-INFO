@@ -18,7 +18,7 @@ Requires-Dist: tomli
 Requires-Dist: tomli_w
 Requires-Dist: tenacity
 Requires-Dist: urllib3
-Requires-Dist: PyQt6
+Requires-Dist: PySide6
 Requires-Dist: fastapi
 Requires-Dist: uvicorn[standard]
 Requires-Dist: jinja2

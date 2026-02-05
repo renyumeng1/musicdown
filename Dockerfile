@@ -5,7 +5,11 @@ WORKDIR /app
 COPY pyproject.toml uv.lock /app/
 
 RUN pip install --no-cache-dir uv && \
-    uv sync --frozen --no-install-project
+    uv sync --frozen --no-install-project \
+      --no-install-package PySide6 \
+      --no-install-package pyside6-addons \
+      --no-install-package pyside6-essentials \
+      --no-install-package shiboken6
 
 COPY . /app
 

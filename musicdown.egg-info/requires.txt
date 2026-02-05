@@ -12,7 +12,7 @@ tomli
 tomli_w
 tenacity
 urllib3
-PyQt6
+PySide6
 fastapi
 uvicorn[standard]
 jinja2

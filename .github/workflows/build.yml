@@ -81,58 +81,21 @@ jobs:
 
       - name: Build Executable(Windows)
         if: ${{ runner.os == 'Windows' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-
-          mode: standalone
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
-
-          windows-icon-from-ico: "ui/icon.ico"
-          mingw64: true
-          windows-disable-console: true
-
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+        shell: pwsh
+        run: |
+          uv run python -m nuitka --mode=standalone --enable-plugin=pyside6 --assume-yes-for-downloads --mingw64 --windows-console-mode=disable --windows-icon-from-ico=ui/icon.ico --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
 
       - name: Build Executable(Linux)
         if: ${{ runner.os == 'Linux' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-
-          mode: standalone
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
-
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+        shell: bash
+        run: |
+          uv run python -m nuitka --mode=standalone --enable-plugin=pyside6 --assume-yes-for-downloads --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
 
       - name: Build Executable(macOS)
         if: ${{ runner.os == 'macOS' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-
-          mode: app
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
-
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+        shell: bash
+        run: |
+          uv run python -m nuitka --mode=app --enable-plugin=pyside6 --assume-yes-for-downloads --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
 
       - name: Build Installer (Windows)
         if: ${{ runner.os == 'Windows' }}

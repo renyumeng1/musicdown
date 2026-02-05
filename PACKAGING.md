@@ -29,7 +29,7 @@ uv sync --frozen
 Windows (standalone folder):
 
 ```powershell
-uv run python -m nuitka --mode=standalone --enable-plugin=pyqt6 --windows-console-mode=disable --windows-icon-from-ico=ui/icon.ico --include-data-dir=ui=ui --output-dir=build main.py
+uv run python -m nuitka --mode=standalone --enable-plugin=pyside6 --windows-console-mode=disable --windows-icon-from-ico=ui/icon.ico --include-data-dir=ui=ui --output-dir=build main.py
 ```
 
 macOS (`.app` bundle):
@@ -37,7 +37,7 @@ macOS (`.app` bundle):
 ```bash
 uv run python -m nuitka \
   --mode=app \
-  --enable-plugin=pyqt6 \
+  --enable-plugin=pyside6 \
   --include-data-dir=ui=ui \
   --output-dir=build \
   main.py
