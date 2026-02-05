@@ -440,6 +440,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.search_results = []
         self.album_songs = []
         self.playlist_songs = []
+        self.daily_songs = []
+        self.daily_original_songs = []
 
         # 设置下载路径
         self.download_path = str(Path.home() / "Downloads")
@@ -463,6 +465,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 歌单/每日推荐：用于“一键下载每日推荐”的状态
         self._auto_download_after_playlist_fetch = False
         self._last_playlist_source = ""
+        self._active_playlist_fetch_source = ""
+        self._daily_auto_refresh_done = False
 
         # 注册日志处理器
         self.setup_logger()
@@ -482,9 +486,16 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 主布局
         main_widget = QWidget()
         main_layout = QVBoxLayout(main_widget)
+        main_layout.setContentsMargins(20, 20, 20, 20)
+        main_layout.setSpacing(16)
 
         # 搜索部分
-        search_layout = QHBoxLayout()
+        search_card = QWidget()
+        search_card.setObjectName("card")
+        search_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        search_layout = QHBoxLayout(search_card)
+        search_layout.setContentsMargins(12, 10, 12, 10)
+        search_layout.setSpacing(10)
 
         # 搜索类型选择
         self.search_type_combo = AnchoredComboBox()
@@ -503,21 +514,25 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.limit_spinbox.setToolTip("搜索结果条数 (1-100)")
 
         self.search_btn = QPushButton("搜索")
+        self.search_btn.setProperty("primary", True)
         self.search_btn.clicked.connect(self.search)
 
-        search_layout.addWidget(self.search_input)
+        search_layout.addWidget(self.search_input, 1)
         search_layout.addWidget(QLabel("条目数:"))
         search_layout.addWidget(self.limit_spinbox)
         search_layout.addWidget(self.search_btn)
 
-        main_layout.addLayout(search_layout)
+        main_layout.addWidget(search_card)
 
         # 选项卡组件
         self.tabs = QTabWidget()
+        self.tabs.setDocumentMode(True)
 
         # 搜索结果标签页
         self.search_tab = QWidget()
         search_tab_layout = QVBoxLayout(self.search_tab)
+        search_tab_layout.setContentsMargins(12, 12, 12, 12)
+        search_tab_layout.setSpacing(12)
 
         # 搜索结果表格
         self.result_table = QTableWidget()
@@ -526,15 +541,20 @@ class QQMusicDownloaderGUI(QMainWindow):
             QTableWidget.EditTrigger.NoEditTriggers)
         self.result_table.setSelectionBehavior(
             QTableWidget.SelectionBehavior.SelectRows)
+        self.result_table.setAlternatingRowColors(True)
+        self.result_table.setShowGrid(False)
+        self.result_table.verticalHeader().setVisible(False)
 
         search_tab_layout.addWidget(self.result_table)
 
         # 批量下载按钮
         batch_download_layout = QHBoxLayout()
+        batch_download_layout.setSpacing(8)
         self.select_all_btn = QPushButton("全选")
         self.select_all_btn.clicked.connect(self.select_all_songs)
 
         self.batch_download_btn = QPushButton("批量下载选中歌曲")
+        self.batch_download_btn.setProperty("primary", True)
         self.batch_download_btn.clicked.connect(self.batch_download)
 
         batch_download_layout.addWidget(self.select_all_btn)
@@ -547,6 +567,9 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.settings_tab = QWidget()
         settings_layout = QGridLayout(self.settings_tab)
         settings_layout.setAlignment(Qt.AlignmentFlag.AlignTop)  # 添加顶部对齐
+        settings_layout.setContentsMargins(12, 12, 12, 12)
+        settings_layout.setHorizontalSpacing(12)
+        settings_layout.setVerticalSpacing(10)
 
         # 下载路径设置
         settings_layout.addWidget(
@@ -568,6 +591,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             QLabel("下载音质:"), 1, 0, Qt.AlignmentFlag.AlignTop)
         quality_layout = QHBoxLayout()
         quality_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        quality_layout.setSpacing(8)
 
         self.quality_m4a = QRadioButton("M4A")
         self.quality_128 = QRadioButton("MP3 128kbps")
@@ -630,6 +654,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 下载记录标签
         self.download_tab = QWidget()
         download_layout = QVBoxLayout(self.download_tab)
+        download_layout.setContentsMargins(12, 12, 12, 12)
+        download_layout.setSpacing(10)
 
         self.download_table = QTableWidget()
         self.download_table.setColumnCount(5)
@@ -641,6 +667,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             4, QHeaderView.ResizeMode.Stretch)
         self.download_table.setEditTriggers(
             QTableWidget.EditTrigger.NoEditTriggers)
+        self.download_table.setAlternatingRowColors(True)
+        self.download_table.setShowGrid(False)
+        self.download_table.verticalHeader().setVisible(False)
 
         download_layout.addWidget(self.download_table)
 
@@ -660,32 +689,38 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 添加歌单链接下载选项卡
         self.playlist_link_tab = QWidget()
         playlist_link_layout = QVBoxLayout(self.playlist_link_tab)
+        playlist_link_layout.setContentsMargins(12, 12, 12, 12)
+        playlist_link_layout.setSpacing(12)
 
         # 歌单链接输入区域
-        link_input_layout = QHBoxLayout()
-        link_input_layout.addWidget(QLabel("歌单链接:"))
+        link_row_layout = QHBoxLayout()
+        link_row_layout.setSpacing(12)
+
+        link_form_card = QWidget()
+        link_form_card.setObjectName("card")
+        link_form_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        link_form_layout = QHBoxLayout(link_form_card)
+        link_form_layout.setContentsMargins(12, 10, 12, 10)
+        link_form_layout.setSpacing(8)
+        link_form_layout.addWidget(QLabel("歌单链接:"))
+
         self.playlist_link_input = QLineEdit()
         self.playlist_link_input.setPlaceholderText("输入QQ音乐歌单链接...")
         self.playlist_link_input.returnPressed.connect(
             self.get_playlist_from_link)
-        link_input_layout.addWidget(self.playlist_link_input)
+        link_form_layout.addWidget(self.playlist_link_input, 1)
 
         self.get_playlist_btn = QPushButton("获取歌单")
         self.get_playlist_btn.clicked.connect(self.get_playlist_from_link)
-        link_input_layout.addWidget(self.get_playlist_btn)
+        link_form_layout.addWidget(self.get_playlist_btn)
 
-        self.get_daily_btn = QPushButton("每日推荐")
-        self.get_daily_btn.clicked.connect(self.fetch_daily_recommendations)
-        link_input_layout.addWidget(self.get_daily_btn)
+        link_row_layout.addWidget(link_form_card, 1)
 
-        self.download_daily_btn = QPushButton("一键下载每日推荐")
-        self.download_daily_btn.clicked.connect(self.download_daily_recommendations)
-        link_input_layout.addWidget(self.download_daily_btn)
-
-        playlist_link_layout.addLayout(link_input_layout)
+        playlist_link_layout.addLayout(link_row_layout)
 
         # 歌单信息区域
         self.playlist_info_label = QLabel("歌单信息: ")
+        self.playlist_info_label.setObjectName("mutedLabel")
         playlist_link_layout.addWidget(self.playlist_info_label)
 
         # 歌单歌曲列表
@@ -701,16 +736,21 @@ class QQMusicDownloaderGUI(QMainWindow):
             QTableWidget.EditTrigger.NoEditTriggers)
         self.playlist_link_table.setSelectionBehavior(
             QTableWidget.SelectionBehavior.SelectRows)
+        self.playlist_link_table.setAlternatingRowColors(True)
+        self.playlist_link_table.setShowGrid(False)
+        self.playlist_link_table.verticalHeader().setVisible(False)
 
         playlist_link_layout.addWidget(self.playlist_link_table)
 
         # 批量下载按钮
         batch_download_layout = QHBoxLayout()
+        batch_download_layout.setSpacing(8)
         self.select_all_link_btn = QPushButton("全选")
         self.select_all_link_btn.clicked.connect(
             self.select_all_playlist_link_songs)
 
         self.download_all_link_btn = QPushButton("下载全部")
+        self.download_all_link_btn.setProperty("primary", True)
         self.download_all_link_btn.clicked.connect(self.download_all_from_link)
 
         self.batch_download_link_btn = QPushButton("批量下载选中歌曲")
@@ -726,14 +766,70 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.tabs.addTab(self.playlist_link_tab, "歌单链接下载")
 
+        # 每日推荐标签页
+        self.daily_tab = QWidget()
+        daily_layout = QVBoxLayout(self.daily_tab)
+        daily_layout.setContentsMargins(12, 12, 12, 12)
+        daily_layout.setSpacing(12)
+
+        daily_header_card = QWidget()
+        daily_header_card.setObjectName("card")
+        daily_header_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        daily_header_layout = QHBoxLayout(daily_header_card)
+        daily_header_layout.setContentsMargins(12, 10, 12, 10)
+        daily_header_layout.setSpacing(10)
+
+        daily_title = QLabel("每日推荐")
+        daily_title.setObjectName("sectionTitle")
+        daily_header_layout.addWidget(daily_title)
+        daily_header_layout.addStretch()
+
+        self.get_daily_btn = QPushButton("刷新")
+        self.get_daily_btn.clicked.connect(self.fetch_daily_recommendations)
+        daily_header_layout.addWidget(self.get_daily_btn)
+
+        self.download_daily_btn = QPushButton("一键下载每日推荐")
+        self.download_daily_btn.setProperty("primary", True)
+        self.download_daily_btn.clicked.connect(self.download_daily_recommendations)
+        daily_header_layout.addWidget(self.download_daily_btn)
+
+        daily_layout.addWidget(daily_header_card)
+
+        self.daily_info_label = QLabel("每日推荐: 未加载")
+        self.daily_info_label.setObjectName("mutedLabel")
+        daily_layout.addWidget(self.daily_info_label)
+
+        self.daily_table = QTableWidget()
+        self.daily_table.setColumnCount(7)
+        self.daily_table.setHorizontalHeaderLabels(
+            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"])
+        self.daily_table.horizontalHeader().setSectionResizeMode(
+            QHeaderView.ResizeMode.ResizeToContents)
+        self.daily_table.horizontalHeader().setSectionResizeMode(
+            1, QHeaderView.ResizeMode.Stretch)
+        self.daily_table.setEditTriggers(
+            QTableWidget.EditTrigger.NoEditTriggers)
+        self.daily_table.setSelectionBehavior(
+            QTableWidget.SelectionBehavior.SelectRows)
+        self.daily_table.setAlternatingRowColors(True)
+        self.daily_table.setShowGrid(False)
+        self.daily_table.verticalHeader().setVisible(False)
+        self.daily_table.setColumnHidden(0, True)
+
+        daily_layout.addWidget(self.daily_table)
+
+        self.tabs.addTab(self.daily_tab, "每日推荐")
+
         # 添加新的日志选项卡
         self.log_tab = QWidget()
         log_layout = QVBoxLayout(self.log_tab)
+        log_layout.setContentsMargins(12, 12, 12, 12)
+        log_layout.setSpacing(10)
 
         self.log_text = QTextEdit()
+        self.log_text.setObjectName("logText")
         self.log_text.setReadOnly(True)
         self.log_text.setLineWrapMode(QTextEdit.LineWrapMode.WidgetWidth)
-        self.log_text.setStyleSheet("font-family: Courier, monospace;")
 
         log_layout.addWidget(self.log_text)
 
@@ -744,9 +840,22 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.tabs.addTab(self.log_tab, "下载日志")
 
+        self.tabs.currentChanged.connect(self.handle_tab_change)
+
         main_layout.addWidget(self.tabs)
 
         self.setCentralWidget(main_widget)
+
+    def handle_tab_change(self, index):
+        """切换标签页时处理自动刷新"""
+        if not hasattr(self, "daily_tab"):
+            return
+        if self.tabs.widget(index) != self.daily_tab:
+            return
+        if not getattr(self, "_daily_auto_refresh_done", False) or self.daily_table.rowCount() == 0:
+            if hasattr(self, "get_daily_btn") and self.get_daily_btn.isEnabled():
+                self._daily_auto_refresh_done = True
+                self.fetch_daily_recommendations()
 
     def setup_logger(self):
         """设置日志处理器，将日志消息发送到UI"""
@@ -838,10 +947,10 @@ class QQMusicDownloaderGUI(QMainWindow):
         except Exception:
             return 4
 
-    def _get_playlist_tab_download_dir(self) -> Path:
+    def _get_playlist_tab_download_dir(self, source: str | None = None) -> Path:
         """歌单链接/每日推荐页的下载目录（每日推荐按日期分文件夹）"""
         base_dir = Path(self.download_path)
-        if getattr(self, "_last_playlist_source", "") == "daily":
+        if (source or getattr(self, "_last_playlist_source", "")) == "daily":
             date_str = datetime.now().strftime("%Y-%m-%d")
             return base_dir / "每日推荐" / date_str
         return base_dir
@@ -932,10 +1041,12 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         task_type = getattr(getattr(self, "current_worker", None), "task_type", "")
         if task_type in {"get_playlist_from_link", "get_daily_recommendations"}:
-            label = getattr(self, "playlist_info_label", None)
+            source = "daily" if task_type == "get_daily_recommendations" else "link"
+            label = self._get_playlist_info_label(source)
             if label is not None:
-                prefix = "获取每日推荐失败" if task_type == "get_daily_recommendations" else "获取歌单失败"
-                label.setText(f"歌单信息: {prefix}")
+                prefix = "获取每日推荐失败" if source == "daily" else "获取歌单失败"
+                title = "每日推荐" if source == "daily" else "歌单信息"
+                label.setText(f"{title}: {prefix}")
 
     @Slot(int, int)
     def handle_progress_update(self, current, total):
@@ -1799,10 +1910,45 @@ class QQMusicDownloaderGUI(QMainWindow):
             return result["songs"][0]
         return None
 
+    def _get_active_playlist_source(self):
+        if hasattr(self, "tabs") and hasattr(self, "daily_tab"):
+            if self.tabs.currentWidget() == self.daily_tab:
+                return "daily"
+        return "link"
+
+    def _get_playlist_table(self, source):
+        if source == "daily":
+            return self.daily_table
+        return self.playlist_link_table
+
+    def _get_playlist_info_label(self, source):
+        if source == "daily":
+            return getattr(self, "daily_info_label", None)
+        return getattr(self, "playlist_info_label", None)
+
+    def _get_playlist_songs_attr(self, source):
+        return "daily_songs" if source == "daily" else "playlist_link_songs"
+
+    def _get_playlist_original_songs_attr(self, source):
+        return "daily_original_songs" if source == "daily" else "playlist_link_original_songs"
+
+    def _get_playlist_songs(self, source):
+        return getattr(self, self._get_playlist_songs_attr(source), None)
+
+    def _set_playlist_songs(self, source, songs):
+        setattr(self, self._get_playlist_songs_attr(source), songs)
+
+    def _get_playlist_original_songs(self, source):
+        return getattr(self, self._get_playlist_original_songs_attr(source), None)
+
+    def _set_playlist_original_songs(self, source, songs):
+        setattr(self, self._get_playlist_original_songs_attr(source), songs)
+
     def get_playlist_from_link(self):
         """从链接获取歌单"""
         self._auto_download_after_playlist_fetch = False
         self._last_playlist_source = "link"
+        self._active_playlist_fetch_source = "link"
 
         link = self.playlist_link_input.text().strip()
         if not link:
@@ -1810,6 +1956,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
 
         self.get_playlist_btn.setEnabled(False)
+        label = self._get_playlist_info_label("link")
+        if label is not None:
+            label.setText("歌单信息: 正在获取歌单...")
         if hasattr(self, "get_daily_btn"):
             self.get_daily_btn.setEnabled(False)
         if hasattr(self, "download_daily_btn"):
@@ -1830,6 +1979,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         """获取每日推荐（可选：获取后自动下载全部）"""
         self._auto_download_after_playlist_fetch = auto_download
         self._last_playlist_source = "daily"
+        self._active_playlist_fetch_source = "daily"
 
         self.get_playlist_btn.setEnabled(False)
         if hasattr(self, "get_daily_btn"):
@@ -1837,12 +1987,18 @@ class QQMusicDownloaderGUI(QMainWindow):
         if hasattr(self, "download_daily_btn"):
             self.download_daily_btn.setEnabled(False)
 
-        self.playlist_info_label.setText("歌单信息: 正在获取每日推荐...")
+        label = self._get_playlist_info_label("daily")
+        if label is not None:
+            label.setText("每日推荐: 正在获取...")
+
+        fallback_url = ""
+        if hasattr(self, "playlist_link_input"):
+            fallback_url = self.playlist_link_input.text().strip()
 
         self.current_worker = WorkerThread(
             "get_daily_recommendations",
             api=self.api,
-            params={"fallback_url": self.playlist_link_input.text().strip()},
+            params={"fallback_url": fallback_url},
         )
         self.current_worker.update_signal.connect(self.handle_playlist_link_result)
         self.current_worker.error_signal.connect(self.handle_worker_error)
@@ -1863,9 +2019,13 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
 
         playlist_data = data["data"]
+        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(self, "_last_playlist_source", "link")
         if playlist_data["code"] != 1:
             QMessageBox.warning(
-                self, "错误", f"获取歌单失败: {playlist_data.get('error', '未知错误')}")
+                self,
+                "错误",
+                f"{'获取每日推荐失败' if source == 'daily' else '获取歌单失败'}: {playlist_data.get('error', '未知错误')}",
+            )
             self.get_playlist_btn.setEnabled(True)
             if hasattr(self, "get_daily_btn"):
                 self.get_daily_btn.setEnabled(True)
@@ -1873,22 +2033,24 @@ class QQMusicDownloaderGUI(QMainWindow):
                 self.download_daily_btn.setEnabled(True)
             return
 
-        # 更新歌单信息标签
+        # 更新歌单/每日推荐信息标签
         playlist_name = clean_html_tags(playlist_data["data"]["name"])
         songs_count = playlist_data["data"]["songs_count"]
-        self.playlist_info_label.setText(
-            f"歌单信息: {playlist_name} (共{songs_count}首歌曲)")
+        info_label = self._get_playlist_info_label(source)
+        if info_label is not None:
+            title = "每日推荐" if source == "daily" else "歌单信息"
+            info_label.setText(f"{title}: {playlist_name} (共{songs_count}首歌曲)")
 
         songs = playlist_data["data"].get("songs", [])
         if songs and isinstance(songs, list) and isinstance(songs[0], dict):
             # 直接拿到歌曲详细信息（包含 mid / file 等），无需二次搜索
-            self.playlist_link_songs = songs
-            self._render_playlist_link_songs()
+            self._set_playlist_songs(source, songs)
+            self._render_playlist_link_songs(source)
 
             # 若是“一键下载每日推荐”，则自动触发下载
             if self._auto_download_after_playlist_fetch and self._last_playlist_source == "daily":
                 self._auto_download_after_playlist_fetch = False
-                self.download_all_from_link()
+                self.download_all_from_link(source="daily")
 
             self.get_playlist_btn.setEnabled(True)
             if hasattr(self, "get_daily_btn"):
@@ -1897,82 +2059,92 @@ class QQMusicDownloaderGUI(QMainWindow):
                 self.download_daily_btn.setEnabled(True)
         else:
             # 兜底：只有 “歌名 - 歌手” 字符串时，再走搜索补全流程
-            self.playlist_link_original_songs = songs
-            self.search_playlist_songs_details()
+            self._set_playlist_original_songs(source, songs)
+            self.search_playlist_songs_details(source)
 
-    def _render_playlist_link_songs(self):
+    def _render_playlist_link_songs(self, source=None):
         """渲染歌单链接获取到的歌曲列表（已包含详细信息）"""
-        if not hasattr(self, "playlist_link_songs") or not self.playlist_link_songs:
-            self.playlist_link_table.clearContents()
-            self.playlist_link_table.setRowCount(0)
+        source = source or self._get_active_playlist_source()
+        songs = self._get_playlist_songs(source)
+        table = self._get_playlist_table(source)
+        if not songs:
+            table.clearContents()
+            table.setRowCount(0)
             return
 
-        songs = self.playlist_link_songs
-        self.playlist_link_table.clearContents()
-        self.playlist_link_table.setRowCount(len(songs))
+        table.clearContents()
+        table.setRowCount(len(songs))
 
         for i, song_info in enumerate(songs):
             # 复选框
             checkbox = QTableWidgetItem()
             checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
             checkbox.setCheckState(Qt.CheckState.Unchecked)
-            self.playlist_link_table.setItem(i, 0, checkbox)
+            table.setItem(i, 0, checkbox)
 
             # 歌曲信息
-            self.playlist_link_table.setItem(i, 1, QTableWidgetItem(song_info.get("name", "")))
+            table.setItem(i, 1, QTableWidgetItem(song_info.get("name", "")))
             singers = song_info.get("singer", []) or []
             singer_text = ", ".join([s.get("name", "") for s in singers if isinstance(s, dict)]) if isinstance(singers, list) else ""
-            self.playlist_link_table.setItem(i, 2, QTableWidgetItem(singer_text))
+            table.setItem(i, 2, QTableWidgetItem(singer_text))
             album_name = ""
             if isinstance(song_info.get("album"), dict):
                 album_name = song_info["album"].get("name", "")
-            self.playlist_link_table.setItem(i, 3, QTableWidgetItem(album_name))
+            table.setItem(i, 3, QTableWidgetItem(album_name))
 
             # 时长
             duration = song_info.get("interval", 0) or 0
             minutes, seconds = divmod(int(duration), 60)
-            self.playlist_link_table.setItem(i, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
+            table.setItem(i, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
 
             # 可用格式
             available_formats = self._get_available_formats(song_info)
-            self.playlist_link_table.setItem(i, 5, QTableWidgetItem(available_formats))
+            table.setItem(i, 5, QTableWidgetItem(available_formats))
 
             # 下载按钮
             download_btn = QPushButton("下载")
-            download_btn.clicked.connect(lambda _, song_index=i: self.download_playlist_link_song(song_index))
-            self.playlist_link_table.setCellWidget(i, 6, download_btn)
+            download_btn.clicked.connect(
+                lambda _, song_index=i, song_source=source: self.download_playlist_link_song(song_index, song_source)
+            )
+            table.setCellWidget(i, 6, download_btn)
 
-    def search_playlist_songs_details(self):
+    def search_playlist_songs_details(self, source=None):
         """搜索歌单中的歌曲详细信息"""
-        if not hasattr(self, 'playlist_link_original_songs') or not self.playlist_link_original_songs:
+        source = source or self._get_active_playlist_source()
+        original_songs = self._get_playlist_original_songs(source)
+        if not original_songs:
             return
 
         # 清空并准备表格
-        self.playlist_link_table.clearContents()
-        self.playlist_link_table.setRowCount(
-            len(self.playlist_link_original_songs))
+        table = self._get_playlist_table(source)
+        table.clearContents()
+        table.setRowCount(len(original_songs))
 
         # 初始化歌单歌曲详细信息存储
-        self.playlist_link_songs = [None] * \
-            len(self.playlist_link_original_songs)
+        self._set_playlist_songs(source, [None] * len(original_songs))
 
         # 设置所有行为"获取详细信息中..."状态
-        for i in range(len(self.playlist_link_original_songs)):
+        for i in range(len(original_songs)):
             # 在第一个单元格显示搜索状态
             status_item = QTableWidgetItem("获取详细信息中...")
             status_item.setFlags(Qt.ItemFlag.ItemIsEnabled)
-            self.playlist_link_table.setItem(i, 1, status_item)
-            self.playlist_link_table.setSpan(i, 1, 1, 5)  # 横向合并单元格
+            table.setItem(i, 1, status_item)
+            table.setSpan(i, 1, 1, 5)  # 横向合并单元格
 
         # 禁用获取歌单按钮
-        self.get_playlist_btn.setEnabled(False)
+        if source == "daily":
+            if hasattr(self, "get_daily_btn"):
+                self.get_daily_btn.setEnabled(False)
+        else:
+            self.get_playlist_btn.setEnabled(False)
+        self._active_playlist_fetch_source = source
 
         # 启动批量搜索线程
         self.current_worker = WorkerThread(
             "search_playlist_link_songs_one_by_one",
             api=self.api,
             params={
-                "songs": self.playlist_link_original_songs
+                "songs": original_songs
             }
         )
         self.current_worker.update_signal.connect(
@@ -1988,21 +2160,27 @@ class QQMusicDownloaderGUI(QMainWindow):
         if data["type"] != "single_song_search_result":
             return
 
+        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(self, "_last_playlist_source", "link")
+        table = self._get_playlist_table(source)
+
         index = data["index"]
         song_info = data["song_info"]
         total_count = data["total"]
 
         # 保存搜索结果到列表中
-        self.playlist_link_songs[index] = song_info
+        songs = self._get_playlist_songs(source)
+        if songs is None:
+            return
+        songs[index] = song_info
 
         # 由于是并发执行，不再使用current_count作为进度
         # 而是使用已完成的搜索数量计算进度
         completed_count = sum(
-            1 for s in self.playlist_link_songs if s is not None)
+            1 for s in songs if s is not None)
         self.progress_bar.setValue(int(completed_count / total_count * 100))
 
         # 移除行合并
-        self.playlist_link_table.setSpan(index, 1, 1, 1)
+        table.setSpan(index, 1, 1, 1)
 
         if song_info:
             # 复选框
@@ -2010,50 +2188,54 @@ class QQMusicDownloaderGUI(QMainWindow):
             checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable |
                               Qt.ItemFlag.ItemIsEnabled)
             checkbox.setCheckState(Qt.CheckState.Unchecked)
-            self.playlist_link_table.setItem(index, 0, checkbox)
+            table.setItem(index, 0, checkbox)
 
             # 歌曲信息
-            self.playlist_link_table.setItem(
+            table.setItem(
                 index, 1, QTableWidgetItem(song_info["name"]))
-            self.playlist_link_table.setItem(index, 2, QTableWidgetItem(
+            table.setItem(index, 2, QTableWidgetItem(
                 ", ".join([s["name"] for s in song_info["singer"]])))
-            self.playlist_link_table.setItem(
+            table.setItem(
                 index, 3, QTableWidgetItem(song_info["album"]["name"]))
 
             # 时长
             duration = song_info.get("interval", 0)
             minutes, seconds = divmod(duration, 60)
-            self.playlist_link_table.setItem(
+            table.setItem(
                 index, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
 
             # 可用格式
             available_formats = self._get_available_formats(song_info)
-            self.playlist_link_table.setItem(
+            table.setItem(
                 index, 5, QTableWidgetItem(available_formats))
 
             # 下载按钮
             download_btn = QPushButton("下载")
             download_btn.clicked.connect(
-                lambda _, song_index=index: self.download_playlist_link_song(song_index))
-            self.playlist_link_table.setCellWidget(index, 6, download_btn)
+                lambda _, song_index=index, song_source=source: self.download_playlist_link_song(song_index, song_source))
+            table.setCellWidget(index, 6, download_btn)
         else:
             # 搜索失败时显示"未找到"
-            self.playlist_link_table.setItem(index, 1, QTableWidgetItem("未找到"))
+            table.setItem(index, 1, QTableWidgetItem("未找到"))
 
         # 如果所有歌曲都已搜索完成，启用获取歌单按钮
         if completed_count == total_count:
-            self.get_playlist_btn.setEnabled(True)
-            if hasattr(self, "get_daily_btn"):
-                self.get_daily_btn.setEnabled(True)
-            if hasattr(self, "download_daily_btn"):
-                self.download_daily_btn.setEnabled(True)
+            if source == "daily":
+                if hasattr(self, "get_daily_btn"):
+                    self.get_daily_btn.setEnabled(True)
+                if hasattr(self, "download_daily_btn"):
+                    self.download_daily_btn.setEnabled(True)
+            else:
+                self.get_playlist_btn.setEnabled(True)
 
-    def download_playlist_link_song(self, song_index):
+    def download_playlist_link_song(self, song_index, source=None):
         """下载单首歌曲（从歌单链接）- 使用已搜索到的详细信息"""
-        if not hasattr(self, 'playlist_link_songs') or song_index >= len(self.playlist_link_songs):
+        source = source or self._get_active_playlist_source()
+        songs = self._get_playlist_songs(source)
+        if not songs or song_index >= len(songs):
             return
 
-        song_info = self.playlist_link_songs[song_index]
+        song_info = songs[song_index]
         if not song_info:
             QMessageBox.warning(self, "提示", "无法下载，搜索失败")
             return
@@ -2064,7 +2246,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
         _, predicted_quality = planned[0]
 
-        download_dir = self._get_playlist_tab_download_dir()
+        download_dir = self._get_playlist_tab_download_dir(source)
 
         # 切换到下载记录标签页
         self.tabs.setCurrentIndex(2)
@@ -2098,19 +2280,26 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.current_worker.error_signal.connect(self.handle_worker_error)
         self.current_worker.start()
 
-    def batch_download_from_link(self):
+    def batch_download_from_link(self, source=None, *, songs_override=None):
         """批量下载选中的歌曲（从歌单链接）"""
-        if not hasattr(self, 'playlist_link_songs'):
-            QMessageBox.warning(self, "提示", "请先获取歌单")
+        source = source or self._get_active_playlist_source()
+        songs = self._get_playlist_songs(source)
+        table = self._get_playlist_table(source)
+        if not songs:
+            msg = "请先获取每日推荐" if source == "daily" else "请先获取歌单"
+            QMessageBox.warning(self, "提示", msg)
             return
 
-        selected_songs = []
-        for row in range(self.playlist_link_table.rowCount()):
-            item = self.playlist_link_table.item(row, 0)
-            if item and item.checkState() == Qt.CheckState.Checked:
-                song_info = self.playlist_link_songs[row]
-                if song_info:  # 确保搜索成功
-                    selected_songs.append(song_info)
+        if songs_override is not None:
+            selected_songs = [song for song in songs_override if song]
+        else:
+            selected_songs = []
+            for row in range(table.rowCount()):
+                item = table.item(row, 0)
+                if item and item.checkState() == Qt.CheckState.Checked:
+                    song_info = songs[row]
+                    if song_info:  # 确保搜索成功
+                        selected_songs.append(song_info)
 
         if not selected_songs:
             QMessageBox.warning(self, "提示", "请选择要下载的歌曲")
@@ -2144,7 +2333,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.download_table.setItem(row, 4, QTableWidgetItem(""))
 
         # 启动批量下载线程
-        download_dir = self._get_playlist_tab_download_dir()
+        download_dir = self._get_playlist_tab_download_dir(source)
         selected_songs = [song for song, _ in planned]
 
         self.current_worker = WorkerThread(
@@ -2163,28 +2352,38 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.handle_progress_update)
         self.current_worker.start()
 
-    def download_all_from_link(self):
+    def download_all_from_link(self, source=None):
         """一键下载歌单链接中的全部歌曲"""
-        if self.playlist_link_table.rowCount() == 0 or not hasattr(self, "playlist_link_songs"):
-            QMessageBox.warning(self, "提示", "请先获取歌单")
+        source = source or self._get_active_playlist_source()
+        songs = self._get_playlist_songs(source)
+        table = self._get_playlist_table(source)
+        if table.rowCount() == 0 or not songs:
+            msg = "请先获取每日推荐" if source == "daily" else "请先获取歌单"
+            QMessageBox.warning(self, "提示", msg)
             return
 
-        for row in range(self.playlist_link_table.rowCount()):
-            item = self.playlist_link_table.item(row, 0)
+        if source == "daily":
+            self.batch_download_from_link(source, songs_override=songs)
+            return
+
+        for row in range(table.rowCount()):
+            item = table.item(row, 0)
             if item:
                 item.setCheckState(Qt.CheckState.Checked)
 
-        self.batch_download_from_link()
+        self.batch_download_from_link(source)
 
-    def select_all_playlist_link_songs(self):
+    def select_all_playlist_link_songs(self, source=None):
         """全选/取消全选歌单链接中的歌曲"""
-        if self.playlist_link_table.rowCount() == 0:
+        source = source or self._get_active_playlist_source()
+        table = self._get_playlist_table(source)
+        if table.rowCount() == 0:
             return
 
         # 检查当前是否已经全选
         all_checked = True
-        for row in range(self.playlist_link_table.rowCount()):
-            item = self.playlist_link_table.item(row, 0)
+        for row in range(table.rowCount()):
+            item = table.item(row, 0)
             if item and item.checkState() != Qt.CheckState.Checked:
                 all_checked = False
                 break
@@ -2193,13 +2392,13 @@ class QQMusicDownloaderGUI(QMainWindow):
         new_state = Qt.CheckState.Unchecked if all_checked else Qt.CheckState.Checked
 
         # 更新所有复选框状态
-        for row in range(self.playlist_link_table.rowCount()):
-            item = self.playlist_link_table.item(row, 0)
+        for row in range(table.rowCount()):
+            item = table.item(row, 0)
             if item:
                 item.setCheckState(new_state)
 
         # 刷新表格视图
-        self.playlist_link_table.update()
+        table.update()
 
     def create_menu_bar(self):
         """创建菜单栏"""

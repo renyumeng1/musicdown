@@ -136,10 +136,13 @@ class QRLoginWidget(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(12)
 
         # 登录方式选择
         type_group = QGroupBox("登录方式")
         type_layout = QHBoxLayout()
+        type_layout.setSpacing(8)
 
         self.login_type_combo = QComboBox()
         self.login_type_combo.addItems(["QQ", "微信"])
@@ -155,10 +158,9 @@ class QRLoginWidget(QWidget):
         qr_layout = QVBoxLayout()
 
         self.qr_label = QLabel("点击下方按钮生成二维码")
+        self.qr_label.setObjectName("qrLabel")
         self.qr_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.qr_label.setMinimumSize(300, 300)
-        self.qr_label.setStyleSheet(
-            "border: 1px solid gray; background-color: #f0f0f0;")
         qr_layout.addWidget(self.qr_label)
 
         qr_group.setLayout(qr_layout)
@@ -166,6 +168,7 @@ class QRLoginWidget(QWidget):
 
         # 状态显示
         self.status_label = QLabel("准备就绪")
+        self.status_label.setObjectName("statusLabel")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
 
@@ -176,7 +179,9 @@ class QRLoginWidget(QWidget):
 
         # 按钮
         button_layout = QHBoxLayout()
+        button_layout.setSpacing(8)
         self.generate_btn = QPushButton("生成二维码")
+        self.generate_btn.setProperty("primary", True)
         self.generate_btn.clicked.connect(self.generate_qr)
 
         self.cancel_btn = QPushButton("取消")
@@ -309,6 +314,8 @@ class LoginDialog(QDialog):
         self.setFixedSize(450, 600)
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(16)
 
         # 标题
         title_label = QLabel("QQ音乐登录")
@@ -325,6 +332,7 @@ class LoginDialog(QDialog):
 
         # 底部按钮
         button_layout = QHBoxLayout()
+        button_layout.setSpacing(8)
         self.close_btn = QPushButton("关闭")
         self.close_btn.clicked.connect(self.reject)
         button_layout.addStretch()
