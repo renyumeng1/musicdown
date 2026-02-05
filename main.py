@@ -26,7 +26,7 @@ if __name__ == "__main__":
             logger.warning("Failed to read theme file: %s (%s)", theme_path, exc)
         else:
             try:
-                icons_url_prefix = (theme_path.parent / "icons").resolve().as_uri()
+                icons_url_prefix = (theme_path.parent / "icons").resolve().as_posix()
             except Exception:
                 icons_url_prefix = (theme_path.parent / "icons").as_posix()
             theme_text = theme_text.replace('url("icons/', f'url("{icons_url_prefix}/')
