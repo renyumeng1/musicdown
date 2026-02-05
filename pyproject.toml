@@ -40,3 +40,6 @@ packages = [
   "utils",
   "web",
 ]
+
+[tool.setuptools.package-data]
+ui = ["theme.qss", "icon.ico", "icons/*.svg"]

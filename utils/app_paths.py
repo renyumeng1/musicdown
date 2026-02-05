@@ -89,12 +89,26 @@ def get_resource_path(*parts: str) -> Path:
     app_dir = get_app_dir()
     candidates: list[Path] = []
 
+    meipass = getattr(sys, "_MEIPASS", None)
+    if meipass:
+        candidates.append(Path(meipass))
+
     if sys.platform == "darwin":
         macos_resources_dir = app_dir.parent / "Resources"
         if macos_resources_dir.is_dir():
             candidates.append(macos_resources_dir)
 
     candidates.append(app_dir)
+
+    nuitka_onefile_dir = os.getenv("NUITKA_ONEFILE_DIRECTORY")
+    if nuitka_onefile_dir:
+        candidates.append(Path(nuitka_onefile_dir))
+
+    try:
+        argv_dir = Path(sys.argv[0]).resolve().parent
+        candidates.append(argv_dir)
+    except Exception:
+        pass
 
     for base_dir in candidates:
         candidate_path = base_dir.joinpath(*parts)
