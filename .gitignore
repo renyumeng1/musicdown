@@ -20,3 +20,4 @@ credential.json
 test*.py
 .ace-tool/
 .venv/
+upload/
