@@ -17,8 +17,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-        arch: [x64]
+        include:
+          - os: windows-latest
+            arch: x64
+          - os: ubuntu-latest
+            arch: x64
+          - os: macos-13
+            arch: x64
+          - os: macos-14
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     
@@ -96,6 +103,26 @@ jobs:
         shell: bash
         run: |
           uv run python -m nuitka --mode=app --enable-plugin=pyside6 --assume-yes-for-downloads --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
+
+      - name: Codesign app (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        shell: bash
+        run: |
+          APP_PATH="$(ls -d build/*.app | head -n 1)"
+          if [[ -z "${APP_PATH}" ]]; then
+            echo "No .app produced under build/"
+            ls -la build
+            exit 1
+          fi
+          echo "Runner arch: $(uname -m)"
+          echo "App path: ${APP_PATH}"
+          codesign --force --deep --sign - "${APP_PATH}"
+          codesign --verify --deep --verbose=2 "${APP_PATH}"
+          echo "App executable(s):"
+          ls -la "${APP_PATH}/Contents/MacOS" || true
+          file "${APP_PATH}/Contents/MacOS/"* || true
+          echo "Gatekeeper check (expected to fail without notarization):"
+          spctl -a -vv "${APP_PATH}" || true
 
       - name: Build Installer (Windows)
         if: ${{ runner.os == 'Windows' }}

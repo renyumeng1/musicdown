@@ -64,5 +64,19 @@ The installer will be generated under `upload/` (configurable in the `.iss` file
 
 ## macOS: distribution notes
 
-- For local use, zipping the `.app` is enough.
-- For distribution outside your machine, you will need code signing + notarization.
+- CI builds **two** macOS artifacts:
+  - `...-macos-amd64.zip` → Intel Macs (x86_64)
+  - `...-macos-arm64.zip` → Apple Silicon (arm64)
+- If the `.app` won’t open after downloading/unzipping, it’s usually Gatekeeper quarantine. For local testing:
+  - Right click the app → **Open**
+  - Or remove quarantine in Terminal:
+    ```bash
+    xattr -dr com.apple.quarantine /path/to/musicdown.app
+    ```
+- To inspect what’s wrong (useful when reporting an issue):
+  ```bash
+  spctl -a -vv /path/to/musicdown.app || true
+  codesign -dv --verbose=4 /path/to/musicdown.app 2>&1 | head -n 50
+  file /path/to/musicdown.app/Contents/MacOS/*
+  ```
+- For proper distribution to other machines, you will need **Developer ID** code signing + notarization.
