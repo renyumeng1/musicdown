@@ -46,6 +46,7 @@ uv run python -m nuitka \
 ```
 
 Notes:
+
 - You can't build a Windows `.exe` from Linux/WSL. Use GitHub Actions or run the Windows build on Windows.
 - For macOS app icon, Nuitka supports `--macos-app-icon=icon.png` / `icon.icns` (PNG/ICNS).
 - If you use a PNG icon on macOS, Nuitka may require `imageio` to convert it; using an `.icns` avoids that.
