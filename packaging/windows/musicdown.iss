@@ -1,7 +1,7 @@
 ; Inno Setup script for musicdown (Nuitka standalone folder -> installer)
 ;
 ; Compile (PowerShell):
-;   iscc /DMyAppVersion=2026.02.05 /DMyAppSourceDir="build\main.dist" packaging\windows\musicdown.iss
+;   iscc /DMyAppVersion=2026.02.05 packaging\windows\musicdown.iss
 ;
 ; If your executable name is not "main.exe", also pass:
 ;   /DMyAppExeName="musicdown.exe"

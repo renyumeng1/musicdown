@@ -5,13 +5,13 @@
 import asyncio
 import sys
 from pathlib import Path
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QTabWidget, QWidget,
     QLabel, QLineEdit, QPushButton, QMessageBox,
     QProgressBar, QGroupBox, QFormLayout, QComboBox
 )
-from PyQt6.QtCore import QThread, pyqtSignal, Qt
-from PyQt6.QtGui import QPixmap, QFont
+from PySide6.QtCore import QThread, Signal, Qt
+from PySide6.QtGui import QPixmap, QFont
 
 from api.qqmusic import QQMusicAPI
 from utils.logger import logger
@@ -20,10 +20,10 @@ from utils.logger import logger
 class LoginWorker(QThread):
     """登录工作线程"""
 
-    login_success = pyqtSignal(dict)  # 登录成功信号
-    login_failed = pyqtSignal(str)    # 登录失败信号
-    status_update = pyqtSignal(str)   # 状态更新信号
-    qr_generated = pyqtSignal(bytes)  # 二维码生成信号（字节数据）
+    login_success = Signal(dict)  # 登录成功信号
+    login_failed = Signal(str)    # 登录失败信号
+    status_update = Signal(str)   # 状态更新信号
+    qr_generated = Signal(bytes)  # 二维码生成信号（字节数据）
 
     def __init__(self, adapter: QQMusicAPI):
         super().__init__()
@@ -356,7 +356,7 @@ class LoginDialog(QDialog):
 
 
 if __name__ == "__main__":
-    from PyQt6.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
     adapter = QQMusicAPI()

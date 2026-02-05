@@ -5,9 +5,9 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from PyQt6.QtCore import Qt, QThread, pyqtSignal, pyqtSlot, QObject, QPoint
-from PyQt6.QtGui import QIcon, QTextCursor
-from PyQt6.QtWidgets import (QComboBox, QFileDialog, QGridLayout,
+from PySide6.QtCore import Qt, QThread, Signal, Slot, QObject, QPoint
+from PySide6.QtGui import QIcon, QTextCursor
+from PySide6.QtWidgets import (QComboBox, QFileDialog, QGridLayout,
                              QHBoxLayout, QHeaderView, QLabel, QLineEdit,
                              QMainWindow, QMessageBox, QProgressBar, QPushButton,
                              QRadioButton, QTabWidget, QTableWidget,
@@ -75,9 +75,9 @@ class AnchoredComboBox(QComboBox):
 
 class WorkerThread(QThread):
     """工作线程，处理异步任务"""
-    update_signal = pyqtSignal(dict)
-    error_signal = pyqtSignal(str)
-    progress_signal = pyqtSignal(int, int)  # 当前进度, 总进度
+    update_signal = Signal(dict)
+    error_signal = Signal(str)
+    progress_signal = Signal(int, int)  # 当前进度, 总进度
 
     def __init__(self, task_type, api=None, downloader=None, params=None):
         super().__init__()
@@ -308,7 +308,8 @@ class WorkerThread(QThread):
                 "data": result,
             })
         elif self.task_type == "get_daily_recommendations":
-            result = await self.api.daily_recommendations()
+            fallback_url = self.params.get("fallback_url") or ""
+            result = await self.api.daily_recommendations(fallback_url)
             self.update_signal.emit({
                 "type": "playlist_link_result",
                 "data": result,
@@ -752,7 +753,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         class UILogHandler(QObject, logging.Handler):
             # 在类级别定义信号
-            log_signal = pyqtSignal(str)
+            log_signal = Signal(str)
 
             def __init__(self, ui_instance):
                 QObject.__init__(self)
@@ -845,7 +846,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             return base_dir / "每日推荐" / date_str
         return base_dir
 
-    @pyqtSlot()
+    @Slot()
     def search(self):
         """执行搜索"""
         query = self.search_input.text().strip()
@@ -876,7 +877,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.current_worker = worker
         worker.start()
 
-    @pyqtSlot(dict)
+    @Slot(dict)
     def handle_worker_update(self, data):
         """处理工作线程的更新信号"""
         update_type = data["type"]
@@ -911,7 +912,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         elif update_type == "download_progress":
             self.update_download_progress(update_data)
 
-    @pyqtSlot(str)
+    @Slot(str)
     def handle_worker_error(self, error_msg):
         """处理工作线程的错误信号"""
         QMessageBox.critical(self, "错误", f"发生错误: {error_msg}")
@@ -936,7 +937,7 @@ class QQMusicDownloaderGUI(QMainWindow):
                 prefix = "获取每日推荐失败" if task_type == "get_daily_recommendations" else "获取歌单失败"
                 label.setText(f"歌单信息: {prefix}")
 
-    @pyqtSlot(int, int)
+    @Slot(int, int)
     def handle_progress_update(self, current, total):
         """处理下载进度更新"""
         progress = int(current / total * 100) if total > 0 else 0
@@ -1841,7 +1842,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.current_worker = WorkerThread(
             "get_daily_recommendations",
             api=self.api,
-            params={},
+            params={"fallback_url": self.playlist_link_input.text().strip()},
         )
         self.current_worker.update_signal.connect(self.handle_playlist_link_result)
         self.current_worker.error_signal.connect(self.handle_worker_error)
@@ -1855,7 +1856,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         """一键下载每日推荐（获取列表后自动全选并下载）"""
         self._start_daily_recommendations(auto_download=True)
 
-    @pyqtSlot(dict)
+    @Slot(dict)
     def handle_playlist_link_result(self, data):
         """处理歌单链接获取结果"""
         if data["type"] != "playlist_link_result":
@@ -1981,7 +1982,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.handle_progress_update)
         self.current_worker.start()
 
-    @pyqtSlot(dict)
+    @Slot(dict)
     def handle_single_song_search_result(self, data):
         """处理单首歌曲搜索结果"""
         if data["type"] != "single_song_search_result":
@@ -2321,7 +2322,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
     def show_api_settings(self):
         """显示API设置对话框"""
-        from PyQt6.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox
+        from PySide6.QtWidgets import QDialog, QVBoxLayout, QCheckBox, QDialogButtonBox
 
         dialog = QDialog(self)
         dialog.setWindowTitle("API设置")

@@ -6,11 +6,15 @@ import time
 from logging import CRITICAL, DEBUG, ERROR, INFO, NOTSET, WARNING
 from datetime import datetime
 
+from utils.app_paths import get_app_data_dir
 
 
-log_file = os.path.join("logs/", f'{time.strftime("%Y.%m.%d", time.localtime())}.log')
-if not os.path.exists(os.path.dirname(log_file)):
-    os.makedirs(os.path.dirname(log_file))
+def _get_log_file_path() -> str:
+    log_dir = get_app_data_dir() / "logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_file = log_dir / f'{time.strftime("%Y.%m.%d", time.localtime())}.log'
+    return str(log_file)
+
 
 class Logger:
     def __init__(self) -> None:
@@ -22,9 +26,13 @@ class Logger:
 
         formatter = logging.Formatter('[%(levelname)s]%(asctime)s- %(module)s(%(lineno)d) - %(funcName)s:%(message)s')
         # 创建一个处理器,用于将日志写入文件
-        file_handler = logging.FileHandler(log_file, encoding='utf-8')
-        file_handler.setFormatter(formatter)
-        self.__logger.addHandler(file_handler)
+        try:
+            file_handler = logging.FileHandler(_get_log_file_path(), encoding="utf-8")
+            file_handler.setFormatter(formatter)
+            self.__logger.addHandler(file_handler)
+        except Exception:
+            # If the file system is not writable (e.g. sandboxed app bundle), fall back silently.
+            pass
 
         if __debug__ and (os.getenv("DEBUGPY_RUNNING") == "true" or sys.gettrace() is not None):
             # 调试时创建一个处理器,用于将日志输出到标准输出

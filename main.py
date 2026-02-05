@@ -1,7 +1,7 @@
 import sys
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QGuiApplication
-from PyQt6.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QGuiApplication
+from PySide6.QtWidgets import QApplication
 from ui.mainui import QQMusicDownloaderGUI
 from utils.app_paths import get_resource_path
 

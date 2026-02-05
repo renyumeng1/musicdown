@@ -17,8 +17,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-        arch: [x64]
+        include:
+          - os: windows-latest
+            arch: x64
+          - os: ubuntu-latest
+            arch: x64
+          - os: macos-13
+            arch: x64
+          - os: macos-14
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     
@@ -81,64 +88,105 @@ jobs:
 
       - name: Build Executable(Windows)
         if: ${{ runner.os == 'Windows' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-
-          mode: standalone
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
-
-          windows-icon-from-ico: "ui/icon.ico"
-          mingw64: true
-          windows-disable-console: true
-
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+        shell: pwsh
+        run: |
+          uv run python -m nuitka --mode=standalone --enable-plugin=pyside6 --assume-yes-for-downloads --mingw64 --windows-console-mode=disable --windows-icon-from-ico=ui/icon.ico --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
 
       - name: Build Executable(Linux)
         if: ${{ runner.os == 'Linux' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
-
-          mode: standalone
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
-
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+        shell: bash
+        run: |
+          uv run python -m nuitka --mode=standalone --enable-plugin=pyside6 --assume-yes-for-downloads --product-name=musicdown --file-version=${{ steps.info.outputs.version }} --product-version=${{ steps.info.outputs.version }} --include-data-dir=ui=ui --output-dir=build main.py
 
       - name: Build Executable(macOS)
         if: ${{ runner.os == 'macOS' }}
-        uses: Nuitka/Nuitka-Action@main
-        with:
-          nuitka-version: main
-          script-name: main.py
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
 
-          mode: app
-          enable-plugins: pyqt6
-          product-name: "musicdown"
-          file-version: ${{ steps.info.outputs.version }}
-          product-version: ${{ steps.info.outputs.version }}
-          copyright: ${{ steps.info.outputs.copyright }}
+          from PIL import Image
 
-          include-package: utils,ui,api,decryptor,downloader
-          include-data-dir: "ui=ui"
+          src = Path("ui/icon.ico")
+          dst = Path("ui/icon.png")
+
+          if src.exists():
+              img = Image.open(src)
+              # Choose the largest frame if the ICO contains multiple sizes.
+              try:
+                  largest_index = 0
+                  largest_area = 0
+                  for i in range(getattr(img, "n_frames", 1)):
+                      img.seek(i)
+                      w, h = img.size
+                      area = w * h
+                      if area > largest_area:
+                          largest_area = area
+                          largest_index = i
+                  img.seek(largest_index)
+              except Exception:
+                  pass
+
+              img = img.convert("RGBA")
+              dst.parent.mkdir(parents=True, exist_ok=True)
+              img.save(dst)
+              print(f"Generated macOS icon: {dst}")
+          else:
+              print("ui/icon.ico not found; macOS app icon will be default.")
+          PY
+
+          ICON_ARG=""
+          if [[ -f ui/icon.png ]]; then
+            ICON_ARG="--macos-app-icon=ui/icon.png"
+            # Nuitka needs imageio to convert PNG to native macOS ICNS internally.
+            uv pip install imageio
+          fi
+
+          uv run python -m nuitka \
+            --mode=app \
+            --enable-plugin=pyside6 \
+            --assume-yes-for-downloads \
+            --product-name=musicdown \
+            --macos-app-name=musicdown \
+            --output-filename=musicdown \
+            ${ICON_ARG} \
+            --file-version=${{ steps.info.outputs.version }} \
+            --product-version=${{ steps.info.outputs.version }} \
+            --include-data-dir=ui=ui \
+            --output-dir=build \
+            main.py
+
+      - name: Codesign app (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        shell: bash
+        run: |
+          APP_PATH="$(ls -d build/*.app | head -n 1)"
+          if [[ -z "${APP_PATH}" ]]; then
+            echo "No .app produced under build/"
+            ls -la build
+            exit 1
+          fi
+          TARGET_PATH="build/musicdown.app"
+          if [[ "${APP_PATH}" != "${TARGET_PATH}" ]]; then
+            rm -rf "${TARGET_PATH}"
+            mv "${APP_PATH}" "${TARGET_PATH}"
+            APP_PATH="${TARGET_PATH}"
+          fi
+          echo "Runner arch: $(uname -m)"
+          echo "App path: ${APP_PATH}"
+          codesign --force --deep --sign - "${APP_PATH}"
+          codesign --verify --deep --verbose=2 "${APP_PATH}"
+          echo "App executable(s):"
+          ls -la "${APP_PATH}/Contents/MacOS" || true
+          file "${APP_PATH}/Contents/MacOS/"* || true
+          echo "Gatekeeper check (expected to fail without notarization):"
+          spctl -a -vv "${APP_PATH}" || true
 
       - name: Build Installer (Windows)
         if: ${{ runner.os == 'Windows' }}
         run: |
           choco install innosetup -y
-          iscc /DMyAppVersion=${{ steps.info.outputs.version }} /DMyAppSourceDir="build\\main.dist" packaging\\windows\\musicdown.iss
+          iscc /DMyAppVersion=${{ steps.info.outputs.version }} packaging\\windows\\musicdown.iss
 
       - name: Compress exe (Windows)
         if: ${{ runner.os == 'Windows' }}
@@ -159,7 +207,10 @@ jobs:
         if: ${{ runner.os == 'macOS' }}
         shell: bash
         run: |
-          APP_PATH="$(ls -d build/*.app | head -n 1)"
+          APP_PATH="build/musicdown.app"
+          if [[ ! -d "${APP_PATH}" ]]; then
+            APP_PATH="$(ls -d build/*.app | head -n 1)"
+          fi
           if [[ -z "${APP_PATH}" ]]; then
             echo "No .app produced under build/"
             ls -la build
