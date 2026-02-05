@@ -22,12 +22,48 @@ Requires-Dist: PyQt6
 Requires-Dist: fastapi
 Requires-Dist: uvicorn[standard]
 Requires-Dist: jinja2
+Requires-Dist: nuitka
 
 # Music Downloader Web
 
 This project provides a simple web interface for the original PyQt based music downloader. It exposes a FastAPI application that allows logging in via QR code, searching for songs and downloading them through the browser. The application can be built and run using Docker.
 
 ## Usage
+
+### Local (uv)
+
+```bash
+uv sync
+```
+
+Run desktop GUI:
+
+```bash
+uv run python main.py
+```
+
+Run web:
+
+```bash
+uv run uvicorn web.app:app --reload --host 0.0.0.0 --port 8000
+```
+
+Open `http://localhost:8000`:
+- Search: `/search`
+- Playlist from share link: `/playlist`
+- Daily recommendations: `/daily`
+
+If daily recommendations cannot be fetched automatically, you can set a fallback share link in `config/config.json`:
+
+```json
+{
+  "daily_recommend": {
+    "url": "https://c6.y.qq.com/base/fcgi-bin/u?__=..."
+  }
+}
+```
+
+### Docker
 
 1. Build the Docker image:
 
@@ -67,3 +103,6 @@ Enable lightweight mode via environment variable:
 USE_LIGHT_DOWNLOAD_MODE=true docker-compose up --build
 ```
 
+## Packaging (GUI)
+
+See `PACKAGING.md`.

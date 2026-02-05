@@ -16,3 +16,4 @@ PyQt6
 fastapi
 uvicorn[standard]
 jinja2
+nuitka

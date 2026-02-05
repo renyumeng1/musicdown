@@ -21,8 +21,7 @@ This repo already uses **Nuitka** in GitHub Actions (`.github/workflows/build.ym
 ### 1) Install dependencies
 
 ```bash
-uv sync
-uv pip install -U nuitka
+uv sync --frozen
 ```
 
 ### 2) Build a standalone GUI app
@@ -45,6 +44,7 @@ uv run python -m nuitka \
 ```
 
 Notes:
+- You can't build a Windows `.exe` from Linux/WSL. Use GitHub Actions or run the Windows build on Windows.
 - For macOS app icon, Nuitka supports `--macos-app-icon=icon.png` / `icon.icns` (PNG/ICNS).
 - `--include-data-dir=ui=ui` is required to ship `ui/theme.qss` and `ui/icons/*.svg`.
 

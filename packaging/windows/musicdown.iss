@@ -1,7 +1,7 @@
 ; Inno Setup script for musicdown (Nuitka standalone folder -> installer)
 ;
 ; Compile (PowerShell):
-;   iscc /DMyAppVersion=2026.02.05 /DMyAppSourceDir="build\musicdown" packaging\windows\musicdown.iss
+;   iscc /DMyAppVersion=2026.02.05 /DMyAppSourceDir="build\main.dist" packaging\windows\musicdown.iss
 ;
 ; If your executable name is not "main.exe", also pass:
 ;   /DMyAppExeName="musicdown.exe"
@@ -14,7 +14,7 @@
 #endif
 
 #ifndef MyAppSourceDir
-  #define MyAppSourceDir "..\..\build\musicdown"
+  #define MyAppSourceDir "..\..\build\main.dist"
 #endif
 
 #ifndef MyAppExeName
@@ -48,4 +48,3 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch {#MyAppName}"; Flags: nowait postinstall skipifsilent
-

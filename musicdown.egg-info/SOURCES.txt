@@ -21,6 +21,7 @@ ui/__init__.py
 ui/login_dialog.py
 ui/mainui.py
 utils/__init__.py
+utils/app_paths.py
 utils/config.py
 utils/cookie2json.py
 utils/decorator.py
@@ -29,5 +30,6 @@ utils/logger.py
 utils/menum.py
 utils/network.py
 utils/parser.py
+utils/quality.py
 web/__init__.py
 web/app.py
