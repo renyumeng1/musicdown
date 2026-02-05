@@ -18,8 +18,12 @@ musicdown.egg-info/top_level.txt
 tgbot/__init__.py
 tgbot/bot.py
 ui/__init__.py
+ui/icon.ico
 ui/login_dialog.py
 ui/mainui.py
+ui/theme.qss
+ui/icons/chevron-down.svg
+ui/icons/chevron-up.svg
 utils/__init__.py
 utils/app_paths.py
 utils/config.py
