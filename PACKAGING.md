@@ -51,6 +51,20 @@ Notes:
 - If you use a PNG icon on macOS, Nuitka may require `imageio` to convert it; using an `.icns` avoids that.
 - `--include-data-dir=ui=ui` is required to ship `ui/theme.qss` and `ui/icons/*.svg`.
 - Compiled app logs are written to `~/.musicdown/logs/` by default.
+- If the packaged GUI looks “unstyled”, check the logs for `Theme file not found` and verify the `ui/` directory is included in your build output.
+
+## Option C: Build with PyInstaller (experimental)
+
+If you prefer PyInstaller, you must also ship the `ui/` assets:
+
+- macOS/Linux:
+  ```bash
+  pyinstaller --noconsole --add-data "ui:ui" main.py
+  ```
+- Windows (note the `;` separator):
+  ```powershell
+  pyinstaller --noconsole --add-data "ui;ui" main.py
+  ```
 
 ## Windows: create an installer (`.exe`) with Inno Setup
 
