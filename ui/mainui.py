@@ -308,7 +308,8 @@ class WorkerThread(QThread):
                 "data": result,
             })
         elif self.task_type == "get_daily_recommendations":
-            result = await self.api.daily_recommendations()
+            fallback_url = self.params.get("fallback_url") or ""
+            result = await self.api.daily_recommendations(fallback_url)
             self.update_signal.emit({
                 "type": "playlist_link_result",
                 "data": result,
@@ -1841,7 +1842,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.current_worker = WorkerThread(
             "get_daily_recommendations",
             api=self.api,
-            params={},
+            params={"fallback_url": self.playlist_link_input.text().strip()},
         )
         self.current_worker.update_signal.connect(self.handle_playlist_link_result)
         self.current_worker.error_signal.connect(self.handle_worker_error)

@@ -13,11 +13,13 @@ import httpx
 
 from utils.logger import logger
 from utils.quality import best_available_fallback_qualities, canonical_quality
-from utils.app_paths import get_credential_file_path, get_config_file_path
+from utils.app_paths import get_app_data_dir, get_credential_file_path, get_config_file_path
 
 try:
     from qqmusic_api import search, song, album, songlist, lyric, login, recommend
     from qqmusic_api.utils.credential import Credential
+    from qqmusic_api.utils.network import RequestGroup
+    from qqmusic_api.exceptions.api_exception import ResponseCodeError
     from qqmusic_api.login import (
         QRLoginType, QRCodeLoginEvents, PhoneLoginEvents,
         get_qrcode, check_qrcode, send_authcode, phone_authorize
@@ -31,6 +33,8 @@ except ImportError:
 class QQMusicAPI:
     """QQ音乐API统一封装类"""
 
+    _DEFAULT_QIMEI36 = "6c9d3cd110abca9b16311cee10001e717614"
+
     def __init__(self):
         if not QQMUSIC_API_AVAILABLE:
             raise ImportError(
@@ -39,7 +43,71 @@ class QQMusicAPI:
         self.credential: Optional[Credential] = None
         # 使用可写路径确保在任何环境下都能正确读写凭证文件
         self.credential_file = get_credential_file_path()
+        self._configure_qqmusic_api_runtime()
         self._load_credential_basic()
+
+    def _qimei_store_path(self) -> Path:
+        return get_app_data_dir() / "cache" / "qimei36.txt"
+
+    def _read_stored_qimei36(self) -> str:
+        try:
+            path = self._qimei_store_path()
+            if path.exists():
+                return path.read_text(encoding="utf-8").strip()
+        except Exception:
+            pass
+        return ""
+
+    def _store_qimei36(self, q36: str) -> None:
+        q36 = (q36 or "").strip()
+        if not q36:
+            return
+        try:
+            path = self._qimei_store_path()
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(q36, encoding="utf-8")
+        except Exception:
+            pass
+
+    def _configure_qqmusic_api_runtime(self) -> None:
+        """修正三方库的缓存路径/会话初始化行为，避免在 macOS .app 内写入导致权限/签名问题。"""
+        try:
+            from qqmusic_api.utils import device as qq_device
+
+            # 默认 device.json 位于 site-packages 内部，打包后会落在 .app 里，写入会导致权限失败/签名失效。
+            qq_device.device_path = get_app_data_dir() / "cache" / "qqmusic_device.json"
+        except Exception:
+            pass
+
+        try:
+            from qqmusic_api.utils import session as qq_session
+
+            if getattr(qq_session, "_musicdown_qimei_patched", False):
+                return
+
+            original_get_qimei = qq_session.get_qimei
+
+            def patched_get_qimei(version: str):  # type: ignore[no-redef]
+                stored = self._read_stored_qimei36()
+                if stored and len(stored) == 36:
+                    return {"q16": "", "q36": stored}
+
+                try:
+                    res = original_get_qimei(version)
+                    q36 = (res or {}).get("q36") if isinstance(res, dict) else ""
+                    if q36:
+                        self._store_qimei36(str(q36))
+                    return res
+                except Exception as e:
+                    logger.warning(f"获取 QIMEI 失败，使用默认值兜底: {e}")
+                    q36 = self._DEFAULT_QIMEI36
+                    self._store_qimei36(q36)
+                    return {"q16": "", "q36": q36}
+
+            qq_session.get_qimei = patched_get_qimei  # type: ignore[assignment]
+            qq_session._musicdown_qimei_patched = True  # type: ignore[attr-defined]
+        except Exception:
+            pass
 
     def _load_credential_basic(self):
         """同步读取凭证（不判断有效期）"""
@@ -228,6 +296,9 @@ class QQMusicAPI:
         if not url or not url.strip():
             return {"code": -1, "error": "链接不能为空"}
 
+        # 确保三方库缓存路径已修正（防止写入 .app 内部导致问题）
+        self._configure_qqmusic_api_runtime()
+
         resolved = await self._resolve_share_url(url)
         playlist_id = self._extract_playlist_id(resolved) or self._extract_playlist_id(url)
         if not playlist_id:
@@ -240,8 +311,8 @@ class QQMusicAPI:
                 num=100,
                 page=1,
                 onlysong=False,
-                tag=True,
-                userinfo=True,
+                tag=False,
+                userinfo=False,
                 credential=self.credential,
             )
             dirinfo = detail.get("dirinfo", {}) if isinstance(detail, dict) else {}
@@ -252,7 +323,7 @@ class QQMusicAPI:
                 or f"歌单 {playlist_id}"
             )
 
-            songs = await songlist.get_songlist(playlist_id, dirid=0)
+            songs = await self._fetch_songlist_songs(playlist_id, dirid=0)
             songs_count = len(songs) if isinstance(songs, list) else int(detail.get("total_song_num", 0) or 0)
 
             return {
@@ -269,8 +340,48 @@ class QQMusicAPI:
             logger.error(f"从链接获取歌单失败: {e}")
             return {"code": -1, "error": str(e)}
 
-    async def daily_recommendations(self) -> Dict:
+    async def _fetch_songlist_songs(self, playlist_id: int, *, dirid: int = 0) -> list[dict]:
+        """获取歌单全部歌曲列表（关闭 tag/userinfo，降低风控触发概率）。"""
+        first = await songlist.get_detail(
+            songlist_id=playlist_id,
+            dirid=dirid,
+            num=100,
+            page=1,
+            onlysong=True,
+            tag=False,
+            userinfo=False,
+            credential=self.credential,
+        )
+        songs = list(first.get("songlist", []) or []) if isinstance(first, dict) else []
+        total = int(first.get("total_song_num", len(songs)) or len(songs)) if isinstance(first, dict) else len(songs)
+
+        if total <= 100:
+            return songs
+
+        rg = RequestGroup(credential=self.credential)
+        # page 从 2 开始；每页 100 首
+        for p in range(2, (total + 99) // 100 + 1):
+            rg.add_request(
+                songlist.get_detail,
+                songlist_id=playlist_id,
+                dirid=dirid,
+                num=100,
+                page=p,
+                onlysong=True,
+                tag=False,
+                userinfo=False,
+            )
+        response = await rg.execute()
+        for res in response:
+            if isinstance(res, dict):
+                songs.extend(res.get("songlist", []) or [])
+        return songs
+
+    async def daily_recommendations(self, fallback_url: str | None = None) -> Dict:
         """尝试获取账号的每日推荐歌曲（优先从推荐 Feed 中解析）。"""
+        # 确保三方库缓存路径已修正（防止写入 .app 内部导致问题）
+        self._configure_qqmusic_api_runtime()
+
         if not await self.is_logged_in():
             return {"code": -1, "error": "未登录或凭证已过期，请先登录"}
 
@@ -292,9 +403,13 @@ class QQMusicAPI:
             feed = await recommend.get_home_feed(credential=self.credential)
         except Exception as e:
             logger.warning(f"获取推荐 Feed 失败: {e}")
-            return {"code": -1, "error": f"获取每日推荐失败: {e}"}
+            # Feed 拉取失败时也允许直接用兜底链接
+            return await self._daily_fallback_from_link(fallback_url)
 
-        playlist_id = None
+        # 收集所有可能的“每日推荐”候选歌单 ID（避免误选导致 500032）
+        candidate_ids: list[int] = []
+        seen: set[int] = set()
+
         for d in _walk(feed):
             title = ""
             for k in ("title", "name", "desc", "subtitle", "label"):
@@ -304,68 +419,100 @@ class QQMusicAPI:
             if not title or not _contains_keywords(title):
                 continue
 
-            for id_key in ("disstid", "dissid", "songlist_id", "playlist_id", "id"):
+            for id_key in ("disstid", "dissid", "songlist_id", "playlist_id", "id", "dirid"):
                 val = d.get(id_key)
+                pid: int | None = None
                 if isinstance(val, int) and val > 0:
-                    playlist_id = val
-                    break
-                if isinstance(val, str) and val.isdigit():
-                    playlist_id = int(val)
-                    break
-            if playlist_id:
-                break
+                    pid = val
+                elif isinstance(val, str) and val.isdigit():
+                    pid = int(val)
+                if pid and pid not in seen:
+                    candidate_ids.append(pid)
+                    seen.add(pid)
 
-        if not playlist_id:
-            # 兜底：允许用户在配置文件中配置每日推荐分享链接
+        if not candidate_ids:
+            return await self._daily_fallback_from_link(fallback_url)
+
+        last_error: str | None = None
+        for playlist_id in candidate_ids:
+            try:
+                # 每日推荐一般只有 30 首，直接取第一页即可；同时关闭 tag/userinfo 以降低风控触发概率。
+                detail = await songlist.get_detail(
+                    songlist_id=playlist_id,
+                    dirid=0,
+                    num=100,
+                    page=1,
+                    onlysong=True,
+                    tag=False,
+                    userinfo=False,
+                    credential=self.credential,
+                )
+
+                dirinfo = detail.get("dirinfo", {}) if isinstance(detail, dict) else {}
+                playlist_name = (
+                    dirinfo.get("title")
+                    or dirinfo.get("dirname")
+                    or dirinfo.get("name")
+                    or "每日推荐"
+                )
+                songs = detail.get("songlist", []) if isinstance(detail, dict) else []
+                if songs and isinstance(songs, list):
+                    return {
+                        "code": 1,
+                        "data": {
+                            "id": playlist_id,
+                            "name": playlist_name,
+                            "songs": songs,
+                            "songs_count": int(detail.get("total_song_num", len(songs)) or len(songs)),
+                        },
+                    }
+            except ResponseCodeError as e:
+                # 对于不符合预期的 code，尝试下一个候选 ID
+                last_error = str(e)
+                logger.warning(
+                    "每日推荐候选歌单获取失败: %s (id=%s, req=%s, raw=%s)",
+                    e,
+                    playlist_id,
+                    getattr(e, "data", None),
+                    getattr(e, "raw", None),
+                )
+                continue
+            except Exception as e:
+                last_error = str(e)
+                logger.warning(f"每日推荐候选歌单获取失败: {e} (id={playlist_id})")
+                continue
+
+        logger.error(f"获取每日推荐歌单失败: {last_error}")
+        return await self._daily_fallback_from_link(fallback_url, last_error=last_error)
+
+    async def _daily_fallback_from_link(self, fallback_url: str | None, *, last_error: str | None = None) -> Dict:
+        # 兜底：优先使用调用方传入的分享链接，其次使用配置文件中的链接
+        url = (fallback_url or "").strip()
+        if not url:
             try:
                 from utils.config import config as app_config
-                fallback_url = getattr(app_config, "DAILY_RECOMMEND_URL", "") or ""
+                url = getattr(app_config, "DAILY_RECOMMEND_URL", "") or ""
+                url = url.strip()
             except Exception:
-                fallback_url = ""
+                url = ""
 
-            if fallback_url.strip():
-                logger.info("未解析到每日推荐歌单ID，使用配置的每日推荐链接作为兜底")
-                return await self.playlist_from_link(fallback_url)
+        if url:
+            logger.info("使用每日推荐分享链接作为兜底")
+            result = await self.playlist_from_link(url)
+            if result.get("code") == 1:
+                return result
+            err = result.get("error") or "未知错误"
+            if last_error and last_error not in str(err):
+                err = f"{last_error}; fallback: {err}"
+            return {"code": -1, "error": err}
 
-            return {
-                "code": -1,
-                "error": (
-                    "未能从推荐数据中解析到每日推荐歌单ID（可在 "
-                    f"{get_config_file_path()} 配置 daily_recommend.url 作为兜底）"
-                ),
-            }
-
-        try:
-            detail = await songlist.get_detail(
-                songlist_id=playlist_id,
-                dirid=0,
-                num=100,
-                page=1,
-                onlysong=False,
-                tag=True,
-                userinfo=True,
-                credential=self.credential,
-            )
-            dirinfo = detail.get("dirinfo", {}) if isinstance(detail, dict) else {}
-            playlist_name = (
-                dirinfo.get("title")
-                or dirinfo.get("dirname")
-                or dirinfo.get("name")
-                or "每日推荐"
-            )
-            songs = await songlist.get_songlist(playlist_id, dirid=0)
-            return {
-                "code": 1,
-                "data": {
-                    "id": playlist_id,
-                    "name": playlist_name,
-                    "songs": songs if isinstance(songs, list) else [],
-                    "songs_count": len(songs) if isinstance(songs, list) else 0,
-                },
-            }
-        except Exception as e:
-            logger.error(f"获取每日推荐歌单失败: {e}")
-            return {"code": -1, "error": str(e)}
+        msg = (
+            "未能获取每日推荐（可在 "
+            f"{get_config_file_path()} 配置 daily_recommend.url 作为兜底）"
+        )
+        if last_error:
+            msg = f"{msg}\n最后一次错误: {last_error}"
+        return {"code": -1, "error": msg}
 
     async def search(self, keyword: str, limit: int = 10, page: int = 1) -> Dict:
         """搜索歌曲

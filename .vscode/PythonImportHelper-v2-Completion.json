@@ -741,6 +741,14 @@
         "documentation": {}
     },
     {
+        "label": "get_app_data_dir",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
         "label": "get_credential_file_path",
         "importPath": "utils.app_paths",
         "description": "utils.app_paths",
@@ -2199,7 +2207,7 @@
         "kind": 6,
         "importPath": "api.qqmusic",
         "description": "api.qqmusic",
-        "peekOfCode": "class QQMusicAPI:\n    \"\"\"QQ音乐API统一封装类\"\"\"\n    def __init__(self):\n        if not QQMUSIC_API_AVAILABLE:\n            raise ImportError(\n                \"qqmusic-api-python 库未安装，请先安装: pip install qqmusic-api-python\")\n        self.credential: Optional[Credential] = None\n        # 使用可写路径确保在任何环境下都能正确读写凭证文件\n        self.credential_file = get_credential_file_path()\n        self._load_credential_basic()",
+        "peekOfCode": "class QQMusicAPI:\n    \"\"\"QQ音乐API统一封装类\"\"\"\n    _DEFAULT_QIMEI36 = \"6c9d3cd110abca9b16311cee10001e717614\"\n    def __init__(self):\n        if not QQMUSIC_API_AVAILABLE:\n            raise ImportError(\n                \"qqmusic-api-python 库未安装，请先安装: pip install qqmusic-api-python\")\n        self.credential: Optional[Credential] = None\n        # 使用可写路径确保在任何环境下都能正确读写凭证文件\n        self.credential_file = get_credential_file_path()",
         "detail": "api.qqmusic",
         "documentation": {}
     },
