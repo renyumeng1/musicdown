@@ -1,0 +1,3179 @@
+[
+    {
+        "label": "runpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "runpy",
+        "description": "runpy",
+        "detail": "runpy",
+        "documentation": {}
+    },
+    {
+        "label": "annotations",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "print_function",
+        "importPath": "__future__",
+        "description": "__future__",
+        "isExtraImport": true,
+        "detail": "__future__",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "site",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "site",
+        "description": "site",
+        "detail": "site",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "argparse",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "pyzbar",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pyzbar",
+        "description": "pyzbar",
+        "detail": "pyzbar",
+        "documentation": {}
+    },
+    {
+        "label": "decode",
+        "importPath": "pyzbar.pyzbar",
+        "description": "pyzbar.pyzbar",
+        "isExtraImport": true,
+        "detail": "pyzbar.pyzbar",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "encode",
+        "importPath": "base64",
+        "description": "base64",
+        "isExtraImport": true,
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "b64decode",
+        "importPath": "base64",
+        "description": "base64",
+        "isExtraImport": true,
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "b64encode",
+        "importPath": "base64",
+        "description": "base64",
+        "isExtraImport": true,
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "httpx",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "httpx",
+        "description": "httpx",
+        "detail": "httpx",
+        "documentation": {}
+    },
+    {
+        "label": "retry",
+        "importPath": "tenacity",
+        "description": "tenacity",
+        "isExtraImport": true,
+        "detail": "tenacity",
+        "documentation": {}
+    },
+    {
+        "label": "retry_if_exception_type",
+        "importPath": "tenacity",
+        "description": "tenacity",
+        "isExtraImport": true,
+        "detail": "tenacity",
+        "documentation": {}
+    },
+    {
+        "label": "stop_after_attempt",
+        "importPath": "tenacity",
+        "description": "tenacity",
+        "isExtraImport": true,
+        "detail": "tenacity",
+        "documentation": {}
+    },
+    {
+        "label": "wait_exponential",
+        "importPath": "tenacity",
+        "description": "tenacity",
+        "isExtraImport": true,
+        "detail": "tenacity",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigManager",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigManager",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "isExtraImport": true,
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "RequestMethod",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "SearchType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "SearchType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "SearchType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "QrcType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "SearchType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDataParser",
+        "importPath": "utils.parser",
+        "description": "utils.parser",
+        "isExtraImport": true,
+        "detail": "utils.parser",
+        "documentation": {}
+    },
+    {
+        "label": "asyncio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncio",
+        "description": "asyncio",
+        "detail": "asyncio",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "urljoin",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "urlparse",
+        "importPath": "urllib.parse",
+        "description": "urllib.parse",
+        "isExtraImport": true,
+        "detail": "urllib.parse",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "isExtraImport": true,
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "best_available_fallback_qualities",
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "isExtraImport": true,
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "canonical_quality",
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "isExtraImport": true,
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "best_available_fallback_qualities",
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "isExtraImport": true,
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "canonical_quality",
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "isExtraImport": true,
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "get_credential_file_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_config_file_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_gui_config_file_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_resource_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_config_file_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_resource_path",
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "isExtraImport": true,
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "binascii",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "binascii",
+        "description": "binascii",
+        "detail": "binascii",
+        "documentation": {}
+    },
+    {
+        "label": "hashlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "hashlib",
+        "description": "hashlib",
+        "detail": "hashlib",
+        "documentation": {}
+    },
+    {
+        "label": "AESModeOfOperationECB",
+        "importPath": "pyaes",
+        "description": "pyaes",
+        "isExtraImport": true,
+        "detail": "pyaes",
+        "documentation": {}
+    },
+    {
+        "label": "humanize",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "humanize",
+        "description": "humanize",
+        "detail": "humanize",
+        "documentation": {}
+    },
+    {
+        "label": "ensure_downloads_dir",
+        "importPath": "utils.decorator",
+        "description": "utils.decorator",
+        "isExtraImport": true,
+        "detail": "utils.decorator",
+        "documentation": {}
+    },
+    {
+        "label": "network",
+        "importPath": "utils.network",
+        "description": "utils.network",
+        "isExtraImport": true,
+        "detail": "utils.network",
+        "documentation": {}
+    },
+    {
+        "label": "File",
+        "importPath": "mutagen",
+        "description": "mutagen",
+        "isExtraImport": true,
+        "detail": "mutagen",
+        "documentation": {}
+    },
+    {
+        "label": "ASF",
+        "importPath": "mutagen.asf",
+        "description": "mutagen.asf",
+        "isExtraImport": true,
+        "detail": "mutagen.asf",
+        "documentation": {}
+    },
+    {
+        "label": "FLAC",
+        "importPath": "mutagen.flac",
+        "description": "mutagen.flac",
+        "isExtraImport": true,
+        "detail": "mutagen.flac",
+        "documentation": {}
+    },
+    {
+        "label": "Picture",
+        "importPath": "mutagen.flac",
+        "description": "mutagen.flac",
+        "isExtraImport": true,
+        "detail": "mutagen.flac",
+        "documentation": {}
+    },
+    {
+        "label": "APIC",
+        "importPath": "mutagen.id3",
+        "description": "mutagen.id3",
+        "isExtraImport": true,
+        "detail": "mutagen.id3",
+        "documentation": {}
+    },
+    {
+        "label": "USLT",
+        "importPath": "mutagen.id3",
+        "description": "mutagen.id3",
+        "isExtraImport": true,
+        "detail": "mutagen.id3",
+        "documentation": {}
+    },
+    {
+        "label": "MP3",
+        "importPath": "mutagen.mp3",
+        "description": "mutagen.mp3",
+        "isExtraImport": true,
+        "detail": "mutagen.mp3",
+        "documentation": {}
+    },
+    {
+        "label": "MP4",
+        "importPath": "mutagen.mp4",
+        "description": "mutagen.mp4",
+        "isExtraImport": true,
+        "detail": "mutagen.mp4",
+        "documentation": {}
+    },
+    {
+        "label": "MP4Cover",
+        "importPath": "mutagen.mp4",
+        "description": "mutagen.mp4",
+        "isExtraImport": true,
+        "detail": "mutagen.mp4",
+        "documentation": {}
+    },
+    {
+        "label": "OggOpus",
+        "importPath": "mutagen.oggopus",
+        "description": "mutagen.oggopus",
+        "isExtraImport": true,
+        "detail": "mutagen.oggopus",
+        "documentation": {}
+    },
+    {
+        "label": "OggVorbis",
+        "importPath": "mutagen.oggvorbis",
+        "description": "mutagen.oggvorbis",
+        "isExtraImport": true,
+        "detail": "mutagen.oggvorbis",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "isExtraImport": true,
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "DownloadManager",
+        "importPath": "downloader.downloader",
+        "description": "downloader.downloader",
+        "isExtraImport": true,
+        "detail": "downloader.downloader",
+        "documentation": {}
+    },
+    {
+        "label": "format_singers",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "get_file_path",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "parse_lrc_lyrics",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_singers",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_singers",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_interval",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "clean_html_tags",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_singers",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_interval",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "clean_html_tags",
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "isExtraImport": true,
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CallbackQueryHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CallbackQueryHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ConversationHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "MessageHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "filters",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CallbackQueryHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "filters",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ContextTypes",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "CommandHandler",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "Application",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "ApplicationBuilder",
+        "importPath": "telegram.ext",
+        "description": "telegram.ext",
+        "isExtraImport": true,
+        "detail": "telegram.ext",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardButton",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardMarkup",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardButton",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardMarkup",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardButton",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "InlineKeyboardMarkup",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "Update",
+        "importPath": "telegram",
+        "description": "telegram",
+        "isExtraImport": true,
+        "detail": "telegram",
+        "documentation": {}
+    },
+    {
+        "label": "build_search_results_message",
+        "importPath": "tgbot.utils.message_builders",
+        "description": "tgbot.utils.message_builders",
+        "isExtraImport": true,
+        "detail": "tgbot.utils.message_builders",
+        "documentation": {}
+    },
+    {
+        "label": "build_search_results_message",
+        "importPath": "tgbot.utils.message_builders",
+        "description": "tgbot.utils.message_builders",
+        "isExtraImport": true,
+        "detail": "tgbot.utils.message_builders",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "traceback",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "traceback",
+        "description": "traceback",
+        "detail": "traceback",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDownloader",
+        "importPath": "downloader.music_downloader",
+        "description": "downloader.music_downloader",
+        "isExtraImport": true,
+        "detail": "downloader.music_downloader",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDownloader",
+        "importPath": "downloader.music_downloader",
+        "description": "downloader.music_downloader",
+        "isExtraImport": true,
+        "detail": "downloader.music_downloader",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDownloader",
+        "importPath": "downloader.music_downloader",
+        "description": "downloader.music_downloader",
+        "isExtraImport": true,
+        "detail": "downloader.music_downloader",
+        "documentation": {}
+    },
+    {
+        "label": "importlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "importlib",
+        "description": "importlib",
+        "detail": "importlib",
+        "documentation": {}
+    },
+    {
+        "label": "QDialog",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QVBoxLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QHBoxLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTabWidget",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QWidget",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QLabel",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QLineEdit",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QPushButton",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QMessageBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QProgressBar",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QGroupBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QFormLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QComboBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QComboBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QFileDialog",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QGridLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QHBoxLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QHeaderView",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QLabel",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QLineEdit",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QMainWindow",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QMessageBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QProgressBar",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QPushButton",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QRadioButton",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTabWidget",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTableWidget",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTableWidgetItem",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QVBoxLayout",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QWidget",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTextEdit",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QMenuBar",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QMenu",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QSpinBox",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QApplication",
+        "importPath": "PyQt6.QtWidgets",
+        "description": "PyQt6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QThread",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "pyqtSignal",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Qt",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Qt",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QThread",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "pyqtSignal",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "pyqtSlot",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QObject",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QPoint",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "Qt",
+        "importPath": "PyQt6.QtCore",
+        "description": "PyQt6.QtCore",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtCore",
+        "documentation": {}
+    },
+    {
+        "label": "QPixmap",
+        "importPath": "PyQt6.QtGui",
+        "description": "PyQt6.QtGui",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QFont",
+        "importPath": "PyQt6.QtGui",
+        "description": "PyQt6.QtGui",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QIcon",
+        "importPath": "PyQt6.QtGui",
+        "description": "PyQt6.QtGui",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QTextCursor",
+        "importPath": "PyQt6.QtGui",
+        "description": "PyQt6.QtGui",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "QGuiApplication",
+        "importPath": "PyQt6.QtGui",
+        "description": "PyQt6.QtGui",
+        "isExtraImport": true,
+        "detail": "PyQt6.QtGui",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "CRITICAL",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "DEBUG",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "ERROR",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "INFO",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "NOTSET",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "WARNING",
+        "importPath": "logging",
+        "description": "logging",
+        "isExtraImport": true,
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "field",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "dataclass",
+        "importPath": "dataclasses",
+        "description": "dataclasses",
+        "isExtraImport": true,
+        "detail": "dataclasses",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv",
+        "description": "dotenv",
+        "isExtraImport": true,
+        "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "wraps",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "io",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "io",
+        "description": "io",
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "IntEnum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "Enum",
+        "importPath": "enum",
+        "description": "enum",
+        "isExtraImport": true,
+        "detail": "enum",
+        "documentation": {}
+    },
+    {
+        "label": "urllib3",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "urllib3",
+        "description": "urllib3",
+        "detail": "urllib3",
+        "documentation": {}
+    },
+    {
+        "label": "qrc_decrypt",
+        "importPath": "decryptor",
+        "description": "decryptor",
+        "isExtraImport": true,
+        "detail": "decryptor",
+        "documentation": {}
+    },
+    {
+        "label": "FastAPI",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Request",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Response",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "Depends",
+        "importPath": "fastapi",
+        "description": "fastapi",
+        "isExtraImport": true,
+        "detail": "fastapi",
+        "documentation": {}
+    },
+    {
+        "label": "HTMLResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "StreamingResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "FileResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "RedirectResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "JSONResponse",
+        "importPath": "fastapi.responses",
+        "description": "fastapi.responses",
+        "isExtraImport": true,
+        "detail": "fastapi.responses",
+        "documentation": {}
+    },
+    {
+        "label": "Jinja2Templates",
+        "importPath": "fastapi.templating",
+        "description": "fastapi.templating",
+        "isExtraImport": true,
+        "detail": "fastapi.templating",
+        "documentation": {}
+    },
+    {
+        "label": "StaticFiles",
+        "importPath": "fastapi.staticfiles",
+        "description": "fastapi.staticfiles",
+        "isExtraImport": true,
+        "detail": "fastapi.staticfiles",
+        "documentation": {}
+    },
+    {
+        "label": "zipfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "zipfile",
+        "description": "zipfile",
+        "detail": "zipfile",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicDownloaderGUI",
+        "importPath": "ui.mainui",
+        "description": "ui.mainui",
+        "isExtraImport": true,
+        "detail": "ui.mainui",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicBot",
+        "importPath": "tgbot.bot",
+        "description": "tgbot.bot",
+        "isExtraImport": true,
+        "detail": "tgbot.bot",
+        "documentation": {}
+    },
+    {
+        "label": "bin_dir",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "bin_dir = os.path.dirname(abs_file)\nbase = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"musicdown\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "base",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "base = bin_dir[: -len(\"bin\") - 1]  # strip away the bin part from the __file__, plus the path separator\n# prepend bin to PATH (this file is inside the bin directory)\nos.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"musicdown\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"PATH\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"PATH\"] = os.pathsep.join([bin_dir, *os.environ.get(\"PATH\", \"\").split(os.pathsep)])\nos.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"musicdown\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"VIRTUAL_ENV\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"VIRTUAL_ENV\"] = base  # virtual env is right above bin directory\nos.environ[\"VIRTUAL_ENV_PROMPT\"] = \"musicdown\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"VIRTUAL_ENV_PROMPT\"]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "os.environ[\"VIRTUAL_ENV_PROMPT\"] = \"musicdown\" or os.path.basename(base)  # noqa: SIM222\n# add the virtual environments libraries to the host python import mechanism\nprev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "prev_length",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "prev_length = len(sys.path)\nfor lib in \"../lib/python3.12/site-packages\".split(os.pathsep):\n    path = os.path.realpath(os.path.join(bin_dir, lib))\n    site.addsitedir(path)\nsys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.path[:]",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.path[:] = sys.path[prev_length:] + sys.path[0:prev_length]\nsys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.real_prefix",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.real_prefix = sys.prefix\nsys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "sys.prefix",
+        "kind": 5,
+        "importPath": ".venv.bin.activate_this",
+        "description": ".venv.bin.activate_this",
+        "peekOfCode": "sys.prefix = base",
+        "detail": ".venv.bin.activate_this",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": ".venv.bin.read_zbar",
+        "description": ".venv.bin.read_zbar",
+        "peekOfCode": "def main(args=None):\n    if args is None:\n        args = sys.argv[1:]\n    parser = argparse.ArgumentParser(\n        description='Reads barcodes in images, using the zbar library'\n    )\n    parser.add_argument('image', nargs='+')\n    parser.add_argument(\n        '-v', '--version', action='version',\n        version='%(prog)s ' + pyzbar.__version__",
+        "detail": ".venv.bin.read_zbar",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "kind": 6,
+        "importPath": "api.qm",
+        "description": "api.qm",
+        "peekOfCode": "class QQMusicAPI:\n    \"\"\"QQ音乐API封装类（异步版本）\"\"\"\n    def __init__(self, user_agent: str = None):\n        \"\"\"初始化API类\n        Args:\n            user_agent (str): 自定义User-Agent，可选\n        \"\"\"\n        self.base_url = \"https://u.y.qq.com/cgi-bin/musicu.fcg\"\n        self.lyric_url = \"https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg\"\n        self.file_config = {",
+        "detail": "api.qm",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicAPI",
+        "kind": 6,
+        "importPath": "api.qqmusic",
+        "description": "api.qqmusic",
+        "peekOfCode": "class QQMusicAPI:\n    \"\"\"QQ音乐API统一封装类\"\"\"\n    def __init__(self):\n        if not QQMUSIC_API_AVAILABLE:\n            raise ImportError(\n                \"qqmusic-api-python 库未安装，请先安装: pip install qqmusic-api-python\")\n        self.credential: Optional[Credential] = None\n        # 使用可写路径确保在任何环境下都能正确读写凭证文件\n        self.credential_file = get_credential_file_path()\n        self._load_credential_basic()",
+        "detail": "api.qqmusic",
+        "documentation": {}
+    },
+    {
+        "label": "pkcs7_pad",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def pkcs7_pad(data: bytes, block_size: int = 16) -> bytes:\n    pad_len = block_size - (len(data) % block_size)\n    padding = bytes([pad_len] * pad_len)\n    return data + padding\ndef pkcs7_unpad(data: bytes) -> bytes:\n    pad_len = data[-1]\n    if pad_len < 1 or pad_len > 16:\n        msg = \"Invalid padding encountered.\"\n        raise ValueError(msg)\n    return data[:-pad_len]",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "pkcs7_unpad",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def pkcs7_unpad(data: bytes) -> bytes:\n    pad_len = data[-1]\n    if pad_len < 1 or pad_len > 16:\n        msg = \"Invalid padding encountered.\"\n        raise ValueError(msg)\n    return data[:-pad_len]\ndef aes_encrypt(data: str | bytes, key: bytes) -> bytes:\n    if isinstance(data, str):\n        data = data.encode()\n    padded_data = pkcs7_pad(data)  # Ensure the data is padded",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "aes_encrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def aes_encrypt(data: str | bytes, key: bytes) -> bytes:\n    if isinstance(data, str):\n        data = data.encode()\n    padded_data = pkcs7_pad(data)  # Ensure the data is padded\n    aes = AESModeOfOperationECB(key)  # Using ECB mode\n    encrypted_data = b''\n    for i in range(0, len(padded_data), 16):\n        encrypted_data += aes.encrypt(padded_data[i:i + 16])  # Encrypt in 16-byte blocks\n    return encrypted_data\ndef aes_decrypt(cipher_buffer: bytes, key: bytes) -> bytes:",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "aes_decrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def aes_decrypt(cipher_buffer: bytes, key: bytes) -> bytes:\n    aes = AESModeOfOperationECB(key)  # Using ECB mode\n    decrypted_data = b''\n    for i in range(0, len(cipher_buffer), 16):\n        decrypted_data += aes.decrypt(cipher_buffer[i:i + 16])  # Decrypt in 16-byte blocks\n    return pkcs7_unpad(decrypted_data)  # Remove padding after decryption\ndef eapi_params_encrypt(path: bytes, params: dict) -> str:\n    \"\"\"eapi接口参数加密.\n    :param path: url路径\n    :param params: 明文参数",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "eapi_params_encrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def eapi_params_encrypt(path: bytes, params: dict) -> str:\n    \"\"\"eapi接口参数加密.\n    :param path: url路径\n    :param params: 明文参数\n    :return str: 请求data.\n    \"\"\"\n    params_bytes = json.dumps(params, separators=(',', ':')).encode()\n    sign_src = b'nobody' + path + b'use' + params_bytes + b'md5forencrypt'\n    sign = hashlib.md5(sign_src).hexdigest()  # noqa: S324\n    aes_src = path + b'-36cd479b6b5-' + params_bytes + b'-36cd479b6b5-' + sign.encode()",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "eapi_params_decrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def eapi_params_decrypt(encrypted_text: str) -> dict:\n    \"\"\"解密使用 _eapi_encrypt 函数加密的文本.\n    :param crypto_text: 加密文本\n    :return: 解密后的 dict 对象\n    \"\"\"\n    encrypted_bytes = binascii.unhexlify(encrypted_text)\n    decrypted_data = aes_decrypt(encrypted_bytes, b'e82ckenh8dichen8')\n    decrypted_text = decrypted_data.decode()\n    parts = decrypted_text.split('-36cd479b6b5-')\n    path = parts[0].encode()",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "get_cache_key",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def get_cache_key(data: str | bytes) -> str:\n    return b64encode(aes_encrypt(data, b\")(13daqP@ssw0rd~\")).decode()\ndef cache_key_decrypt(data: str | bytes) -> str:\n    return aes_decrypt(b64decode(data), b\")(13daqP@ssw0rd~\").decode()\ndef eapi_response_decrypt(cipher_buffer: bytes) -> bytes:\n    return aes_decrypt(cipher_buffer, b'e82ckenh8dichen8')",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "cache_key_decrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def cache_key_decrypt(data: str | bytes) -> str:\n    return aes_decrypt(b64decode(data), b\")(13daqP@ssw0rd~\").decode()\ndef eapi_response_decrypt(cipher_buffer: bytes) -> bytes:\n    return aes_decrypt(cipher_buffer, b'e82ckenh8dichen8')",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "eapi_response_decrypt",
+        "kind": 2,
+        "importPath": "decryptor.eapi",
+        "description": "decryptor.eapi",
+        "peekOfCode": "def eapi_response_decrypt(cipher_buffer: bytes) -> bytes:\n    return aes_decrypt(cipher_buffer, b'e82ckenh8dichen8')",
+        "detail": "decryptor.eapi",
+        "documentation": {}
+    },
+    {
+        "label": "qmc1_decrypt",
+        "kind": 2,
+        "importPath": "decryptor.qmc1",
+        "description": "decryptor.qmc1",
+        "peekOfCode": "def qmc1_decrypt(data: bytearray) -> None:\n    for i, _value in enumerate(data):\n        data[i] ^= PRIVKEY[(i % 0x7FFF) & 0x7F] if i > 0x7FFF else PRIVKEY[i & 0x7F]",
+        "detail": "decryptor.qmc1",
+        "documentation": {}
+    },
+    {
+        "label": "PRIVKEY",
+        "kind": 5,
+        "importPath": "decryptor.qmc1",
+        "description": "decryptor.qmc1",
+        "peekOfCode": "PRIVKEY = (\n    0xc3, 0x4a, 0xd6, 0xca, 0x90, 0x67, 0xf7, 0x52,\n    0xd8, 0xa1, 0x66, 0x62, 0x9f, 0x5b, 0x09, 0x00,\n    0xc3, 0x5e, 0x95, 0x23, 0x9f, 0x13, 0x11, 0x7e,\n    0xd8, 0x92, 0x3f, 0xbc, 0x90, 0xbb, 0x74, 0x0e,\n    0xc3, 0x47, 0x74, 0x3d, 0x90, 0xaa, 0x3f, 0x51,\n    0xd8, 0xf4, 0x11, 0x84, 0x9f, 0xde, 0x95, 0x1d,\n    0xc3, 0xc6, 0x09, 0xd5, 0x9f, 0xfa, 0x66, 0xf9,\n    0xd8, 0xf0, 0xf7, 0xa0, 0x90, 0xa1, 0xd6, 0xf3,\n    0xc3, 0xf3, 0xd6, 0xa1, 0x90, 0xa0, 0xf7, 0xf0,",
+        "detail": "decryptor.qmc1",
+        "documentation": {}
+    },
+    {
+        "label": "bitnum",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def bitnum(a: bytearray | bytes, b: int, c: int) -> int:\n    \"\"\"从字节串中提取指定位置的位,并左移指定偏移量。\n    :param a: 字节串\n    :param b: 要提取的位索引\n    :param c: 位提取后的偏移量\n    :return: 提取后的位\n    \"\"\"\n    return ((a[(b // 32) * 4 + 3 - (b % 32) // 8] >> (7 - b % 8)) & 1) << c\ndef bitnum_intr(a: int, b: int, c: int) -> int:\n    \"\"\"从整数中提取指定位置的位,并左移指定偏移量。",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "bitnum_intr",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def bitnum_intr(a: int, b: int, c: int) -> int:\n    \"\"\"从整数中提取指定位置的位,并左移指定偏移量。\n    :param a: 整数\n    :param b: 要提取的位索引\n    :param c: 位提取后的偏移量\n    :return: 提取后的位\n    \"\"\"\n    return ((a >> (31 - b)) & 1) << c\ndef bitnum_intl(a: int, b: int, c: int) -> int:\n    \"\"\"从整数中提取指定位置的位,并右移指定偏移量。",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "bitnum_intl",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def bitnum_intl(a: int, b: int, c: int) -> int:\n    \"\"\"从整数中提取指定位置的位,并右移指定偏移量。\n    :param a: 整数\n    :param b: 要提取的位索引\n    :param c: 位提取后的偏移量\n    :return: 提取后的位\n    \"\"\"\n    return ((a << b) & 0x80000000) >> c\ndef sbox_bit(a: int) -> int:\n    \"\"\"对输入整数进行位运算,重新组合位。",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "sbox_bit",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def sbox_bit(a: int) -> int:\n    \"\"\"对输入整数进行位运算,重新组合位。\n    :param a: 整数\n    :return: 重新组合后的位\n    \"\"\"\n    return (a & 32) | ((a & 31) >> 1) | ((a & 1) << 4)\ndef initial_permutation(input_data: bytearray) -> tuple[int, int]:\n    return ((bitnum(input_data, 57, 31) | bitnum(input_data, 49, 30) | bitnum(input_data, 41, 29) | bitnum(input_data, 33, 28) |\n             bitnum(input_data, 25, 27) | bitnum(input_data, 17, 26) | bitnum(input_data, 9, 25) | bitnum(input_data, 1, 24) |\n             bitnum(input_data, 59, 23) | bitnum(input_data, 51, 22) | bitnum(input_data, 43, 21) | bitnum(input_data, 35, 20) |",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "initial_permutation",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def initial_permutation(input_data: bytearray) -> tuple[int, int]:\n    return ((bitnum(input_data, 57, 31) | bitnum(input_data, 49, 30) | bitnum(input_data, 41, 29) | bitnum(input_data, 33, 28) |\n             bitnum(input_data, 25, 27) | bitnum(input_data, 17, 26) | bitnum(input_data, 9, 25) | bitnum(input_data, 1, 24) |\n             bitnum(input_data, 59, 23) | bitnum(input_data, 51, 22) | bitnum(input_data, 43, 21) | bitnum(input_data, 35, 20) |\n             bitnum(input_data, 27, 19) | bitnum(input_data, 19, 18) | bitnum(input_data, 11, 17) | bitnum(input_data, 3, 16) |\n             bitnum(input_data, 61, 15) | bitnum(input_data, 53, 14) | bitnum(input_data, 45, 13) | bitnum(input_data, 37, 12) |\n             bitnum(input_data, 29, 11) | bitnum(input_data, 21, 10) | bitnum(input_data, 13, 9) | bitnum(input_data, 5, 8) |\n             bitnum(input_data, 63, 7) | bitnum(input_data, 55, 6) | bitnum(input_data, 47, 5) | bitnum(input_data, 39, 4) |\n             bitnum(input_data, 31, 3) | bitnum(input_data, 23, 2) | bitnum(input_data, 15, 1) | bitnum(input_data, 7, 0)),\n            (bitnum(input_data, 56, 31) | bitnum(input_data, 48, 30) | bitnum(input_data, 40, 29) | bitnum(input_data, 32, 28) |",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "inverse_permutation",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def inverse_permutation(s0: int, s1: int) -> bytearray:\n    data = bytearray(8)\n    data[3] = (bitnum_intr(s1, 7, 7) | bitnum_intr(s0, 7, 6) | bitnum_intr(s1, 15, 5) |\n               bitnum_intr(s0, 15, 4) | bitnum_intr(s1, 23, 3) | bitnum_intr(s0, 23, 2) |\n               bitnum_intr(s1, 31, 1) | bitnum_intr(s0, 31, 0))\n    data[2] = (bitnum_intr(s1, 6, 7) | bitnum_intr(s0, 6, 6) | bitnum_intr(s1, 14, 5) |\n               bitnum_intr(s0, 14, 4) | bitnum_intr(s1, 22, 3) | bitnum_intr(s0, 22, 2) |\n               bitnum_intr(s1, 30, 1) | bitnum_intr(s0, 30, 0))\n    data[1] = (bitnum_intr(s1, 5, 7) | bitnum_intr(s0, 5, 6) | bitnum_intr(s1, 13, 5) |\n               bitnum_intr(s0, 13, 4) | bitnum_intr(s1, 21, 3) | bitnum_intr(s0, 21, 2) |",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "f",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def f(state: int, key: list[int]) -> int:\n    # 提取位并左移\n    t1 = (bitnum_intl(state, 31, 0) | ((state & 0xf0000000) >> 1) | bitnum_intl(state, 4, 5) |\n          bitnum_intl(state, 3, 6) | ((state & 0x0f000000) >> 3) | bitnum_intl(state, 8, 11) |\n          bitnum_intl(state, 7, 12) | ((state & 0x00f00000) >> 5) | bitnum_intl(state, 12, 17) |\n          bitnum_intl(state, 11, 18) | ((state & 0x000f0000) >> 7) | bitnum_intl(state, 16, 23))\n    t2 = (bitnum_intl(state, 15, 0) | ((state & 0x0000f000) << 15) | bitnum_intl(state, 20, 5) |\n          bitnum_intl(state, 19, 6) | ((state & 0x00000f00) << 13) | bitnum_intl(state, 24, 11) |\n          bitnum_intl(state, 23, 12) | ((state & 0x000000f0) << 11) | bitnum_intl(state, 28, 17) |\n          bitnum_intl(state, 27, 18) | ((state & 0x0000000f) << 9) | bitnum_intl(state, 0, 23))",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "crypt",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def crypt(input_data: bytearray, key: list) -> bytearray:\n    s0, s1 = initial_permutation(input_data)  # 初始置换\n    for idx in range(15):  # 15轮迭代\n        previous_s1 = s1\n        s1 = f(s1, key[idx]) ^ s0\n        s0 = previous_s1\n    s0 = f(s1, key[15]) ^ s0  # 第15轮\n    return inverse_permutation(s0, s1)  # 逆置换\ndef key_schedule(key: bytes, mode: int) -> list[list[int]]:\n    schedule = [[0] * 6 for _ in range(16)]",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "key_schedule",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def key_schedule(key: bytes, mode: int) -> list[list[int]]:\n    schedule = [[0] * 6 for _ in range(16)]\n    key_rnd_shift = (1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1)\n    key_perm_c = (56, 48, 40, 32, 24, 16, 8, 0, 57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35)\n    key_perm_d = (62, 54, 46, 38, 30, 22, 14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 60, 52, 44, 36, 28, 20, 12, 4, 27, 19, 11, 3)\n    key_compression = (13, 16, 10, 23, 0, 4, 2, 27, 14, 5, 20, 9, 22, 18, 11, 3, 25, 7, 15, 6, 26, 19, 12, 1, 40, 51, 30, 36,\n                       46, 54, 29, 39, 50, 44, 32, 47, 43, 48, 38, 55, 33, 52, 45, 41, 49, 35, 28, 31)\n    c = sum(bitnum(key, key_perm_c[i], 31 - i) for i in range(28))\n    d = sum(bitnum(key, key_perm_d[i], 31 - i) for i in range(28))\n    for i in range(16):",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "tripledes_key_setup",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def tripledes_key_setup(key: bytes, mode: int) -> list[list[list[int]]]:\n    if mode == ENCRYPT:\n        return [key_schedule(key[0:], ENCRYPT),\n                key_schedule(key[8:], DECRYPT),\n                key_schedule(key[16:], ENCRYPT)]\n    return [key_schedule(key[16:], DECRYPT),\n            key_schedule(key[8:], ENCRYPT),\n            key_schedule(key[0:], DECRYPT)]\ndef tripledes_crypt(data: bytearray, key: list) -> bytearray:\n    for i in range(3):",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "tripledes_crypt",
+        "kind": 2,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "def tripledes_crypt(data: bytearray, key: list) -> bytearray:\n    for i in range(3):\n        data = crypt(data, key[i])\n    return data",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "ENCRYPT",
+        "kind": 5,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "ENCRYPT = 1\nDECRYPT = 0\nsbox = (\n    # sbox1\n    (14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,\n     0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8,\n     4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0,\n     15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13),\n    # sbox2\n    (15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10,",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "DECRYPT",
+        "kind": 5,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "DECRYPT = 0\nsbox = (\n    # sbox1\n    (14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,\n     0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8,\n     4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0,\n     15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13),\n    # sbox2\n    (15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10,\n     3, 13, 4, 7, 15, 2, 8, 15, 12, 0, 1, 10, 6, 9, 11, 5,",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "sbox",
+        "kind": 5,
+        "importPath": "decryptor.tripledes",
+        "description": "decryptor.tripledes",
+        "peekOfCode": "sbox = (\n    # sbox1\n    (14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,\n     0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8,\n     4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0,\n     15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13),\n    # sbox2\n    (15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10,\n     3, 13, 4, 7, 15, 2, 8, 15, 12, 0, 1, 10, 6, 9, 11, 5,\n     0, 14, 7, 11, 10, 4, 13, 1, 5, 8, 12, 6, 9, 3, 2, 15,",
+        "detail": "decryptor.tripledes",
+        "documentation": {}
+    },
+    {
+        "label": "DownloadManager",
+        "kind": 6,
+        "importPath": "downloader.downloader",
+        "description": "downloader.downloader",
+        "peekOfCode": "class DownloadManager:\n    \"\"\"下载管理器\"\"\"\n    def __init__(self):\n        self.log = logger.log_progress\n    async def download_with_progress(self, url: str, filepath: Path) -> bool:\n        \"\"\"带进度和速度显示的下载函数\"\"\"\n        try:\n            client = await network._ensure_async_client()\n            async with client.stream('GET', url) as response:\n                if response.status_code != 200:",
+        "detail": "downloader.downloader",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDownloader",
+        "kind": 6,
+        "importPath": "downloader.music_downloader",
+        "description": "downloader.music_downloader",
+        "peekOfCode": "class MusicDownloader:\n    \"\"\"音乐下载器，处理歌曲下载、封面和歌词嵌入、重命名等功能\"\"\"\n    def __init__(self):\n        self.qq_music_api = QQMusicAPI()  # 使用新的统一API\n        self.download_manager = DownloadManager()\n        self.log = logger.log_progress\n    async def download_song(\n        self,\n        song_info: Dict,\n        download_dir: Path,",
+        "detail": "downloader.music_downloader",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.callbacks.pagination",
+        "description": "tgbot.callbacks.pagination",
+        "peekOfCode": "def register(app):\n    app.add_handler(CallbackQueryHandler(\n        handle_pagination, pattern=r\"^page:(next|prev)$\"))",
+        "detail": "tgbot.callbacks.pagination",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.pagination",
+        "description": "tgbot.callbacks.pagination",
+        "peekOfCode": "current_dir = Path(__file__).parent\nproject_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom tgbot.utils.message_builders import build_search_results_message\nfrom utils.config import config\nfrom utils.menum import SearchType\n# 初始化QQ音乐API\nqq_music_api = QQMusicAPI()\nasync def handle_pagination(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    callback_query = update.callback_query",
+        "detail": "tgbot.callbacks.pagination",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.pagination",
+        "description": "tgbot.callbacks.pagination",
+        "peekOfCode": "project_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom tgbot.utils.message_builders import build_search_results_message\nfrom utils.config import config\nfrom utils.menum import SearchType\n# 初始化QQ音乐API\nqq_music_api = QQMusicAPI()\nasync def handle_pagination(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    callback_query = update.callback_query\n    user_id = callback_query.from_user.id",
+        "detail": "tgbot.callbacks.pagination",
+        "documentation": {}
+    },
+    {
+        "label": "qq_music_api",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.pagination",
+        "description": "tgbot.callbacks.pagination",
+        "peekOfCode": "qq_music_api = QQMusicAPI()\nasync def handle_pagination(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    callback_query = update.callback_query\n    user_id = callback_query.from_user.id\n    action = callback_query.data.split(\":\")[1]\n    await callback_query.answer()  # 必须应答回调查询\n    if user_id not in config.user_sessions:\n        await callback_query.message.edit_text(\"会话已过期，请重新搜索\")\n        return\n    current_page = config.user_sessions[user_id][\"current_page\"]",
+        "detail": "tgbot.callbacks.pagination",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "def register(app):\n    # 注册设置回调处理程序\n    app.add_handler(CallbackQueryHandler(handle_settings,\n                    pattern=r\"^settings:(cookie|quality|back)$\"))\n    app.add_handler(CallbackQueryHandler(\n        handle_quality_selection, pattern=r\"^quality:\"))\n    # 注册消息处理程序来捕获Cookie输入\n    app.add_handler(MessageHandler(\n        filters.TEXT & ~filters.COMMAND, handle_cookie_input))\n    app.add_handler(CommandHandler(\"cancel\", cancel))",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "current_dir = Path(__file__).parent\nproject_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\n# 定义状态\nWAITING_COOKIE = 1\nWAITING_QUALITY = 2\n# 音质选项\nQUALITY_OPTIONS = {\n    \"m4a\": \"标准品质 M4A\",\n    \"128\": \"标准品质 MP3 128k\",",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "project_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\n# 定义状态\nWAITING_COOKIE = 1\nWAITING_QUALITY = 2\n# 音质选项\nQUALITY_OPTIONS = {\n    \"m4a\": \"标准品质 M4A\",\n    \"128\": \"标准品质 MP3 128k\",\n    \"320\": \"高品质 MP3 320k\",",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WAITING_COOKIE",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "WAITING_COOKIE = 1\nWAITING_QUALITY = 2\n# 音质选项\nQUALITY_OPTIONS = {\n    \"m4a\": \"标准品质 M4A\",\n    \"128\": \"标准品质 MP3 128k\",\n    \"320\": \"高品质 MP3 320k\",\n    \"flac\": \"无损品质 FLAC\",\n    \"ATMOS_51\": \"臻品音质2.0\",\n    \"ATMOS_2\": \"臻品全景声2.0\",",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "WAITING_QUALITY",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "WAITING_QUALITY = 2\n# 音质选项\nQUALITY_OPTIONS = {\n    \"m4a\": \"标准品质 M4A\",\n    \"128\": \"标准品质 MP3 128k\",\n    \"320\": \"高品质 MP3 320k\",\n    \"flac\": \"无损品质 FLAC\",\n    \"ATMOS_51\": \"臻品音质2.0\",\n    \"ATMOS_2\": \"臻品全景声2.0\",\n    \"MASTER\": \"臻品母带2.0\"",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "QUALITY_OPTIONS",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "QUALITY_OPTIONS = {\n    \"m4a\": \"标准品质 M4A\",\n    \"128\": \"标准品质 MP3 128k\",\n    \"320\": \"高品质 MP3 320k\",\n    \"flac\": \"无损品质 FLAC\",\n    \"ATMOS_51\": \"臻品音质2.0\",\n    \"ATMOS_2\": \"臻品全景声2.0\",\n    \"MASTER\": \"臻品母带2.0\"\n}\n# 对话状态存储",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "conversation_states",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.settings",
+        "description": "tgbot.callbacks.settings",
+        "peekOfCode": "conversation_states = {}\nasync def handle_settings(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    \"\"\"处理设置菜单的回调\"\"\"\n    callback_query = update.callback_query\n    user_id = callback_query.from_user.id\n    action = callback_query.data.split(\":\")[1]\n    await callback_query.answer()  # 必须应答回调查询\n    if action == \"cookie\":\n        await callback_query.message.edit_text(\n            \"🍪 更新QQ音乐Cookie\\n\\n\"",
+        "detail": "tgbot.callbacks.settings",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.callbacks.song_selection",
+        "description": "tgbot.callbacks.song_selection",
+        "peekOfCode": "def register(app):\n    app.add_handler(CallbackQueryHandler(\n        handle_song_selection, pattern=r\"^song:(\\d+)$\"))",
+        "detail": "tgbot.callbacks.song_selection",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.song_selection",
+        "description": "tgbot.callbacks.song_selection",
+        "peekOfCode": "current_dir = Path(__file__).parent\nproject_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom downloader.music_downloader import MusicDownloader\nfrom utils.config import config\nfrom utils.formatters import format_singers\nfrom utils.logger import logger\n# 初始化QQ音乐API和下载管理器\nqq_music_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()",
+        "detail": "tgbot.callbacks.song_selection",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.song_selection",
+        "description": "tgbot.callbacks.song_selection",
+        "peekOfCode": "project_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom downloader.music_downloader import MusicDownloader\nfrom utils.config import config\nfrom utils.formatters import format_singers\nfrom utils.logger import logger\n# 初始化QQ音乐API和下载管理器\nqq_music_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nasync def handle_song_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):",
+        "detail": "tgbot.callbacks.song_selection",
+        "documentation": {}
+    },
+    {
+        "label": "qq_music_api",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.song_selection",
+        "description": "tgbot.callbacks.song_selection",
+        "peekOfCode": "qq_music_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nasync def handle_song_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    callback_query = update.callback_query\n    user_id = callback_query.from_user.id\n    song_index = int(callback_query.data.split(\":\")[1])\n    await callback_query.answer()  # 必须应答回调查询\n    if user_id not in config.user_sessions or \"search_results\" not in config.user_sessions[user_id]:\n        await callback_query.message.edit_text(\"会话已过期，请重新搜索\")\n        return",
+        "detail": "tgbot.callbacks.song_selection",
+        "documentation": {}
+    },
+    {
+        "label": "music_downloader",
+        "kind": 5,
+        "importPath": "tgbot.callbacks.song_selection",
+        "description": "tgbot.callbacks.song_selection",
+        "peekOfCode": "music_downloader = MusicDownloader()\nasync def handle_song_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    callback_query = update.callback_query\n    user_id = callback_query.from_user.id\n    song_index = int(callback_query.data.split(\":\")[1])\n    await callback_query.answer()  # 必须应答回调查询\n    if user_id not in config.user_sessions or \"search_results\" not in config.user_sessions[user_id]:\n        await callback_query.message.edit_text(\"会话已过期，请重新搜索\")\n        return\n    songs = config.user_sessions[user_id][\"search_results\"]",
+        "detail": "tgbot.callbacks.song_selection",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.commands.help",
+        "description": "tgbot.commands.help",
+        "peekOfCode": "def register(app):\n    app.add_handler(CommandHandler(\"help\", help))",
+        "detail": "tgbot.commands.help",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.commands.search",
+        "description": "tgbot.commands.search",
+        "peekOfCode": "def register(app):\n    app.add_handler(CommandHandler(\"search\", search))",
+        "detail": "tgbot.commands.search",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.commands.search",
+        "description": "tgbot.commands.search",
+        "peekOfCode": "current_dir = Path(__file__).parent\nproject_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom tgbot.utils.message_builders import build_search_results_message\nfrom utils.config import config\nfrom utils.menum import SearchType\n# 初始化QQ音乐API\nqq_music_api = QQMusicAPI()\nasync def search(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    # 获取搜索关键词",
+        "detail": "tgbot.commands.search",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.commands.search",
+        "description": "tgbot.commands.search",
+        "peekOfCode": "project_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nfrom tgbot.utils.message_builders import build_search_results_message\nfrom utils.config import config\nfrom utils.menum import SearchType\n# 初始化QQ音乐API\nqq_music_api = QQMusicAPI()\nasync def search(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    # 获取搜索关键词\n    if not context.args:",
+        "detail": "tgbot.commands.search",
+        "documentation": {}
+    },
+    {
+        "label": "qq_music_api",
+        "kind": 5,
+        "importPath": "tgbot.commands.search",
+        "description": "tgbot.commands.search",
+        "peekOfCode": "qq_music_api = QQMusicAPI()\nasync def search(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    # 获取搜索关键词\n    if not context.args:\n        await update.message.reply_text(\"请输入要搜索的歌曲名，例如：/search 周杰伦 稻香\")\n        return\n    query = \" \".join(context.args)\n    user_id = update.message.from_user.id\n    # 显示搜索中消息\n    status_message = await update.message.reply_text(\"🔍 正在搜索歌曲，请稍候...\")",
+        "detail": "tgbot.commands.search",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.commands.settings",
+        "description": "tgbot.commands.settings",
+        "peekOfCode": "def register(app):\n    app.add_handler(CommandHandler(\"settings\", settings))",
+        "detail": "tgbot.commands.settings",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.commands.settings",
+        "description": "tgbot.commands.settings",
+        "peekOfCode": "current_dir = Path(__file__).parent\nproject_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nasync def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    \"\"\"处理设置命令，显示设置选项\"\"\"\n    user_id = update.message.from_user.id\n    # 检查用户是否为管理员\n    # 这里可以添加管理员检查逻辑，目前简单实现\n    # 创建设置菜单\n    keyboard = [",
+        "detail": "tgbot.commands.settings",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.commands.settings",
+        "description": "tgbot.commands.settings",
+        "peekOfCode": "project_root = current_dir.parent.parent\nsys.path.insert(0, str(project_root))\nasync def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):\n    \"\"\"处理设置命令，显示设置选项\"\"\"\n    user_id = update.message.from_user.id\n    # 检查用户是否为管理员\n    # 这里可以添加管理员检查逻辑，目前简单实现\n    # 创建设置菜单\n    keyboard = [\n        [InlineKeyboardButton(",
+        "detail": "tgbot.commands.settings",
+        "documentation": {}
+    },
+    {
+        "label": "register",
+        "kind": 2,
+        "importPath": "tgbot.commands.start",
+        "description": "tgbot.commands.start",
+        "peekOfCode": "def register(app):\n    app.add_handler(CommandHandler(\"start\", start))",
+        "detail": "tgbot.commands.start",
+        "documentation": {}
+    },
+    {
+        "label": "build_search_results_message",
+        "kind": 2,
+        "importPath": "tgbot.utils.message_builders",
+        "description": "tgbot.utils.message_builders",
+        "peekOfCode": "def build_search_results_message(songs: List[Dict], header: str = \"\") -> Tuple[str, InlineKeyboardMarkup]:\n    \"\"\"构建搜索结果消息和键盘\"\"\"\n    if not header:\n        text = \"🔍 搜索结果:\\n\\n\"\n    else:\n        text = header\n    keyboard = []\n    for i, song in enumerate(songs):\n        text += f\"{i + 1}. {song['name']} - {format_singers(song['singer'])} | 专辑: {song['album']['name']} | 时长: {format_interval(song['interval'])} \\n\"\n        keyboard.append([InlineKeyboardButton(",
+        "detail": "tgbot.utils.message_builders",
+        "documentation": {}
+    },
+    {
+        "label": "build_album_results_message",
+        "kind": 2,
+        "importPath": "tgbot.utils.message_builders",
+        "description": "tgbot.utils.message_builders",
+        "peekOfCode": "def build_album_results_message(songs: List[Dict]) -> Tuple[str, InlineKeyboardMarkup]:\n    \"\"\"构建专辑歌曲列表消息和键盘\"\"\"\n    text = \"💿 专辑歌曲列表:\\n\\n\"\n    keyboard = []\n    for i, song in enumerate(songs):\n        song_info = song['songInfo'] if 'songInfo' in song else song\n        text += f\"{i + 1}. {song_info['name']} - {format_singers(song_info['singer'])}\\n\"\n        keyboard.append([InlineKeyboardButton(\n            f\"{i + 1}. {song_info['name']}\", callback_data=f\"song:{i}\")])\n    return text, InlineKeyboardMarkup(keyboard)",
+        "detail": "tgbot.utils.message_builders",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicBot",
+        "kind": 6,
+        "importPath": "tgbot.bot",
+        "description": "tgbot.bot",
+        "peekOfCode": "class QQMusicBot:\n    def __init__(self):\n        # 使用自定义API地址\n        self.app = (ApplicationBuilder()\n                    .token(config.BOT_TOKEN)\n                    .base_url(config.API_BASE_URL)  # 使用配置中的自定义API地址\n                    .build())\n        # 注册所有命令和回调\n        self._register_handlers()\n    def _register_handlers(self):",
+        "detail": "tgbot.bot",
+        "documentation": {}
+    },
+    {
+        "label": "current_dir",
+        "kind": 5,
+        "importPath": "tgbot.bot",
+        "description": "tgbot.bot",
+        "peekOfCode": "current_dir = Path(__file__).parent\nlogger.debug(current_dir)\nproject_root = current_dir.parent\nsys.path.insert(0, str(project_root))\nfrom utils.config import config\nclass QQMusicBot:\n    def __init__(self):\n        # 使用自定义API地址\n        self.app = (ApplicationBuilder()\n                    .token(config.BOT_TOKEN)",
+        "detail": "tgbot.bot",
+        "documentation": {}
+    },
+    {
+        "label": "project_root",
+        "kind": 5,
+        "importPath": "tgbot.bot",
+        "description": "tgbot.bot",
+        "peekOfCode": "project_root = current_dir.parent\nsys.path.insert(0, str(project_root))\nfrom utils.config import config\nclass QQMusicBot:\n    def __init__(self):\n        # 使用自定义API地址\n        self.app = (ApplicationBuilder()\n                    .token(config.BOT_TOKEN)\n                    .base_url(config.API_BASE_URL)  # 使用配置中的自定义API地址\n                    .build())",
+        "detail": "tgbot.bot",
+        "documentation": {}
+    },
+    {
+        "label": "LoginWorker",
+        "kind": 6,
+        "importPath": "ui.login_dialog",
+        "description": "ui.login_dialog",
+        "peekOfCode": "class LoginWorker(QThread):\n    \"\"\"登录工作线程\"\"\"\n    login_success = pyqtSignal(dict)  # 登录成功信号\n    login_failed = pyqtSignal(str)    # 登录失败信号\n    status_update = pyqtSignal(str)   # 状态更新信号\n    qr_generated = pyqtSignal(bytes)  # 二维码生成信号（字节数据）\n    def __init__(self, adapter: QQMusicAPI):\n        super().__init__()\n        self.adapter = adapter\n        self.login_type = \"QQ\"",
+        "detail": "ui.login_dialog",
+        "documentation": {}
+    },
+    {
+        "label": "QRLoginWidget",
+        "kind": 6,
+        "importPath": "ui.login_dialog",
+        "description": "ui.login_dialog",
+        "peekOfCode": "class QRLoginWidget(QWidget):\n    \"\"\"二维码登录组件\"\"\"\n    def __init__(self, adapter: QQMusicAPI):\n        super().__init__()\n        self.adapter = adapter\n        self.worker = None\n        self.init_ui()\n    def init_ui(self):\n        layout = QVBoxLayout()\n        # 登录方式选择",
+        "detail": "ui.login_dialog",
+        "documentation": {}
+    },
+    {
+        "label": "LoginDialog",
+        "kind": 6,
+        "importPath": "ui.login_dialog",
+        "description": "ui.login_dialog",
+        "peekOfCode": "class LoginDialog(QDialog):\n    \"\"\"登录对话框\"\"\"\n    def __init__(self, adapter: QQMusicAPI, parent=None):\n        super().__init__(parent)\n        self.adapter = adapter\n        self.user_info = None\n        self.init_ui()\n    def init_ui(self):\n        self.setWindowTitle(\"QQ音乐登录\")\n        self.setFixedSize(450, 600)",
+        "detail": "ui.login_dialog",
+        "documentation": {}
+    },
+    {
+        "label": "AnchoredComboBox",
+        "kind": 6,
+        "importPath": "ui.mainui",
+        "description": "ui.mainui",
+        "peekOfCode": "class AnchoredComboBox(QComboBox):\n    \"\"\"Use a QMenu as the popup to avoid platform popup glitches with QComboBox.\"\"\"\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        self._popup_menu = QMenu(self)\n        self._popup_menu.triggered.connect(self._on_menu_triggered)\n    def showPopup(self) -> None:\n        self._popup_menu.clear()\n        current = self.currentIndex()\n        for i in range(self.count()):",
+        "detail": "ui.mainui",
+        "documentation": {}
+    },
+    {
+        "label": "WorkerThread",
+        "kind": 6,
+        "importPath": "ui.mainui",
+        "description": "ui.mainui",
+        "peekOfCode": "class WorkerThread(QThread):\n    \"\"\"工作线程，处理异步任务\"\"\"\n    update_signal = pyqtSignal(dict)\n    error_signal = pyqtSignal(str)\n    progress_signal = pyqtSignal(int, int)  # 当前进度, 总进度\n    def __init__(self, task_type, api=None, downloader=None, params=None):\n        super().__init__()\n        self.task_type = task_type\n        self.api = api\n        self.downloader = downloader",
+        "detail": "ui.mainui",
+        "documentation": {}
+    },
+    {
+        "label": "QQMusicDownloaderGUI",
+        "kind": 6,
+        "importPath": "ui.mainui",
+        "description": "ui.mainui",
+        "peekOfCode": "class QQMusicDownloaderGUI(QMainWindow):\n    \"\"\"QQ音乐下载器GUI\"\"\"\n    def __init__(self):\n        super().__init__()\n        self.api = QQMusicAPI()\n        self.downloader = MusicDownloader()\n        # 设置配置文件路径\n        self.config_file = get_gui_config_file_path()\n        self.config_dir = self.config_file.parent\n        # 存储搜索结果",
+        "detail": "ui.mainui",
+        "documentation": {}
+    },
+    {
+        "label": "is_compiled",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def is_compiled() -> bool:\n    try:\n        __compiled__  # type: ignore[name-defined]\n        return True\n    except NameError:\n        return bool(getattr(sys, \"frozen\", False))\ndef _find_repo_root(start_dir: Path) -> Path | None:\n    for candidate in (start_dir, *start_dir.parents):\n        if (candidate / \"pyproject.toml\").is_file():\n            return candidate",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_app_dir",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_app_dir() -> Path:\n    try:\n        return Path(__compiled__.containing_dir)  # type: ignore[name-defined]\n    except NameError:\n        argv_path = Path(sys.argv[0]).resolve()\n        argv_dir = argv_path.parent\n        repo_root = _find_repo_root(argv_dir)\n        if repo_root is not None:\n            return repo_root\n        module_root = _find_repo_root(Path(__file__).resolve().parent)",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_user_data_dir",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_user_data_dir() -> Path:\n    override = os.getenv(\"MUSICDOWN_HOME\") or os.getenv(\"MUSICDOWN_CONFIG_DIR\")\n    if override:\n        return Path(override).expanduser().resolve()\n    return Path.home() / f\".{APP_NAME}\"\ndef _portable_requested() -> bool:\n    return os.getenv(\"MUSICDOWN_PORTABLE\", \"\").strip().lower() in {\"1\", \"true\", \"yes\"}\ndef get_app_data_dir() -> Path:\n    if _portable_requested():\n        return get_app_dir()",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_app_data_dir",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_app_data_dir() -> Path:\n    if _portable_requested():\n        return get_app_dir()\n    # Compiled distributions should always write to a user-writable location by default.\n    if is_compiled():\n        return get_user_data_dir()\n    # During development, keep configs next to the project if possible.\n    app_dir = get_app_dir()\n    try:\n        test_file = app_dir / \".write_test\"",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_config_dir",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_config_dir() -> Path:\n    return get_app_data_dir() / \"config\"\ndef get_config_file_path() -> Path:\n    return get_config_dir() / \"config.json\"\ndef get_credential_file_path() -> Path:\n    return get_config_dir() / \"credential.json\"\ndef get_gui_config_file_path() -> Path:\n    return get_app_data_dir() / \"config.json\"\ndef get_resource_path(*parts: str) -> Path:\n    app_dir = get_app_dir()",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_config_file_path",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_config_file_path() -> Path:\n    return get_config_dir() / \"config.json\"\ndef get_credential_file_path() -> Path:\n    return get_config_dir() / \"credential.json\"\ndef get_gui_config_file_path() -> Path:\n    return get_app_data_dir() / \"config.json\"\ndef get_resource_path(*parts: str) -> Path:\n    app_dir = get_app_dir()\n    candidates: list[Path] = []\n    if sys.platform == \"darwin\":",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_credential_file_path",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_credential_file_path() -> Path:\n    return get_config_dir() / \"credential.json\"\ndef get_gui_config_file_path() -> Path:\n    return get_app_data_dir() / \"config.json\"\ndef get_resource_path(*parts: str) -> Path:\n    app_dir = get_app_dir()\n    candidates: list[Path] = []\n    if sys.platform == \"darwin\":\n        macos_resources_dir = app_dir.parent / \"Resources\"\n        if macos_resources_dir.is_dir():",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_gui_config_file_path",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_gui_config_file_path() -> Path:\n    return get_app_data_dir() / \"config.json\"\ndef get_resource_path(*parts: str) -> Path:\n    app_dir = get_app_dir()\n    candidates: list[Path] = []\n    if sys.platform == \"darwin\":\n        macos_resources_dir = app_dir.parent / \"Resources\"\n        if macos_resources_dir.is_dir():\n            candidates.append(macos_resources_dir)\n    candidates.append(app_dir)",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "get_resource_path",
+        "kind": 2,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "def get_resource_path(*parts: str) -> Path:\n    app_dir = get_app_dir()\n    candidates: list[Path] = []\n    if sys.platform == \"darwin\":\n        macos_resources_dir = app_dir.parent / \"Resources\"\n        if macos_resources_dir.is_dir():\n            candidates.append(macos_resources_dir)\n    candidates.append(app_dir)\n    for base_dir in candidates:\n        candidate_path = base_dir.joinpath(*parts)",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "APP_NAME",
+        "kind": 5,
+        "importPath": "utils.app_paths",
+        "description": "utils.app_paths",
+        "peekOfCode": "APP_NAME = \"musicdown\"\ndef is_compiled() -> bool:\n    try:\n        __compiled__  # type: ignore[name-defined]\n        return True\n    except NameError:\n        return bool(getattr(sys, \"frozen\", False))\ndef _find_repo_root(start_dir: Path) -> Path | None:\n    for candidate in (start_dir, *start_dir.parents):\n        if (candidate / \"pyproject.toml\").is_file():",
+        "detail": "utils.app_paths",
+        "documentation": {}
+    },
+    {
+        "label": "ConfigManager",
+        "kind": 6,
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "peekOfCode": "class ConfigManager:\n    _instances = {}\n    @classmethod\n    def get_instance(cls, config_file: str) -> \"ConfigManager\":\n        if config_file not in cls._instances:\n            cls._instances[config_file] = cls(config_file)\n        return cls._instances[config_file]\n    def __init__(self, config_file: str):\n        self.config_file = config_file\n        self.config = {}",
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "Config",
+        "kind": 6,
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "peekOfCode": "class Config:\n    config_file = ConfigManager.get_instance(str(get_config_file_path()))\n    DOWNLOADS_DIR: Path = field(default=Path('downloads'))\n    DEFAULT_QUALITY: str = field(init=False)\n    BLOCK_SIZE: int = 8192\n    PROGRESS_UPDATE_INTERVAL: float = 0.5\n    QQMUSIC_COOKIE: str = field(init=False)\n    BOT_TOKEN: str = field(init=False)\n    API_BASE_URL: str = field(init=False)\n    # 登录相关配置",
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "config",
+        "kind": 5,
+        "importPath": "utils.config",
+        "description": "utils.config",
+        "peekOfCode": "config = Config()\n# robot_module.py\n# from config import ConfigManager\n# robot_config = ConfigManager.get_instance(\"robot_config.toml\")\n# shared_config = ConfigManager.get_instance(\"shared_config.toml\")\n# speed = robot_config.get(\"speed\")\n# log_level = shared_config.get(\"log_level\")\n# # desktop_module.py\n# from config import ConfigManager\n# desktop_config = ConfigManager.get_instance(\"desktop_config.toml\")",
+        "detail": "utils.config",
+        "documentation": {}
+    },
+    {
+        "label": "data_str",
+        "kind": 5,
+        "importPath": "utils.cookie2json",
+        "description": "utils.cookie2json",
+        "peekOfCode": "data_str = \"\"\"RK=HcXILXlyQ3; ptcz=2e29b953ce55163edf676cef1baddcd65cbf529e15caf686c5dc44a70bd0a57f; pac_uid=0_DWpnW4Se1GMbM; _qimei_uuid42=18b020b291110018ed0cb79799bdcd1853a9da177b; _qimei_fingerprint=f85b38cc9f1388641316f92802c3da81; _qimei_h38=2db8665aed0cb79799bdcd180200000fe18b02; qq_domain_video_guid_verify=078f1094fb3d98f1; tvfe_boss_uuid=406c5c9d541131c6; pgv_pvid=6916008410; _qimei_q32=aba8d6cb7a8727616eee300ad1d760d3; _qimei_q36=2f8df2a3b15e109877e90a27300019018818; ts_uid=7953382399; fqm_pvqid=e44c8b21-1e15-4b99-9f5e-10ad3d2f04a1; suid=user_0_DWpnW4Se1GMbM; ETCI=3207b28b2b534b2ab473f097b638c0e8; omgid=0_DWpnW4Se1GMbM; ts_refer=678910.cc/; fqm_sessionid=85da44ba-9d2e-406f-a014-3a5a04008827; pgv_info=ssid=s8851706640; ts_last=y.qq.com/\"\"\"\n# 拆分并转换为字典\ncookie_dict = dict(item.strip().split('=', 1) for item in data_str.split('; ') if '=' in item)\n# 输出为 JSON 字符串（格式化）\njson_output = json.dumps(cookie_dict, indent=4, ensure_ascii=False)\nlogger.info(json_output)",
+        "detail": "utils.cookie2json",
+        "documentation": {}
+    },
+    {
+        "label": "cookie_dict",
+        "kind": 5,
+        "importPath": "utils.cookie2json",
+        "description": "utils.cookie2json",
+        "peekOfCode": "cookie_dict = dict(item.strip().split('=', 1) for item in data_str.split('; ') if '=' in item)\n# 输出为 JSON 字符串（格式化）\njson_output = json.dumps(cookie_dict, indent=4, ensure_ascii=False)\nlogger.info(json_output)",
+        "detail": "utils.cookie2json",
+        "documentation": {}
+    },
+    {
+        "label": "json_output",
+        "kind": 5,
+        "importPath": "utils.cookie2json",
+        "description": "utils.cookie2json",
+        "peekOfCode": "json_output = json.dumps(cookie_dict, indent=4, ensure_ascii=False)\nlogger.info(json_output)",
+        "detail": "utils.cookie2json",
+        "documentation": {}
+    },
+    {
+        "label": "ensure_downloads_dir",
+        "kind": 2,
+        "importPath": "utils.decorator",
+        "description": "utils.decorator",
+        "peekOfCode": "def ensure_downloads_dir(func):\n    \"\"\"确保下载目录存在的装饰器\"\"\"\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        config.DOWNLOADS_DIR.mkdir(exist_ok=True)\n        return func(*args, **kwargs)\n    return wrapper",
+        "detail": "utils.decorator",
+        "documentation": {}
+    },
+    {
+        "label": "format_singers",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def format_singers(singers: List[Dict]) -> str:\n    \"\"\"格式化歌手列表为字符串\"\"\"\n    return \" \".join([singer['name'] for singer in singers])\ndef clean_html_tags(text: str) -> str:\n    \"\"\"清理文本中的HTML标签\n    Args:\n        text: 包含HTML标签的文本\n    Returns:\n        清理后的纯文本\n    \"\"\"",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "clean_html_tags",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def clean_html_tags(text: str) -> str:\n    \"\"\"清理文本中的HTML标签\n    Args:\n        text: 包含HTML标签的文本\n    Returns:\n        清理后的纯文本\n    \"\"\"\n    if not text:\n        return text\n    # 移除HTML标签，保留标签内的文本内容",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "format_interval",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def format_interval(interval: int) -> str:\n    minutes = interval // 60  # 计算分钟\n    seconds = interval % 60  # 计算剩余秒数\n    duration = f\"{minutes}:{seconds:02d}\"  # 格式化成 mm:ss\n    return duration\ndef get_audio_extension(url: str) -> str:\n    \"\"\"获取音频文件扩展名\"\"\"\n    ext = Path(urlparse(url).path).suffix.lower()\n    valid_extensions = {\".mp3\", \".flac\", \".wav\", \".aac\", \".ogg\", \".m4a\"}\n    if ext not in valid_extensions:",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "get_audio_extension",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def get_audio_extension(url: str) -> str:\n    \"\"\"获取音频文件扩展名\"\"\"\n    ext = Path(urlparse(url).path).suffix.lower()\n    valid_extensions = {\".mp3\", \".flac\", \".wav\", \".aac\", \".ogg\", \".m4a\"}\n    if ext not in valid_extensions:\n        ext = \".mp3\"  # 默认值\n    return ext\nasync def get_file_path(selected_song: Dict, song_url: str, download_dir: Path = config.DOWNLOADS_DIR):\n    \"\"\"获取下载文件路径\"\"\"\n    ext = get_audio_extension(song_url)",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "parse_word_by_word_lyrics",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def parse_word_by_word_lyrics(lyrics_data: Dict, isTrans: bool = False, isRoma: bool = False) -> str:\n    \"\"\"解析逐字歌词数据，转换为LRC格式\n    Args:\n        lyrics_data: 逐字歌词数据字典\n        isTrans: 是否包含翻译歌词\n        isRoma: 是否包含罗马音歌词\n    Returns:\n        LRC格式的歌词字符串\n    \"\"\"\n    lyric = lyrics_data.get(\"lyric\", \"\")",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "parse_lrc_lyrics",
+        "kind": 2,
+        "importPath": "utils.formatters",
+        "description": "utils.formatters",
+        "peekOfCode": "def parse_lrc_lyrics(lyric_data: Dict):\n    \"\"\"解析LRC歌词数据\"\"\"\n    lyric = lyric_data.get(\"lyric\", \"\")\n    trans = lyric_data.get(\"trans\", \"\")\n    headers = _parse_headers(lyric)\n    original_lines = _parse_lyric_lines(lyric)\n    translate_lines = _parse_lyric_lines(trans)\n    lyrics_content = []\n    for header in headers:\n        if header.endswith(\"\\n\") or header.endswith(\"\\r\") or header.endswith(\"\\r\\n\"):",
+        "detail": "utils.formatters",
+        "documentation": {}
+    },
+    {
+        "label": "Logger",
+        "kind": 6,
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "peekOfCode": "class Logger:\n    def __init__(self) -> None:\n        self.name = 'LDDC'\n        self.__logger = logging.getLogger(self.name)\n        self.level = self.str2log_level(\"DEBUG\")\n        self.last_progress = None  # 添加进度跟踪变量\n        self.ui_handlers = []  # 存储UI处理器\n        formatter = logging.Formatter('[%(levelname)s]%(asctime)s- %(module)s(%(lineno)d) - %(funcName)s:%(message)s')\n        # 创建一个处理器,用于将日志写入文件\n        file_handler = logging.FileHandler(log_file, encoding='utf-8')",
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "log_file",
+        "kind": 5,
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "peekOfCode": "log_file = os.path.join(\"logs/\", f'{time.strftime(\"%Y.%m.%d\", time.localtime())}.log')\nif not os.path.exists(os.path.dirname(log_file)):\n    os.makedirs(os.path.dirname(log_file))\nclass Logger:\n    def __init__(self) -> None:\n        self.name = 'LDDC'\n        self.__logger = logging.getLogger(self.name)\n        self.level = self.str2log_level(\"DEBUG\")\n        self.last_progress = None  # 添加进度跟踪变量\n        self.ui_handlers = []  # 存储UI处理器",
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "kind": 5,
+        "importPath": "utils.logger",
+        "description": "utils.logger",
+        "peekOfCode": "logger = Logger()",
+        "detail": "utils.logger",
+        "documentation": {}
+    },
+    {
+        "label": "SearchType",
+        "kind": 6,
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "peekOfCode": "class SearchType(IntEnum):\n    \"\"\"搜索类型枚举\"\"\"\n    SONG = 0\n    ARTIST = 1\n    ALBUM = 2\n    SONGLIST = 3\n    MV = 4\n    LYRICS = 7\nclass RequestMethod(str, Enum):\n    \"\"\"请求方法枚举\"\"\"",
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "RequestMethod",
+        "kind": 6,
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "peekOfCode": "class RequestMethod(str, Enum):\n    \"\"\"请求方法枚举\"\"\"\n    GET = \"GET\"\n    POST = \"POST\"\nclass QrcType(Enum):\n    \"\"\"歌词类型枚举\"\"\"\n    LOCAL = 0\n    CLOUD = 1",
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "QrcType",
+        "kind": 6,
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "peekOfCode": "class QrcType(Enum):\n    \"\"\"歌词类型枚举\"\"\"\n    LOCAL = 0\n    CLOUD = 1",
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
+        "label": "NetworkManager",
+        "kind": 6,
+        "importPath": "utils.network",
+        "description": "utils.network",
+        "peekOfCode": "class NetworkManager:\n    \"\"\"网络请求管理类\"\"\"\n    def __init__(self):\n        self.client = self._setup_client()\n        self.async_client = None\n    def _setup_client(self) -> httpx.Client:\n        \"\"\"配置同步客户端\"\"\"\n        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)\n        return httpx.Client(verify=False, trust_env=False, timeout=10.0)\n    async def _ensure_async_client(self):",
+        "detail": "utils.network",
+        "documentation": {}
+    },
+    {
+        "label": "network",
+        "kind": 5,
+        "importPath": "utils.network",
+        "description": "utils.network",
+        "peekOfCode": "network = NetworkManager()",
+        "detail": "utils.network",
+        "documentation": {}
+    },
+    {
+        "label": "MusicDataParser",
+        "kind": 6,
+        "importPath": "utils.parser",
+        "description": "utils.parser",
+        "peekOfCode": "class MusicDataParser:\n    \"\"\"音乐数据解析器\"\"\"\n    @staticmethod\n    def parse_search_result(json_data: Dict, search_type: SearchType) -> Dict:\n        \"\"\"解析搜索结果数据\n        Args:\n            json_data (Dict): 搜索结果的原始JSON数据\n        Returns:\n            Dict: 解析后的搜索结果，包含歌曲列表等信息\n        \"\"\"",
+        "detail": "utils.parser",
+        "documentation": {}
+    },
+    {
+        "label": "canonical_quality",
+        "kind": 2,
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "peekOfCode": "def canonical_quality(quality: str) -> str:\n    q = (quality or \"\").strip()\n    if not q:\n        return \"\"\n    q = q.replace(\"-\", \"_\")\n    upper = q.upper()\n    if upper in {\"MASTER\", \"ATMOS_2\", \"ATMOS_51\"}:\n        return upper\n    lower = q.lower()\n    if lower in {\"flac\", \"m4a\"}:",
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "best_available_fallback_qualities",
+        "kind": 2,
+        "importPath": "utils.quality",
+        "description": "utils.quality",
+        "peekOfCode": "def best_available_fallback_qualities(preferred: str) -> list[str]:\n    \"\"\"Fallback by exploring the highest available quality.\n    Order:\n    1) preferred\n    2) then from best → worst (excluding preferred)\n    \"\"\"\n    preferred_q = canonical_quality(preferred)\n    if not preferred_q:\n        return []\n    candidates = [preferred_q]",
+        "detail": "utils.quality",
+        "documentation": {}
+    },
+    {
+        "label": "login_callback",
+        "kind": 2,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "def login_callback(event: str, data):\n    global qr_bytes, login_status\n    if event == \"qr_generated\":\n        qr_bytes = data\n        login_status = \"waiting_scan\"\n    elif event == \"waiting_scan\":\n        login_status = \"waiting_scan\"\n    elif event == \"waiting_confirm\":\n        login_status = \"waiting_confirm\"\n    elif event == \"login_success\":",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "get_available_formats",
+        "kind": 2,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "def get_available_formats(song: dict) -> dict:\n    \"\"\"Return available audio formats with their keys and human readable names\"\"\"\n    if not song.get(\"file\"):\n        return {\"readable\": \"未知\", \"formats\": []}\n    file_info = song[\"file\"]\n    available = []\n    format_map = {\n        \"size_48aac\": {\"name\": \"M4A 48k\", \"quality\": \"m4a\", \"ext\": \"m4a\"},\n        \"size_96aac\": {\"name\": \"M4A 96k\", \"quality\": \"m4a\", \"ext\": \"m4a\"},\n        \"size_192aac\": {\"name\": \"M4A 192k\", \"quality\": \"m4a\", \"ext\": \"m4a\"},",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "app = FastAPI(title=\"Music Downloader Web\")\nBASE_DIR = Path(__file__).parent\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\nqq_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nqr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_DIR",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "BASE_DIR = Path(__file__).parent\ntemplates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\nqq_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nqr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "templates",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "templates = Jinja2Templates(directory=str(BASE_DIR / \"templates\"))\napp.mount(\"/static\", StaticFiles(directory=str(BASE_DIR / \"static\")), name=\"static\")\nqq_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nqr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")\nasync def startup_event():",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "qq_api",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "qq_api = QQMusicAPI()\nmusic_downloader = MusicDownloader()\nqr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")\nasync def startup_event():\n    # 启动时异步验证凭证\n    try:",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "music_downloader",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "music_downloader = MusicDownloader()\nqr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")\nasync def startup_event():\n    # 启动时异步验证凭证\n    try:\n        await qq_api.validate_credential()",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "qr_bytes",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "qr_bytes = b\"\"\nlogin_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")\nasync def startup_event():\n    # 启动时异步验证凭证\n    try:\n        await qq_api.validate_credential()\n        global login_status",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "login_status",
+        "kind": 5,
+        "importPath": "web.app",
+        "description": "web.app",
+        "peekOfCode": "login_status = \"not_started\"\nlogin_task: asyncio.Task | None = None\n# 应用启动事件\n@app.on_event(\"startup\")\nasync def startup_event():\n    # 启动时异步验证凭证\n    try:\n        await qq_api.validate_credential()\n        global login_status\n        if await qq_api.is_logged_in():",
+        "detail": "web.app",
+        "documentation": {}
+    },
+    {
+        "label": "ms_to_timestamp",
+        "kind": 2,
+        "importPath": "json_to_lrc",
+        "description": "json_to_lrc",
+        "peekOfCode": "def ms_to_timestamp(ms):\n    \"\"\"将毫秒转换为LRC格式的时间戳 [mm:ss.sss]\"\"\"\n    seconds, ms = divmod(int(ms), 1000)\n    minutes, seconds = divmod(seconds, 60)\n    return f\"{minutes:02d}:{seconds:02d}.{ms:03d}\"\ndef timestamp_to_ms(timestamp):\n    \"\"\"将LRC格式的时间戳转换为毫秒\"\"\"\n    if not timestamp:\n        return 0\n    try:",
+        "detail": "json_to_lrc",
+        "documentation": {}
+    },
+    {
+        "label": "timestamp_to_ms",
+        "kind": 2,
+        "importPath": "json_to_lrc",
+        "description": "json_to_lrc",
+        "peekOfCode": "def timestamp_to_ms(timestamp):\n    \"\"\"将LRC格式的时间戳转换为毫秒\"\"\"\n    if not timestamp:\n        return 0\n    try:\n        minute, second = timestamp.split(':')\n        return int(minute) * 60 * 1000 + int(float(second) * 1000)\n    except:\n        return 0\ndef parse_json_to_lrc(json_file, output_dir=\"lrc_output\"):",
+        "detail": "json_to_lrc",
+        "documentation": {}
+    },
+    {
+        "label": "parse_json_to_lrc",
+        "kind": 2,
+        "importPath": "json_to_lrc",
+        "description": "json_to_lrc",
+        "peekOfCode": "def parse_json_to_lrc(json_file, output_dir=\"lrc_output\"):\n    \"\"\"将JSON文件转换为LRC格式，整合原文、翻译和罗马音\"\"\"\n    try:\n        # 确保输出目录存在\n        os.makedirs(output_dir, exist_ok=True)\n        # 读取JSON文件\n        with open(json_file, 'r', encoding='utf-8') as f:\n            data = json.load(f)\n        # 获取歌词信息\n        lyric_xml = data.get(\"lyric\", \"\")",
+        "detail": "json_to_lrc",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "json_to_lrc",
+        "description": "json_to_lrc",
+        "peekOfCode": "def main():\n    json_files = \"json\\lyrics_parser_word_by_word_older.json\"\n    logger.info(f\"处理文件: {json_files}\")\n    parse_json_to_lrc(json_files)\nif __name__ == \"__main__\":\n    main()",
+        "detail": "json_to_lrc",
+        "documentation": {}
+    }
+]

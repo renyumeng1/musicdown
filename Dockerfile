@@ -2,10 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+COPY pyproject.toml uv.lock /app/
+
+RUN pip install --no-cache-dir uv && \
+    uv sync --frozen --no-install-project
+
 COPY . /app
 
-RUN pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir fastapi uvicorn[standard] jinja2
+ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 

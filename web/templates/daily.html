@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block title %}每日推荐 - Music Downloader{% endblock %}
+
+{% block header %}
+<h1><i class="fas fa-calendar-day"></i> 每日推荐</h1>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="text-align:center; margin-bottom: 10px;">
+        <a href="/daily" class="button"><i class="fas fa-rotate"></i> 刷新</a>
+        <a href="/playlist" class="button" style="background:#333; margin-left: 8px;"><i class="fas fa-link"></i> 用链接获取</a>
+    </div>
+
+    <form action="/daily" method="get" class="search-form">
+        <input type="text" name="url" placeholder="（可选）粘贴每日推荐分享链接作为兜底..." value="{{ url }}">
+        <button type="submit"><i class="fas fa-magic"></i> 获取</button>
+    </form>
+
+    <div class="info">
+        <i class="fas fa-info-circle"></i> 若自动获取失败，可在 <code>config/config.json</code> 设置 <code>daily_recommend.url</code> 作为兜底。
+    </div>
+
+    {% if error %}
+    <div class="info" style="border-left-color:#e74c3c;background:rgba(231,76,60,0.10);">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+    </div>
+    {% endif %}
+
+    {% if daily_name %}
+    <div class="info">
+        <i class="fas fa-heart"></i> {{ daily_name }}
+    </div>
+    {% endif %}
+
+    {% if songs %}
+    <div style="display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; margin: 10px 0 20px;">
+        <label for="zip-quality" style="font-weight:500;">打包音质</label>
+        <select id="zip-quality" class="quality-select" style="width:auto;">
+            <option value="flac" {% if default_quality=='flac' %}selected{% endif %}>FLAC</option>
+            <option value="320" {% if default_quality=='320' %}selected{% endif %}>MP3 320k</option>
+            <option value="128" {% if default_quality=='128' %}selected{% endif %}>MP3 128k</option>
+            <option value="m4a" {% if default_quality=='m4a' %}selected{% endif %}>M4A</option>
+        </select>
+        <a href="#" id="zip-download" class="button"><i class="fas fa-file-archive"></i> 下载 ZIP</a>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table class="result-table">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-music"></i> 标题</th>
+                    <th><i class="fas fa-user"></i> 歌手</th>
+                    <th><i class="fas fa-compact-disc"></i> 专辑</th>
+                    <th><i class="fas fa-clock"></i> 时长</th>
+                    <th><i class="fas fa-file-audio"></i> 可用格式</th>
+                    <th><i class="fas fa-sliders-h"></i> 音质选择</th>
+                    <th><i class="fas fa-download"></i> 操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td>{{ song.name }}</td>
+                    <td>{{ song.singers }}</td>
+                    <td>{{ song.album_name }}</td>
+                    <td>{{ song.duration }}</td>
+                    <td>{{ song.formats }}</td>
+                    <td>
+                        <select id="quality-{{ song.mid }}" class="quality-select" style="padding: 5px;">
+                            {% for format in song.available_formats %}
+                            <option value="{{ format.quality }}" {% if format.quality==default_quality %}selected{% endif %}>
+                                {{ format.name }}
+                            </option>
+                            {% endfor %}
+                            {% if not song.available_formats %}
+                            <option value="flac">FLAC</option>
+                            <option value="320">MP3 320k</option>
+                            <option value="128">MP3 128k</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td>
+                        <a class="button download-button" href="#" data-mid="{{ song.mid }}" data-name="{{ song.name }}"
+                            data-singer="{{ song.singers }}" data-album="{{ song.album_name }}">
+                            <i class="fas fa-download"></i> 下载
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const downloadButtons = document.querySelectorAll('.download-button');
+
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const mid = this.getAttribute('data-mid');
+                    const name = this.getAttribute('data-name');
+                    const singer = this.getAttribute('data-singer');
+                    const album = this.getAttribute('data-album');
+                    const quality = document.getElementById(`quality-${mid}`).value;
+
+                    const downloadUrl = `/download?mid=${encodeURIComponent(mid)}&name=${encodeURIComponent(name)}&singer=${encodeURIComponent(singer)}&album=${encodeURIComponent(album)}&quality=${encodeURIComponent(quality)}`;
+                    window.location.href = downloadUrl;
+                });
+            });
+
+            const zipBtn = document.getElementById('zip-download');
+            if (zipBtn) {
+                zipBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const url = document.querySelector('input[name="url"]').value || '';
+                    const quality = document.getElementById('zip-quality').value;
+                    const qp = url ? `&url=${encodeURIComponent(url)}` : '';
+                    window.location.href = `/daily/download_zip?quality=${encodeURIComponent(quality)}${qp}`;
+                });
+            }
+        });
+    </script>
+    {% endif %}
+
+    <div style="margin-top: 20px; text-align: center;">
+        <a href="/" class="button"><i class="fas fa-home"></i> 返回首页</a>
+    </div>
+</div>
+{% endblock %}

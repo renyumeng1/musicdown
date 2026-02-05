@@ -6,7 +6,8 @@ on:
     paths:
       - 'Dockerfile'
       - 'web/**'
-      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'uv.lock'
       - '.github/workflows/docker.yml'
   workflow_dispatch:
 
@@ -30,4 +31,3 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME || github.repository_owner }}/musicdown:latest
-

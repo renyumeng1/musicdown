@@ -12,6 +12,8 @@ from pathlib import Path
 import asyncio
 import io
 import os
+import time
+import zipfile
 
 import sys
 # 确保可以导入项目根目录的模块
@@ -98,16 +100,62 @@ def get_available_formats(song: dict) -> dict:
     size_new = file_info.get("size_new", [])
     if len(size_new) >= 6:
         if size_new[0] > 0:
-            available.append({"name": "母带", "quality": "sq", "ext": "flac"})
+            available.append({"name": "母带", "quality": "MASTER", "ext": "flac"})
         if size_new[1] > 0:
             available.append(
-                {"name": "全景声", "quality": "dolby", "ext": "flac"})
+                {"name": "全景声", "quality": "ATMOS_2", "ext": "flac"})
         if size_new[2] > 0:
-            available.append({"name": "臻品音质", "quality": "hi", "ext": "flac"})
+            available.append({"name": "臻品音质", "quality": "ATMOS_51", "ext": "flac"})
 
     readable = ", ".join([fmt["name"]
                          for fmt in available]) if available else "无可用格式"
     return {"readable": readable, "formats": available}
+
+def _as_web_song(song: dict) -> dict:
+    formats_data = get_available_formats(song)
+    return {
+        "name": clean_html_tags(song.get("name", "")),
+        "mid": song.get("mid", ""),
+        "singers": format_singers(song.get("singer", [])),
+        "album_name": clean_html_tags(song.get("album", {}).get("name", "")),
+        "duration": format_interval(song.get("interval", 0)),
+        "formats": formats_data["readable"],
+        "available_formats": formats_data["formats"],
+    }
+
+def _safe_filename(name: str, fallback: str) -> str:
+    safe = "".join(c for c in (name or "") if c.isalnum() or c in " -_.").strip()
+    return safe or fallback
+
+async def _download_songs_concurrently(
+    songs: list[dict],
+    download_dir: Path,
+    quality: str,
+    *,
+    concurrency: int = 4,
+) -> list[Path]:
+    concurrency = max(1, min(int(concurrency or 4), 10))
+    semaphore = asyncio.Semaphore(concurrency)
+    downloaded_files: list[Path] = []
+
+    async def _download_one(song_info: dict) -> Path | None:
+        async with semaphore:
+            try:
+                return await music_downloader.download_song(song_info, download_dir, quality)
+            except Exception as e:
+                logger.warning(f"下载歌曲失败: {song_info.get('name')}: {e}")
+                return None
+
+    tasks = [asyncio.create_task(_download_one(song_info)) for song_info in songs]
+    for finished in asyncio.as_completed(tasks):
+        fp = await finished
+        if fp:
+            downloaded_files.append(fp)
+
+    return downloaded_files
+
+async def _require_login() -> bool:
+    return await qq_api.is_logged_in()
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -160,18 +208,7 @@ async def search(request: Request, q: str = ""):
             },
         )
     result = await qq_api.search(q, limit=20, page=1)
-    songs = []
-    for s in result.get("songs", []):
-        formats_data = get_available_formats(s)
-        songs.append({
-            "name": clean_html_tags(s.get("name", "")),
-            "mid": s.get("mid", ""),
-            "singers": format_singers(s.get("singer", [])),
-            "album_name": clean_html_tags(s.get("album", {}).get("name", "")),
-            "duration": format_interval(s.get("interval", 0)),
-            "formats": formats_data["readable"],
-            "available_formats": formats_data["formats"],
-        })
+    songs = [_as_web_song(s) for s in result.get("songs", [])]
     return templates.TemplateResponse(
         "search.html",
         {
@@ -182,6 +219,153 @@ async def search(request: Request, q: str = ""):
             "default_quality": config.DEFAULT_QUALITY,
         },
     )
+
+
+@app.get("/playlist", response_class=HTMLResponse)
+async def playlist(request: Request, url: str = ""):
+    if not await _require_login():
+        return RedirectResponse("/login")
+
+    playlist_name = None
+    songs = []
+    error = None
+    resolved_url = None
+
+    if url:
+        result = await qq_api.playlist_from_link(url)
+        if result.get("code") == 1:
+            data = result.get("data", {})
+            playlist_name = clean_html_tags(str(data.get("name", "")))
+            resolved_url = data.get("resolved_url")
+            songs = [_as_web_song(s) for s in data.get("songs", []) if isinstance(s, dict)]
+        else:
+            error = result.get("error") or "获取歌单失败"
+
+    return templates.TemplateResponse(
+        "playlist.html",
+        {
+            "request": request,
+            "url": url,
+            "playlist_name": playlist_name,
+            "resolved_url": resolved_url,
+            "songs": songs,
+            "error": error,
+            "use_light_mode": config.LIGHT_DOWNLOAD_MODE,
+            "default_quality": config.DEFAULT_QUALITY,
+        },
+    )
+
+
+@app.get("/playlist/download_zip")
+async def playlist_download_zip(url: str, quality: str | None = None, concurrency: int = 4):
+    if not await _require_login():
+        return RedirectResponse("/login")
+
+    quality = quality or config.DEFAULT_QUALITY
+    result = await qq_api.playlist_from_link(url)
+    if result.get("code") != 1:
+        return JSONResponse({"error": result.get("error", "获取歌单失败")}, status_code=400)
+
+    data = result.get("data", {})
+    playlist_id = data.get("id")
+    playlist_name = clean_html_tags(str(data.get("name", "playlist")))
+    songs = [s for s in data.get("songs", []) if isinstance(s, dict)]
+
+    download_root = Path("downloads")
+    download_dir = download_root / f"playlist_{playlist_id or int(time.time())}"
+    download_dir.mkdir(parents=True, exist_ok=True)
+
+    downloaded_files = await _download_songs_concurrently(
+        songs, download_dir, quality, concurrency=concurrency
+    )
+
+    if not downloaded_files:
+        return JSONResponse({"error": "没有成功下载任何歌曲"}, status_code=500)
+
+    zip_name = f"{_safe_filename(playlist_name, 'playlist')}_{int(time.time())}.zip"
+    zip_path = download_root / zip_name
+
+    def _build_zip():
+        with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for fp in downloaded_files:
+                if fp.exists():
+                    zf.write(fp, arcname=fp.name)
+
+    await asyncio.to_thread(_build_zip)
+    return FileResponse(zip_path, filename=zip_name)
+
+
+@app.get("/daily", response_class=HTMLResponse)
+async def daily(request: Request, url: str = ""):
+    if not await _require_login():
+        return RedirectResponse("/login")
+
+    daily_name = None
+    songs = []
+    error = None
+
+    if url:
+        result = await qq_api.playlist_from_link(url)
+    else:
+        result = await qq_api.daily_recommendations()
+
+    if result.get("code") == 1:
+        data = result.get("data", {})
+        daily_name = clean_html_tags(str(data.get("name", "每日推荐")))
+        songs = [_as_web_song(s) for s in data.get("songs", []) if isinstance(s, dict)]
+    else:
+        error = result.get("error") or "获取每日推荐失败"
+
+    return templates.TemplateResponse(
+        "daily.html",
+        {
+            "request": request,
+            "url": url,
+            "daily_name": daily_name,
+            "songs": songs,
+            "error": error,
+            "use_light_mode": config.LIGHT_DOWNLOAD_MODE,
+            "default_quality": config.DEFAULT_QUALITY,
+        },
+    )
+
+
+@app.get("/daily/download_zip")
+async def daily_download_zip(quality: str | None = None, url: str = "", concurrency: int = 4):
+    if not await _require_login():
+        return RedirectResponse("/login")
+
+    quality = quality or config.DEFAULT_QUALITY
+    result = await qq_api.playlist_from_link(url) if url else await qq_api.daily_recommendations()
+    if result.get("code") != 1:
+        return JSONResponse({"error": result.get("error", "获取每日推荐失败")}, status_code=400)
+
+    data = result.get("data", {})
+    daily_name = clean_html_tags(str(data.get("name", "daily")))
+    songs = [s for s in data.get("songs", []) if isinstance(s, dict)]
+
+    download_root = Path("downloads")
+    download_dir = download_root / f"daily_{int(time.time())}"
+    download_dir.mkdir(parents=True, exist_ok=True)
+
+    downloaded_files = await _download_songs_concurrently(
+        songs, download_dir, quality, concurrency=concurrency
+    )
+
+    if not downloaded_files:
+        return JSONResponse({"error": "没有成功下载任何歌曲"}, status_code=500)
+
+    zip_name = f"{_safe_filename(daily_name, 'daily')}_{int(time.time())}.zip"
+    zip_path = download_root / zip_name
+
+    def _build_zip():
+        with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for fp in downloaded_files:
+                if fp.exists():
+                    zf.write(fp, arcname=fp.name)
+
+    await asyncio.to_thread(_build_zip)
+    return FileResponse(zip_path, filename=zip_name)
 
 
 @app.get("/download")

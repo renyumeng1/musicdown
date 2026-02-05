@@ -1,0 +1,41 @@
+[project]
+name = "musicdown"
+version = "0.0.0"
+description = "QQ music downloader"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "qqmusic-api-python>=0.3.4",
+  "python-telegram-bot>=20.7",
+  "mutagen>=1.45.0",
+  "httpx>=0.24.0",
+  "humanize>=4.0.0",
+  "python-dotenv>=1.0.0",
+  "pydantic>=2.0.0",
+  "qrcode>=7.0.0",
+  "pillow>=9.0.0",
+  "pyzbar>=0.1.9",
+  "tomli",
+  "tomli_w",
+  "tenacity",
+  "urllib3",
+  "PyQt6",
+  "fastapi",
+  "uvicorn[standard]",
+  "jinja2",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = [
+  "api",
+  "decryptor",
+  "downloader",
+  "tgbot",
+  "ui",
+  "utils",
+  "web",
+]

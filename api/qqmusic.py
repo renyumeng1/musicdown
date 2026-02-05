@@ -4,11 +4,19 @@ QQ音乐API统一封装
 """
 import asyncio
 import json
+import re
 from typing import Dict, List, Optional
 from pathlib import Path
+from urllib.parse import urljoin
+
+import httpx
+
+from utils.logger import logger
+from utils.quality import best_available_fallback_qualities, canonical_quality
+from utils.app_paths import get_credential_file_path, get_config_file_path
 
 try:
-    from qqmusic_api import search, song, album, songlist, lyric, login
+    from qqmusic_api import search, song, album, songlist, lyric, login, recommend
     from qqmusic_api.utils.credential import Credential
     from qqmusic_api.login import (
         QRLoginType, QRCodeLoginEvents, PhoneLoginEvents,
@@ -18,8 +26,6 @@ try:
 except ImportError:
     QQMUSIC_API_AVAILABLE = False
     logger.warning("警告: qqmusic-api-python 未安装")
-
-from utils.logger import logger
 
 
 class QQMusicAPI:
@@ -31,8 +37,8 @@ class QQMusicAPI:
                 "qqmusic-api-python 库未安装，请先安装: pip install qqmusic-api-python")
 
         self.credential: Optional[Credential] = None
-        # 使用绝对路径确保在任何环境下都能正确找到凭证文件
-        self.credential_file = Path("config/credential.json").absolute()
+        # 使用可写路径确保在任何环境下都能正确读写凭证文件
+        self.credential_file = get_credential_file_path()
         self._load_credential_basic()
 
     def _load_credential_basic(self):
@@ -105,6 +111,262 @@ class QQMusicAPI:
             self.credential_file.unlink()
         logger.info("登录凭证已清除")
 
+    def _build_qqmusic_cookies(self) -> httpx.Cookies | None:
+        """构造访问 QQ 音乐页面所需的 Cookie（用于解析分享链接等网页请求）"""
+        if not self.credential:
+            return None
+        if not getattr(self.credential, "musicid", 0) or not getattr(self.credential, "musickey", ""):
+            return None
+
+        cookies = httpx.Cookies()
+        cookies.set("uin", str(self.credential.musicid), domain=".qq.com")
+        cookies.set("qqmusic_key", self.credential.musickey, domain=".qq.com")
+        cookies.set("qm_keyst", self.credential.musickey, domain=".qq.com")
+        cookies.set("tmeLoginType", str(getattr(self.credential, "login_type", 0)), domain=".qq.com")
+        return cookies
+
+    async def _resolve_share_url(self, url: str, *, max_hops: int = 8) -> str:
+        """尽可能解析 QQ 音乐分享短链，返回最终可解析的 URL。
+
+        说明：
+        - 会处理 3xx 跳转
+        - 也会尝试解析 HTML 中的 meta refresh / JS 跳转（部分 QQ 分享页会用这种方式跳转）
+        """
+        current_url = url.strip()
+        if not current_url:
+            return current_url
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+            "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        }
+        cookies = self._build_qqmusic_cookies()
+
+        async with httpx.AsyncClient(
+            headers=headers,
+            cookies=cookies,
+            follow_redirects=False,
+            timeout=httpx.Timeout(10.0, connect=10.0),
+        ) as client:
+            for _ in range(max_hops):
+                try:
+                    resp = await client.get(current_url)
+                except Exception as e:
+                    logger.warning(f"解析分享链接失败: {e}")
+                    return current_url
+
+                # 3xx 跳转
+                if resp.status_code in {301, 302, 303, 307, 308}:
+                    location = resp.headers.get("location") or resp.headers.get("Location")
+                    if not location:
+                        return str(resp.url)
+                    current_url = urljoin(str(resp.url), location)
+                    continue
+
+                # 某些页面 200 但用 meta refresh 或 JS 跳转
+                content_type = resp.headers.get("content-type", "")
+                if "text/html" in content_type.lower():
+                    text = resp.text or ""
+
+                    # meta refresh: <meta http-equiv="refresh" content="0;url=...">
+                    m = re.search(
+                        r'http-equiv=["\']refresh["\'][^>]*content=["\'][^"\']*url=([^"\'>]+)',
+                        text,
+                        re.IGNORECASE,
+                    )
+                    if m:
+                        next_url = m.group(1).strip()
+                        current_url = urljoin(str(resp.url), next_url)
+                        continue
+
+                    # JS redirect patterns
+                    js_patterns = [
+                        r'location\.href\s*=\s*["\']([^"\']+)["\']',
+                        r'window\.location\.href\s*=\s*["\']([^"\']+)["\']',
+                        r'window\.location\s*=\s*["\']([^"\']+)["\']',
+                        r'top\.location\.href\s*=\s*["\']([^"\']+)["\']',
+                    ]
+                    for pat in js_patterns:
+                        jm = re.search(pat, text, re.IGNORECASE)
+                        if jm:
+                            next_url = jm.group(1).strip()
+                            current_url = urljoin(str(resp.url), next_url)
+                            break
+                    else:
+                        return str(resp.url)
+                    continue
+
+                return str(resp.url)
+
+        return current_url
+
+    @staticmethod
+    def _extract_playlist_id(url: str) -> int | None:
+        """从 URL 中尽可能提取歌单 ID（disstid/id 等）"""
+        if not url:
+            return None
+
+        patterns = [
+            r"/playlistDetail/(\d+)",
+            r"/playlist/(\d+)",
+            r"/songlist/(\d+)",
+            r"taoge\.html[^#]*[?&]id=(\d+)",
+            r"[?&](?:id|disstid|dissid|songlist_id|playlist_id)=(\d+)",
+        ]
+        for pat in patterns:
+            m = re.search(pat, url, re.IGNORECASE)
+            if m:
+                try:
+                    return int(m.group(1))
+                except ValueError:
+                    continue
+        return None
+
+    async def playlist_from_link(self, url: str) -> Dict:
+        """从分享链接解析歌单并返回歌曲列表（支持短链）"""
+        if not url or not url.strip():
+            return {"code": -1, "error": "链接不能为空"}
+
+        resolved = await self._resolve_share_url(url)
+        playlist_id = self._extract_playlist_id(resolved) or self._extract_playlist_id(url)
+        if not playlist_id:
+            return {"code": -1, "error": f"无法从链接解析歌单ID: {resolved}"}
+
+        try:
+            detail = await songlist.get_detail(
+                songlist_id=playlist_id,
+                dirid=0,
+                num=100,
+                page=1,
+                onlysong=False,
+                tag=True,
+                userinfo=True,
+                credential=self.credential,
+            )
+            dirinfo = detail.get("dirinfo", {}) if isinstance(detail, dict) else {}
+            playlist_name = (
+                dirinfo.get("title")
+                or dirinfo.get("dirname")
+                or dirinfo.get("name")
+                or f"歌单 {playlist_id}"
+            )
+
+            songs = await songlist.get_songlist(playlist_id, dirid=0)
+            songs_count = len(songs) if isinstance(songs, list) else int(detail.get("total_song_num", 0) or 0)
+
+            return {
+                "code": 1,
+                "data": {
+                    "id": playlist_id,
+                    "name": playlist_name,
+                    "songs": songs if isinstance(songs, list) else [],
+                    "songs_count": songs_count,
+                    "resolved_url": resolved,
+                },
+            }
+        except Exception as e:
+            logger.error(f"从链接获取歌单失败: {e}")
+            return {"code": -1, "error": str(e)}
+
+    async def daily_recommendations(self) -> Dict:
+        """尝试获取账号的每日推荐歌曲（优先从推荐 Feed 中解析）。"""
+        if not await self.is_logged_in():
+            return {"code": -1, "error": "未登录或凭证已过期，请先登录"}
+
+        def _contains_keywords(text: str) -> bool:
+            t = (text or "").lower()
+            keywords = ["每日", "30首", "今日推荐", "daily"]
+            return any(k.lower() in t for k in keywords)
+
+        def _walk(obj):
+            if isinstance(obj, dict):
+                yield obj
+                for v in obj.values():
+                    yield from _walk(v)
+            elif isinstance(obj, list):
+                for item in obj:
+                    yield from _walk(item)
+
+        try:
+            feed = await recommend.get_home_feed(credential=self.credential)
+        except Exception as e:
+            logger.warning(f"获取推荐 Feed 失败: {e}")
+            return {"code": -1, "error": f"获取每日推荐失败: {e}"}
+
+        playlist_id = None
+        for d in _walk(feed):
+            title = ""
+            for k in ("title", "name", "desc", "subtitle", "label"):
+                if isinstance(d.get(k), str) and d.get(k):
+                    title = d.get(k)
+                    break
+            if not title or not _contains_keywords(title):
+                continue
+
+            for id_key in ("disstid", "dissid", "songlist_id", "playlist_id", "id"):
+                val = d.get(id_key)
+                if isinstance(val, int) and val > 0:
+                    playlist_id = val
+                    break
+                if isinstance(val, str) and val.isdigit():
+                    playlist_id = int(val)
+                    break
+            if playlist_id:
+                break
+
+        if not playlist_id:
+            # 兜底：允许用户在配置文件中配置每日推荐分享链接
+            try:
+                from utils.config import config as app_config
+                fallback_url = getattr(app_config, "DAILY_RECOMMEND_URL", "") or ""
+            except Exception:
+                fallback_url = ""
+
+            if fallback_url.strip():
+                logger.info("未解析到每日推荐歌单ID，使用配置的每日推荐链接作为兜底")
+                return await self.playlist_from_link(fallback_url)
+
+            return {
+                "code": -1,
+                "error": (
+                    "未能从推荐数据中解析到每日推荐歌单ID（可在 "
+                    f"{get_config_file_path()} 配置 daily_recommend.url 作为兜底）"
+                ),
+            }
+
+        try:
+            detail = await songlist.get_detail(
+                songlist_id=playlist_id,
+                dirid=0,
+                num=100,
+                page=1,
+                onlysong=False,
+                tag=True,
+                userinfo=True,
+                credential=self.credential,
+            )
+            dirinfo = detail.get("dirinfo", {}) if isinstance(detail, dict) else {}
+            playlist_name = (
+                dirinfo.get("title")
+                or dirinfo.get("dirname")
+                or dirinfo.get("name")
+                or "每日推荐"
+            )
+            songs = await songlist.get_songlist(playlist_id, dirid=0)
+            return {
+                "code": 1,
+                "data": {
+                    "id": playlist_id,
+                    "name": playlist_name,
+                    "songs": songs if isinstance(songs, list) else [],
+                    "songs_count": len(songs) if isinstance(songs, list) else 0,
+                },
+            }
+        except Exception as e:
+            logger.error(f"获取每日推荐歌单失败: {e}")
+            return {"code": -1, "error": str(e)}
+
     async def search(self, keyword: str, limit: int = 10, page: int = 1) -> Dict:
         """搜索歌曲
         
@@ -152,42 +414,59 @@ class QQMusicAPI:
             logger.error(f"获取歌曲详情失败: {e}")
             return {"code": -1, "data": None, "error": str(e)}
 
-    async def song_url(self, song_mid: str, quality: str = "128") -> Dict:
+    async def song_url(self, song_mid: str, quality: str = "128", *, allow_fallback: bool = True) -> Dict:
         """获取歌曲下载链接
         
         Args:
             song_mid: 歌曲MID
             quality: 音质 (128/320/flac/ATMOS_51/ATMOS_2/MASTER等)
+            allow_fallback: 是否启用相邻音质兜底（优先指定音质，不可用则尝试相邻更低/更高一档）
             
         Returns:
             下载链接信息
         """
         try:
-            # 质量映射到SongFileType枚举
+            requested = canonical_quality(quality) or "128"
+
+            # 质量映射到 SongFileType 枚举
             quality_map = {
-                'm4a': song.SongFileType.ACC_192,
-                '128': song.SongFileType.MP3_128,
-                '320': song.SongFileType.MP3_320,
-                'flac': song.SongFileType.FLAC,
-                'ATMOS_51': song.SongFileType.ATMOS_51,
-                'ATMOS_2': song.SongFileType.ATMOS_2,
-                'MASTER': song.SongFileType.MASTER,
-                'ogg': song.SongFileType.OGG_320
+                "m4a": song.SongFileType.ACC_192,
+                "128": song.SongFileType.MP3_128,
+                "320": song.SongFileType.MP3_320,
+                "flac": song.SongFileType.FLAC,
+                "ATMOS_51": song.SongFileType.ATMOS_51,
+                "ATMOS_2": song.SongFileType.ATMOS_2,
+                "MASTER": song.SongFileType.MASTER,
+                "ogg": song.SongFileType.OGG_320,
             }
 
-            file_type = quality_map.get(quality, song.SongFileType.MP3_128)
-            result = await song.get_song_urls(
-                [song_mid], file_type, credential=self.credential)
-            logger.debug("song_url result: %s", result)
+            candidates = best_available_fallback_qualities(requested) if allow_fallback else [requested]
+            if not candidates:
+                candidates = ["128"]
 
-            if isinstance(result, dict) and song_mid in result:
-                url = result[song_mid]
-                return {
-                    'code': 0 if url else -1,
-                    'url': url
-                }
-            else:
-                return {'code': -1, 'url': ''}
+            last_error: str | None = None
+            for q in candidates:
+                file_type = quality_map.get(q)
+                if not file_type:
+                    continue
+                try:
+                    result = await song.get_song_urls([song_mid], file_type, credential=self.credential)
+                except Exception as e:
+                    last_error = str(e)
+                    continue
+
+                logger.debug("song_url result (%s): %s", q, result)
+                if isinstance(result, dict) and song_mid in result:
+                    url = result[song_mid]
+                    if url:
+                        return {"code": 0, "url": url, "quality": q}
+
+            return {
+                "code": -1,
+                "url": "",
+                "error": last_error or "Cannot fetch song URL",
+                "tried": candidates,
+            }
         except Exception as e:
             logger.error(f"获取歌曲URL失败: {e}")
             return {'code': -1, 'url': '', 'error': str(e)}

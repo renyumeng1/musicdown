@@ -25,7 +25,15 @@ class MusicDownloader:
         self.download_manager = DownloadManager()
         self.log = logger.log_progress
 
-    async def download_song(self, song_info: Dict, download_dir: Path, filetype: str = 'm4a', cookie: str = None) -> Optional[Path]:
+    async def download_song(
+        self,
+        song_info: Dict,
+        download_dir: Path,
+        filetype: str = "m4a",
+        cookie: str = None,
+        *,
+        return_info: bool = False,
+    ) -> Optional[Path | dict]:
         """下载歌曲并处理封面、歌词等
 
         Args:
@@ -33,9 +41,10 @@ class MusicDownloader:
             download_dir: 下载目录
             filetype: 文件类型 ('m4a'/'128'/'320'/'flac/ATMOS_51/ATMOS_2/MASTER')
             cookie: QQ音乐Cookie (可选，如果使用新API且已登录则自动使用凭证)
+            return_info: 是否返回包含实际使用音质等信息的字典
 
         Returns:
-            处理完成的文件路径，失败则返回None
+            处理完成的文件路径（或字典），失败则返回None
         """
         song_name = song_info["name"]
         singers = format_singers(song_info["singer"])
@@ -58,7 +67,7 @@ class MusicDownloader:
                 self.log("未登录状态，尝试获取免费下载链接...")
                 self.log("登录凭据无效或已过期，如遇下载受限请重新登录。", level="WARNING")
 
-            song_url_result = await self.qq_music_api.song_url(song_info['mid'], quality=filetype)
+            song_url_result = await self.qq_music_api.song_url(song_info["mid"], quality=filetype)
 
             if song_url_result['code'] == -1 or not song_url_result.get('url'):
                 error_msg = "无法获取歌曲下载链接，可能原因："
@@ -69,10 +78,19 @@ class MusicDownloader:
                 error_msg += "\n- 歌曲可能有版权限制"
                 if use_credential:
                     error_msg += "\n- 当前账户可能没有该歌曲的下载权限"
+                tried = song_url_result.get("tried")
+                if isinstance(tried, list) and tried:
+                    error_msg += f"\n- 已尝试音质: {', '.join([str(t) for t in tried])}"
                 self.log(error_msg)
                 return None
 
             # 2. 下载歌曲
+            quality_used = song_url_result.get("quality") or filetype
+            if quality_used != filetype:
+                self.log(
+                    f"所选音质（{filetype}）不可用，已自动切换为（{quality_used}）",
+                    level="WARNING",
+                )
             song_url = song_url_result["url"]
             temp_filepath = await get_file_path(song_info, song_url, download_dir)
             self.log(f"准备下载歌曲到: {temp_filepath.name}")
@@ -138,7 +156,7 @@ class MusicDownloader:
                 "ATMOS_51": "臻品音质2.0",
                 "ATMOS_2": "臻品全景声2.0",
                 "MASTER": "臻品母带2.0",
-            }.get(filetype, filetype)
+            }.get(quality_used, quality_used)
 
             file_size = processed_filepath.stat().st_size
             size_str = f"{file_size / 1024 / 1024:.1f}MB"
@@ -148,6 +166,12 @@ class MusicDownloader:
                 f"音质: {quality_str}\n"
                 f"大小: {size_str}"
             )
+            if return_info:
+                return {
+                    "path": processed_filepath,
+                    "quality_requested": filetype,
+                    "quality_used": quality_used,
+                }
             return processed_filepath
 
         except Exception as e:

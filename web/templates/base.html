@@ -11,14 +11,23 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            {% block header %}{% endblock %}
+        <header class="site-header">
+            <nav class="top-nav">
+                <a class="brand" href="/"><i class="fas fa-music"></i> MusicDown</a>
+                <div class="nav-links">
+                    <a href="/playlist" class="nav-item"><i class="fas fa-list-music"></i> 歌单</a>
+                    <a href="/daily" class="nav-item"><i class="fas fa-calendar-day"></i> 每日推荐</a>
+                </div>
+            </nav>
+            <div class="page-header">
+                {% block header %}{% endblock %}
+            </div>
         </header>
         <main>
             {% block content %}{% endblock %}
         </main>
         <footer>
-            <p style="text-align: center; margin-top: 30px; color: #777; font-size: 0.9rem;">
+            <p class="footer-text">
                 &copy; 2025 Music Downloader | <a href="/" class="nav-link">首页</a>
             </p>
         </footer>

@@ -4,6 +4,7 @@ import json
 from dataclasses import field, dataclass
 from pathlib import Path
 from dotenv import load_dotenv
+from utils.app_paths import get_config_file_path
 
 load_dotenv()
 
@@ -35,6 +36,7 @@ class ConfigManager:
         return self.config
 
     def save_config(self):
+        Path(self.config_file).parent.mkdir(parents=True, exist_ok=True)
         with open(self.config_file, "w", encoding='utf-8') as f:
             json.dump(self.config, f, indent=4, ensure_ascii=False)
 
@@ -61,7 +63,7 @@ class ConfigManager:
 
 @dataclass
 class Config:
-    config_file = ConfigManager.get_instance("config/config.json")
+    config_file = ConfigManager.get_instance(str(get_config_file_path()))
     DOWNLOADS_DIR: Path = field(default=Path('downloads'))
     DEFAULT_QUALITY: str = field(init=False)
     BLOCK_SIZE: int = 8192
@@ -74,6 +76,8 @@ class Config:
     LOGIN_TYPE: str = field(init=False)  # "qr" 或 "phone"
     # 是否启用轻量下载模式，由环境变量 USE_LIGHT_DOWNLOAD_MODE 控制
     LIGHT_DOWNLOAD_MODE: bool = field(init=False)
+    # 每日推荐分享链接（可选，作为无法自动解析时的兜底）
+    DAILY_RECOMMEND_URL: str = field(init=False)
     # 用户会话状态存储
     user_sessions = {}
 
@@ -97,6 +101,7 @@ class Config:
         # 轻量下载模式通过环境变量控制，默认为true
         env_val = os.getenv("USE_LIGHT_DOWNLOAD_MODE", "true")
         self.LIGHT_DOWNLOAD_MODE = env_val.lower() == "true"
+        self.DAILY_RECOMMEND_URL = self.config_file.get("daily_recommend.url", "")
 
     def set_login_config(self, auto_login: bool = False, login_type: str = "qr"):
         """设置登录配置"""
