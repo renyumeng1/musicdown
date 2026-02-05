@@ -57,7 +57,7 @@ This repo includes an Inno Setup template: `packaging/windows/musicdown.iss`.
 3. Compile the installer:
 
 ```powershell
-iscc /DMyAppVersion=2026.02.05 /DMyAppSourceDir="build\main.dist" packaging\windows\musicdown.iss
+iscc /DMyAppVersion=2026.02.05 packaging\windows\musicdown.iss
 ```
 
 The installer will be generated under `upload/` (configurable in the `.iss` file).

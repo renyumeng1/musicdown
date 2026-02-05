@@ -138,7 +138,7 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         run: |
           choco install innosetup -y
-          iscc /DMyAppVersion=${{ steps.info.outputs.version }} /DMyAppSourceDir="build\\main.dist" packaging\\windows\\musicdown.iss
+          iscc /DMyAppVersion=${{ steps.info.outputs.version }} packaging\\windows\\musicdown.iss
 
       - name: Compress exe (Windows)
         if: ${{ runner.os == 'Windows' }}
