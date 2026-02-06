@@ -629,7 +629,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 默认音质设置
         self._saved_quality = "320"  # 添加默认音质设置
-        self.concurrent_downloads = 4
+        self.concurrent_downloads = 5
 
         # 存储当前活动的工作线程
         self.current_worker = None
@@ -667,8 +667,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 主布局
         main_widget = QWidget()
         main_layout = QVBoxLayout(main_widget)
-        main_layout.setContentsMargins(20, 20, 20, 20)
-        main_layout.setSpacing(16)
+        main_layout.setContentsMargins(24, 20, 24, 20)
+        main_layout.setSpacing(18)
 
         # 搜索部分
         search_card = QWidget()
@@ -724,7 +724,6 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 搜索结果表格
         self.result_table = QTableWidget()
-        self.result_table.setStyleSheet("QTableWidget::item { padding: 4px 8px; }")
         self._setup_song_table()
         self.result_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.result_table.setSelectionBehavior(
@@ -733,7 +732,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table.setAlternatingRowColors(True)
         self.result_table.setShowGrid(False)
         self.result_table.verticalHeader().setVisible(False)
-        self.result_table.verticalHeader().setDefaultSectionSize(34)
+        self.result_table.verticalHeader().setDefaultSectionSize(40)
 
         search_tab_layout.addWidget(self.result_table)
 
@@ -755,37 +754,76 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 下载设置标签页
         self.settings_tab = QWidget()
-        settings_layout = QGridLayout(self.settings_tab)
-        settings_layout.setAlignment(Qt.AlignmentFlag.AlignTop)  # 添加顶部对齐
-        settings_layout.setContentsMargins(12, 12, 12, 12)
-        settings_layout.setHorizontalSpacing(12)
-        settings_layout.setVerticalSpacing(10)
+        settings_outer = QVBoxLayout(self.settings_tab)
+        settings_outer.setContentsMargins(24, 24, 24, 24)
+        settings_outer.setSpacing(20)
+        settings_outer.setAlignment(Qt.AlignmentFlag.AlignTop)
 
-        # 下载路径设置
-        settings_layout.addWidget(
-            QLabel("下载保存路径:"), 0, 0, Qt.AlignmentFlag.AlignTop
-        )
+        # ── 卡片 1：存储位置 ──
+        path_card = QWidget()
+        path_card.setObjectName("card")
+        path_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        path_card_layout = QVBoxLayout(path_card)
+        path_card_layout.setContentsMargins(20, 16, 20, 16)
+        path_card_layout.setSpacing(10)
+
+        path_title = QLabel("存储位置")
+        path_title.setObjectName("sectionTitle")
+        path_card_layout.addWidget(path_title)
+
+        path_row = QHBoxLayout()
+        path_row.setSpacing(10)
         self.path_input = QLineEdit(self.download_path)
         self.path_input.setReadOnly(True)
-        settings_layout.addWidget(self.path_input, 0, 1, Qt.AlignmentFlag.AlignTop)
-
+        path_row.addWidget(self.path_input, 1)
         self.browse_btn = QPushButton("浏览...")
         self.browse_btn.clicked.connect(self.browse_path)
-        settings_layout.addWidget(self.browse_btn, 0, 2, Qt.AlignmentFlag.AlignTop)
+        path_row.addWidget(self.browse_btn)
+        path_card_layout.addLayout(path_row)
 
-        # 音质选择
-        settings_layout.addWidget(QLabel("下载音质:"), 1, 0, Qt.AlignmentFlag.AlignTop)
-        quality_layout = QHBoxLayout()
-        quality_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-        quality_layout.setSpacing(8)
+        settings_outer.addWidget(path_card)
 
+        # ── 卡片 2：音质偏好 ──
+        quality_card = QWidget()
+        quality_card.setObjectName("card")
+        quality_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        quality_card_layout = QVBoxLayout(quality_card)
+        quality_card_layout.setContentsMargins(20, 16, 20, 16)
+        quality_card_layout.setSpacing(12)
+
+        quality_title = QLabel("音质偏好")
+        quality_title.setObjectName("sectionTitle")
+        quality_card_layout.addWidget(quality_title)
+
+        quality_desc = QLabel("选择下载歌曲时优先使用的音质格式")
+        quality_desc.setObjectName("mutedLabel")
+        quality_card_layout.addWidget(quality_desc)
+
+        # 标准音质行
+        standard_row = QHBoxLayout()
+        standard_row.setSpacing(16)
         self.quality_m4a = QRadioButton("M4A")
-        self.quality_128 = QRadioButton("MP3 128kbps")
-        self.quality_320 = QRadioButton("MP3 320kbps")
-        self.quality_flac = QRadioButton("FLAC")
-        self.quality_ATMOS_51 = QRadioButton("臻品音质2.0")
-        self.quality_ATMOS_2 = QRadioButton("臻品全景声2.0")
-        self.quality_MASTER = QRadioButton("臻品母带2.0")
+        self.quality_128 = QRadioButton("MP3 128k")
+        self.quality_320 = QRadioButton("MP3 320k")
+        self.quality_flac = QRadioButton("FLAC 无损")
+        standard_row.addWidget(self.quality_m4a)
+        standard_row.addWidget(self.quality_128)
+        standard_row.addWidget(self.quality_320)
+        standard_row.addWidget(self.quality_flac)
+        standard_row.addStretch()
+        quality_card_layout.addLayout(standard_row)
+
+        # 高品质行
+        hires_row = QHBoxLayout()
+        hires_row.setSpacing(16)
+        self.quality_ATMOS_51 = QRadioButton("臻品音质 2.0")
+        self.quality_ATMOS_2 = QRadioButton("臻品全景声 2.0")
+        self.quality_MASTER = QRadioButton("臻品母带 2.0")
+        hires_row.addWidget(self.quality_ATMOS_51)
+        hires_row.addWidget(self.quality_ATMOS_2)
+        hires_row.addWidget(self.quality_MASTER)
+        hires_row.addStretch()
+        quality_card_layout.addLayout(hires_row)
 
         # 根据保存的设置选择音质
         quality_map = {
@@ -800,7 +838,6 @@ class QQMusicDownloaderGUI(QMainWindow):
         selected_quality = quality_map.get(self._saved_quality, self.quality_320)
         selected_quality.setChecked(True)
 
-        # 添加音质变化的事件处理
         for radio in [
             self.quality_m4a,
             self.quality_128,
@@ -812,29 +849,43 @@ class QQMusicDownloaderGUI(QMainWindow):
         ]:
             radio.toggled.connect(self.save_config)
 
-        quality_layout.addWidget(self.quality_m4a)
-        quality_layout.addWidget(self.quality_128)
-        quality_layout.addWidget(self.quality_320)
-        quality_layout.addWidget(self.quality_flac)
-        quality_layout.addWidget(self.quality_ATMOS_51)
-        quality_layout.addWidget(self.quality_ATMOS_2)
-        quality_layout.addWidget(self.quality_MASTER)
-        quality_layout.addStretch()
+        settings_outer.addWidget(quality_card)
 
-        settings_layout.addLayout(quality_layout, 1, 1, 1, 2)
+        # ── 卡片 3：下载性能 ──
+        perf_card = QWidget()
+        perf_card.setObjectName("card")
+        perf_card.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        perf_card_layout = QVBoxLayout(perf_card)
+        perf_card_layout.setContentsMargins(20, 16, 20, 16)
+        perf_card_layout.setSpacing(10)
 
-        # 并发下载数
-        settings_layout.addWidget(
-            QLabel("并发下载数:"), 2, 0, Qt.AlignmentFlag.AlignTop
-        )
+        perf_title = QLabel("下载性能")
+        perf_title.setObjectName("sectionTitle")
+        perf_card_layout.addWidget(perf_title)
+
+        perf_row = QHBoxLayout()
+        perf_row.setSpacing(10)
+        perf_label = QLabel("同时下载数量")
+        perf_row.addWidget(perf_label)
+
         self.concurrent_spinbox = QSpinBox()
         self.concurrent_spinbox.setRange(1, 10)
-        self.concurrent_spinbox.setValue(int(self.concurrent_downloads or 4))
-        self.concurrent_spinbox.setToolTip("同时下载歌曲数量（建议 2-6）")
-        self.concurrent_spinbox.valueChanged.connect(self.save_config)
-        settings_layout.addWidget(
-            self.concurrent_spinbox, 2, 1, Qt.AlignmentFlag.AlignTop
+        self.concurrent_spinbox.setValue(int(self.concurrent_downloads or 5))
+        self.concurrent_spinbox.setFixedWidth(100)
+        self.concurrent_spinbox.setToolTip(
+            "同时下载歌曲的数量，数值越大速度越快但占用更多带宽"
         )
+        self.concurrent_spinbox.valueChanged.connect(self.save_config)
+        perf_row.addWidget(self.concurrent_spinbox)
+
+        perf_hint = QLabel("建议 3 ~ 6，过高可能导致限速")
+        perf_hint.setObjectName("mutedLabel")
+        perf_row.addWidget(perf_hint)
+        perf_row.addStretch()
+        perf_card_layout.addLayout(perf_row)
+
+        settings_outer.addWidget(perf_card)
+        settings_outer.addStretch()
 
         # 下载记录标签
         self.download_tab = QWidget()
@@ -843,9 +894,9 @@ class QQMusicDownloaderGUI(QMainWindow):
         download_layout.setSpacing(10)
 
         self.download_table = QTableWidget()
-        self.download_table.setColumnCount(6)
+        self.download_table.setColumnCount(7)
         self.download_table.setHorizontalHeaderLabels(
-            ["歌曲名", "歌手", "音质", "进度", "状态", "保存路径"]
+            ["歌曲名", "歌手", "音质", "进度", "状态", "保存路径", "操作"]
         )
         self.download_table.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.ResizeToContents
@@ -856,20 +907,33 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.download_table.horizontalHeader().setSectionResizeMode(
             3, QHeaderView.ResizeMode.Fixed
         )
+        self.download_table.horizontalHeader().setSectionResizeMode(
+            6, QHeaderView.ResizeMode.Fixed
+        )
         self.download_table.setColumnWidth(3, 120)
+        self.download_table.setColumnWidth(6, 120)
         self.download_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.download_table.setAlternatingRowColors(True)
         self.download_table.setShowGrid(False)
         self.download_table.verticalHeader().setVisible(False)
-        self.download_table.verticalHeader().setDefaultSectionSize(34)
+        self.download_table.verticalHeader().setDefaultSectionSize(40)
 
         download_layout.addWidget(self.download_table)
 
-        # 下载进度
+        # 下载进度 + 操作按钮
         progress_layout = QHBoxLayout()
+        progress_layout.setSpacing(12)
         progress_layout.addWidget(QLabel("总体进度:"))
         self.progress_bar = QProgressBar()
-        progress_layout.addWidget(self.progress_bar)
+        progress_layout.addWidget(self.progress_bar, 1)
+
+        self.clear_completed_btn = QPushButton("清除已完成")
+        self.clear_completed_btn.clicked.connect(self.clear_completed_downloads)
+        progress_layout.addWidget(self.clear_completed_btn)
+
+        self.clear_all_downloads_btn = QPushButton("清除全部")
+        self.clear_all_downloads_btn.clicked.connect(self.clear_all_downloads)
+        progress_layout.addWidget(self.clear_all_downloads_btn)
 
         download_layout.addLayout(progress_layout)
 
@@ -913,21 +977,20 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 歌单歌曲列表
         self.playlist_link_table = QTableWidget()
-        self.playlist_link_table.setStyleSheet(
-            "QTableWidget::item { padding: 4px 8px; }"
-        )
         self.playlist_link_table.setColumnCount(7)
         self.playlist_link_table.setHorizontalHeaderLabels(
             ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"]
         )
         self._clear_checkbox_column_header(self.playlist_link_table)
         playlist_header = self.playlist_link_table.horizontalHeader()
-        playlist_header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        playlist_header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
         playlist_header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
         playlist_header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         playlist_header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
-        playlist_header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
         playlist_header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
+        self.playlist_link_table.setColumnWidth(2, 150)
+        self.playlist_link_table.setColumnWidth(3, 130)
+        self.playlist_link_table.setColumnWidth(5, 320)
         self.playlist_link_table.setEditTriggers(
             QTableWidget.EditTrigger.NoEditTriggers
         )
@@ -937,8 +1000,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.playlist_link_table.setAlternatingRowColors(True)
         self.playlist_link_table.setShowGrid(False)
         self.playlist_link_table.verticalHeader().setVisible(False)
-        self.playlist_link_table.verticalHeader().setDefaultSectionSize(34)
-        self.playlist_link_table.setColumnWidth(0, 34)
+        self.playlist_link_table.verticalHeader().setDefaultSectionSize(40)
+        self.playlist_link_table.setColumnWidth(0, 28)
         self._apply_operation_column_width(self.playlist_link_table)
 
         playlist_link_layout.addWidget(self.playlist_link_table)
@@ -997,27 +1060,28 @@ class QQMusicDownloaderGUI(QMainWindow):
         daily_layout.addWidget(self.daily_info_label)
 
         self.daily_table = QTableWidget()
-        self.daily_table.setStyleSheet("QTableWidget::item { padding: 4px 8px; }")
         self.daily_table.setColumnCount(7)
         self.daily_table.setHorizontalHeaderLabels(
             ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"]
         )
         self._clear_checkbox_column_header(self.daily_table)
         daily_header = self.daily_table.horizontalHeader()
-        daily_header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        daily_header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
         daily_header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
         daily_header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         daily_header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
-        daily_header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
         daily_header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
+        self.daily_table.setColumnWidth(2, 150)
+        self.daily_table.setColumnWidth(3, 130)
+        self.daily_table.setColumnWidth(5, 320)
         self.daily_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.daily_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.daily_table.setAlternatingRowColors(True)
         self.daily_table.setShowGrid(False)
         self.daily_table.verticalHeader().setVisible(False)
-        self.daily_table.verticalHeader().setDefaultSectionSize(34)
+        self.daily_table.verticalHeader().setDefaultSectionSize(40)
         self.daily_table.setColumnHidden(0, False)
-        self.daily_table.setColumnWidth(0, 34)
+        self.daily_table.setColumnWidth(0, 28)
         self._apply_operation_column_width(self.daily_table)
 
         daily_layout.addWidget(self.daily_table)
@@ -1347,6 +1411,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
+        self.result_table.setColumnWidth(3, 120)
 
         self.result_table.setRowCount(len(albums))
         for i, album in enumerate(albums):
@@ -1367,6 +1433,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.Fixed)
+        self.result_table.setColumnWidth(3, 120)
 
         self.result_table.setRowCount(len(playlists))
         for i, playlist in enumerate(playlists):
@@ -1384,11 +1452,16 @@ class QQMusicDownloaderGUI(QMainWindow):
         )
         self._clear_checkbox_column_header(self.result_table)
         header = self.result_table.horizontalHeader()
-        header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(QHeaderView.ResizeMode.Interactive)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Fixed)
         header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
-        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
-        self.result_table.setColumnWidth(0, 34)
+        self.result_table.setColumnWidth(0, 28)
+        self.result_table.setColumnWidth(2, 150)
+        self.result_table.setColumnWidth(3, 130)
+        self.result_table.setColumnWidth(5, 320)
+        self.result_table.setColumnWidth(3, 160)
         self._apply_operation_column_width(self.result_table)
 
     def _apply_operation_column_width(self, table: QTableWidget):
@@ -1422,24 +1495,22 @@ class QQMusicDownloaderGUI(QMainWindow):
         return max(148, min(hint_width + 56, 220))
 
     def _create_download_button(self, table: QTableWidget | None = None) -> QPushButton:
-        """创建宽度与操作列匹配的下载按钮。"""
+        """创建 macOS 风格蓝色药丸下载按钮。"""
         download_btn = QPushButton("下载")
-        target_width = self._operation_column_width(table)
-        button_width = max(download_btn.sizeHint().width(), target_width - 16)
-        download_btn.setMinimumWidth(button_width)
-        download_btn.setFixedHeight(24)
-        download_btn.setSizePolicy(
-            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
-        )
+        download_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        download_btn.setFixedHeight(26)
+        download_btn.setMinimumWidth(72)
+        download_btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         return download_btn
 
     def _create_download_cell_widget(
         self, table: QTableWidget | None = None
     ) -> tuple[QWidget, QPushButton]:
-        """创建居中显示的下载按钮单元格，避免按钮贴顶显示。"""
+        """创建居中显示的下载按钮单元格。"""
         container = QWidget()
+        container.setStyleSheet("background: transparent;")
         container_layout = QHBoxLayout(container)
-        container_layout.setContentsMargins(4, 2, 4, 2)
+        container_layout.setContentsMargins(8, 4, 8, 4)
         container_layout.setSpacing(0)
         container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -1453,6 +1524,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         checkbox = QTableWidgetItem()
         checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
         checkbox.setCheckState(Qt.CheckState.Unchecked)
+        checkbox.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.result_table.setItem(row, 0, checkbox)
 
         # 歌曲信息
@@ -1502,6 +1574,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table.setItem(row, 2, QTableWidgetItem(public_time))
 
         view_btn = QPushButton("查看歌曲")
+        view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         view_btn.clicked.connect(lambda _, mid=album_mid: self.get_album_songs(mid))
         self.result_table.setCellWidget(row, 3, view_btn)
 
@@ -1518,6 +1591,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table.setItem(row, 2, QTableWidgetItem(str(song_count)))
 
         view_btn = QPushButton("查看歌曲")
+        view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         view_btn.clicked.connect(lambda _, pid=int(playlist_id): self.get_playlist(pid))
         self.result_table.setCellWidget(row, 3, view_btn)
 
@@ -1973,6 +2047,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         checkbox = QTableWidgetItem()
         checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
         checkbox.setCheckState(Qt.CheckState.Unchecked)
+        checkbox.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
         self.result_table.setItem(row, 0, checkbox)
 
         # 歌曲信息
@@ -2153,6 +2228,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.download_table.setCellWidget(row, 3, self._create_table_progress_bar())
             self.download_table.setItem(row, 4, QTableWidgetItem("等待下载..."))
             self.download_table.setItem(row, 5, QTableWidgetItem(""))
+            self._add_download_delete_button(row)
 
         # 使用用户设置的下载路径
         download_dir = Path(self.download_path)
@@ -2182,6 +2258,50 @@ class QQMusicDownloaderGUI(QMainWindow):
         bar.setFixedHeight(12)
         bar.setObjectName("tableProgress")
         return bar
+
+    def _add_download_delete_button(self, row: int):
+        """为下载记录行添加删除按钮。"""
+        container = QWidget()
+        container.setStyleSheet("background: transparent;")
+        layout = QHBoxLayout(container)
+        layout.setContentsMargins(4, 4, 4, 4)
+        layout.setSpacing(0)
+        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        del_btn = QPushButton("删除")
+        del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        del_btn.setFixedHeight(24)
+        del_btn.setMinimumWidth(52)
+        del_btn.clicked.connect(lambda _, r=row: self._remove_download_row(r))
+        layout.addWidget(del_btn)
+        self.download_table.setCellWidget(row, 6, container)
+
+    def _remove_download_row(self, row: int):
+        """删除指定的下载记录行。"""
+        if 0 <= row < self.download_table.rowCount():
+            self.download_table.removeRow(row)
+            # 重新绑定剩余行的删除按钮（行号已变）
+            for r in range(self.download_table.rowCount()):
+                self._add_download_delete_button(r)
+
+    def clear_completed_downloads(self):
+        """清除已完成（下载成功/下载失败）的下载记录。"""
+        rows_to_remove = []
+        for row in range(self.download_table.rowCount()):
+            status_item = self.download_table.item(row, 4)
+            if status_item and status_item.text() in ("下载成功", "下载失败"):
+                rows_to_remove.append(row)
+        # 从后往前删除，避免行号偏移
+        for row in reversed(rows_to_remove):
+            self.download_table.removeRow(row)
+        # 重新绑定删除按钮
+        for r in range(self.download_table.rowCount()):
+            self._add_download_delete_button(r)
+
+    def clear_all_downloads(self):
+        """清除全部下载记录并重置进度条。"""
+        self.download_table.setRowCount(0)
+        self.progress_bar.setValue(0)
 
     def _get_download_progress_bar(self, row: int) -> QProgressBar:
         bar = self.download_table.cellWidget(row, 3)
@@ -2574,6 +2694,7 @@ class QQMusicDownloaderGUI(QMainWindow):
                 Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
             )
             checkbox.setCheckState(Qt.CheckState.Unchecked)
+            checkbox.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             table.setItem(i, 0, checkbox)
 
             # 歌曲信息
@@ -2686,6 +2807,7 @@ class QQMusicDownloaderGUI(QMainWindow):
                 Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
             )
             checkbox.setCheckState(Qt.CheckState.Unchecked)
+            checkbox.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             table.setItem(index, 0, checkbox)
 
             # 歌曲信息
@@ -2840,6 +2962,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.download_table.setCellWidget(row, 3, self._create_table_progress_bar())
             self.download_table.setItem(row, 4, QTableWidgetItem("等待下载..."))
             self.download_table.setItem(row, 5, QTableWidgetItem(""))
+            self._add_download_delete_button(row)
 
         # 启动批量下载线程
         download_dir = self._get_playlist_tab_download_dir(source)

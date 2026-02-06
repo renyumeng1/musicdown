@@ -1892,6 +1892,14 @@
         "documentation": {}
     },
     {
+        "label": "QFont",
+        "importPath": "PySide6.QtGui",
+        "description": "PySide6.QtGui",
+        "isExtraImport": true,
+        "detail": "PySide6.QtGui",
+        "documentation": {}
+    },
+    {
         "label": "logging",
         "kind": 6,
         "isExtraImport": true,
@@ -2133,6 +2141,15 @@
         "importPath": "zipfile",
         "description": "zipfile",
         "detail": "zipfile",
+        "documentation": {}
+    },
+    {
+        "label": "platform",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "platform",
+        "description": "platform",
+        "detail": "platform",
         "documentation": {}
     },
     {
