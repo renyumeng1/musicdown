@@ -33,6 +33,7 @@ class MusicDownloader:
         cookie: str = None,
         *,
         return_info: bool = False,
+        progress_callback=None,
     ) -> Optional[Path | dict]:
         """下载歌曲并处理封面、歌词等
 
@@ -96,7 +97,9 @@ class MusicDownloader:
             self.log(f"准备下载歌曲到: {temp_filepath.name}")
 
             download_success = await self.download_manager.download_with_progress(
-                song_url, temp_filepath
+                song_url,
+                temp_filepath,
+                progress_callback=progress_callback,
             )
             if not download_success:
                 self.log("下载歌曲失败，请检查网络连接或重试")

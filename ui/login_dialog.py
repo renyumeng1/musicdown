@@ -311,7 +311,10 @@ class LoginDialog(QDialog):
 
     def init_ui(self):
         self.setWindowTitle("QQ音乐登录")
-        self.setFixedSize(450, 600)
+        # Don't hard-lock the window height: on high DPI or when the progress bar shows,
+        # a fixed height can clip the QR code. Keep a sensible minimum width and allow resize.
+        self.setMinimumWidth(450)
+        self.setSizeGripEnabled(True)
 
         layout = QVBoxLayout()
         layout.setContentsMargins(20, 20, 20, 20)
@@ -340,6 +343,12 @@ class LoginDialog(QDialog):
 
         layout.addLayout(button_layout)
         self.setLayout(layout)
+
+        # Size the dialog to fit the QR login UI even when the progress bar is visible.
+        # (The progress bar is normally hidden, but becomes visible during QR login.)
+        self.qr_widget.progress_bar.setVisible(True)
+        self.adjustSize()
+        self.qr_widget.progress_bar.setVisible(False)
 
         # 连接二维码登录成功信号，登录成功后自动关闭窗口
         self.qr_widget_login_success_connected = False

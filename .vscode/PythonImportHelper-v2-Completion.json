@@ -426,6 +426,14 @@
         "documentation": {}
     },
     {
+        "label": "SearchType",
+        "importPath": "utils.menum",
+        "description": "utils.menum",
+        "isExtraImport": true,
+        "detail": "utils.menum",
+        "documentation": {}
+    },
+    {
         "label": "QrcType",
         "importPath": "utils.menum",
         "description": "utils.menum",
@@ -1652,6 +1660,46 @@
         "documentation": {}
     },
     {
+        "label": "QSizePolicy",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QStyle",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QStyleOptionTab",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QStylePainter",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
+        "label": "QTabBar",
+        "importPath": "PySide6.QtWidgets",
+        "description": "PySide6.QtWidgets",
+        "isExtraImport": true,
+        "detail": "PySide6.QtWidgets",
+        "documentation": {}
+    },
+    {
         "label": "QTabWidget",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
@@ -1685,14 +1733,6 @@
     },
     {
         "label": "QWidget",
-        "importPath": "PySide6.QtWidgets",
-        "description": "PySide6.QtWidgets",
-        "isExtraImport": true,
-        "detail": "PySide6.QtWidgets",
-        "documentation": {}
-    },
-    {
-        "label": "QTextEdit",
         "importPath": "PySide6.QtWidgets",
         "description": "PySide6.QtWidgets",
         "isExtraImport": true,
@@ -1836,7 +1876,7 @@
         "documentation": {}
     },
     {
-        "label": "QTextCursor",
+        "label": "QPalette",
         "importPath": "PySide6.QtGui",
         "description": "PySide6.QtGui",
         "isExtraImport": true,
@@ -2467,7 +2507,7 @@
         "kind": 6,
         "importPath": "downloader.downloader",
         "description": "downloader.downloader",
-        "peekOfCode": "class DownloadManager:\n    \"\"\"下载管理器\"\"\"\n    def __init__(self):\n        self.log = logger.log_progress\n    async def download_with_progress(self, url: str, filepath: Path) -> bool:\n        \"\"\"带进度和速度显示的下载函数\"\"\"\n        try:\n            client = await network._ensure_async_client()\n            async with client.stream('GET', url) as response:\n                if response.status_code != 200:",
+        "peekOfCode": "class DownloadManager:\n    \"\"\"下载管理器\"\"\"\n    def __init__(self):\n        self.log = logger.log_progress\n    async def download_with_progress(\n        self,\n        url: str,\n        filepath: Path,\n        *,\n        progress_callback=None,",
         "detail": "downloader.downloader",
         "documentation": {}
     },
@@ -2773,7 +2813,7 @@
         "kind": 6,
         "importPath": "ui.login_dialog",
         "description": "ui.login_dialog",
-        "peekOfCode": "class LoginDialog(QDialog):\n    \"\"\"登录对话框\"\"\"\n    def __init__(self, adapter: QQMusicAPI, parent=None):\n        super().__init__(parent)\n        self.adapter = adapter\n        self.user_info = None\n        self.init_ui()\n    def init_ui(self):\n        self.setWindowTitle(\"QQ音乐登录\")\n        self.setFixedSize(450, 600)",
+        "peekOfCode": "class LoginDialog(QDialog):\n    \"\"\"登录对话框\"\"\"\n    def __init__(self, adapter: QQMusicAPI, parent=None):\n        super().__init__(parent)\n        self.adapter = adapter\n        self.user_info = None\n        self.init_ui()\n    def init_ui(self):\n        self.setWindowTitle(\"QQ音乐登录\")\n        # Don't hard-lock the window height: on high DPI or when the progress bar shows,",
         "detail": "ui.login_dialog",
         "documentation": {}
     },
@@ -2783,6 +2823,15 @@
         "importPath": "ui.mainui",
         "description": "ui.mainui",
         "peekOfCode": "class AnchoredComboBox(QComboBox):\n    \"\"\"Use a QMenu as the popup to avoid platform popup glitches with QComboBox.\"\"\"\n    def __init__(self, *args, **kwargs):\n        super().__init__(*args, **kwargs)\n        self._popup_menu = QMenu(self)\n        self._popup_menu.triggered.connect(self._on_menu_triggered)\n    def showPopup(self) -> None:\n        self._popup_menu.clear()\n        current = self.currentIndex()\n        for i in range(self.count()):",
+        "detail": "ui.mainui",
+        "documentation": {}
+    },
+    {
+        "label": "HorizontalTextTabBar",
+        "kind": 6,
+        "importPath": "ui.mainui",
+        "description": "ui.mainui",
+        "peekOfCode": "class HorizontalTextTabBar(QTabBar):\n    \"\"\"西侧标签栏使用横向文本展示，避免中文竖排。\"\"\"\n    def tabSizeHint(self, index):\n        size = super().tabSizeHint(index)\n        size.transpose()\n        metrics = self.fontMetrics()\n        max_text_width = 0\n        for i in range(self.count()):\n            max_text_width = max(max_text_width, metrics.horizontalAdvance(self.tabText(i) or \"\"))\n        desired_width = max(132, min(max_text_width + 40, 210))",
         "detail": "ui.mainui",
         "documentation": {}
     },

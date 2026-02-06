@@ -14,6 +14,7 @@ import httpx
 from utils.logger import logger
 from utils.quality import best_available_fallback_qualities, canonical_quality
 from utils.app_paths import get_app_data_dir, get_credential_file_path, get_config_file_path
+from utils.menum import SearchType as LocalSearchType
 
 try:
     from qqmusic_api import search, song, album, songlist, lyric, login, recommend
@@ -45,6 +46,7 @@ class QQMusicAPI:
         self.credential_file = get_credential_file_path()
         self._configure_qqmusic_api_runtime()
         self._load_credential_basic()
+        self._fallback_api = None
 
     def _qimei_store_path(self) -> Path:
         return get_app_data_dir() / "cache" / "qimei36.txt"
@@ -514,6 +516,56 @@ class QQMusicAPI:
             msg = f"{msg}\n最后一次错误: {last_error}"
         return {"code": -1, "error": msg}
 
+    def _get_fallback_api(self):
+        if self._fallback_api is not None:
+            return self._fallback_api
+        try:
+            from api.qm import QQMusicAPI as FallbackQQMusicAPI
+        except Exception as e:
+            logger.warning("搜索兜底 API 不可用: %s", e)
+            return None
+        try:
+            self._fallback_api = FallbackQQMusicAPI()
+        except Exception as e:
+            logger.warning("初始化搜索兜底 API 失败: %s", e)
+            self._fallback_api = None
+        return self._fallback_api
+
+    async def _search_via_fallback(
+        self,
+        keyword: str,
+        limit: int,
+        page: int,
+        *,
+        search_type: LocalSearchType,
+        result_key: str,
+    ) -> Dict:
+        fallback_api = self._get_fallback_api()
+        if not fallback_api:
+            return {"code": -1, result_key: [], "total": 0, "error": "fallback api unavailable"}
+        try:
+            result = await fallback_api.search(
+                keyword,
+                search_type=search_type,
+                page=page,
+                limit=limit,
+            )
+        except Exception as e:
+            logger.warning("搜索兜底 API 请求失败: %s", e)
+            return {"code": -1, result_key: [], "total": 0, "error": str(e)}
+        if not isinstance(result, dict):
+            return {"code": -1, result_key: [], "total": 0, "error": "invalid fallback response"}
+        items = result.get(result_key, [])
+        if not isinstance(items, list):
+            items = []
+        code = 0 if result.get("code", -1) == 0 else -1
+        if code != 0 and items:
+            code = 0
+        response = {"code": code, result_key: items, "total": len(items)}
+        if code != 0:
+            response["error"] = result.get("error", "fallback search failed")
+        return response
+
     async def search(self, keyword: str, limit: int = 10, page: int = 1) -> Dict:
         """搜索歌曲
         
@@ -539,7 +591,29 @@ class QQMusicAPI:
                 "songs": result if isinstance(result, list) else [],
                 "total": len(result) if isinstance(result, list) else 0
             }
+        except ResponseCodeError as e:
+            logger.warning("搜索歌曲响应异常，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.SONG,
+                result_key="songs",
+            )
+            if fallback.get("code") == 0 or fallback.get("songs"):
+                return fallback
+            return {"code": -1, "songs": [], "total": 0, "error": str(e)}
         except Exception as e:
+            logger.warning("搜索歌曲失败，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.SONG,
+                result_key="songs",
+            )
+            if fallback.get("code") == 0 or fallback.get("songs"):
+                return fallback
             logger.error(f"搜索歌曲失败: {e}")
             return {"code": -1, "songs": [], "total": 0, "error": str(e)}
 
@@ -643,7 +717,29 @@ class QQMusicAPI:
                 "albums": result if isinstance(result, list) else [],
                 "total": len(result) if isinstance(result, list) else 0
             }
+        except ResponseCodeError as e:
+            logger.warning("搜索专辑响应异常，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.ALBUM,
+                result_key="albums",
+            )
+            if fallback.get("code") == 0 or fallback.get("albums"):
+                return fallback
+            return {"code": -1, "albums": [], "total": 0, "error": str(e)}
         except Exception as e:
+            logger.warning("搜索专辑失败，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.ALBUM,
+                result_key="albums",
+            )
+            if fallback.get("code") == 0 or fallback.get("albums"):
+                return fallback
             logger.error(f"搜索专辑失败: {e}")
             return {"code": -1, "albums": [], "total": 0, "error": str(e)}
 
@@ -694,7 +790,29 @@ class QQMusicAPI:
                 "playlists": result if isinstance(result, list) else [],
                 "total": len(result) if isinstance(result, list) else 0
             }
+        except ResponseCodeError as e:
+            logger.warning("搜索歌单响应异常，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.SONGLIST,
+                result_key="playlists",
+            )
+            if fallback.get("code") == 0 or fallback.get("playlists"):
+                return fallback
+            return {"code": -1, "playlists": [], "total": 0, "error": str(e)}
         except Exception as e:
+            logger.warning("搜索歌单失败，尝试兜底: %s", e)
+            fallback = await self._search_via_fallback(
+                keyword,
+                limit,
+                page,
+                search_type=LocalSearchType.SONGLIST,
+                result_key="playlists",
+            )
+            if fallback.get("code") == 0 or fallback.get("playlists"):
+                return fallback
             logger.error(f"搜索歌单失败: {e}")
             return {"code": -1, "playlists": [], "total": 0, "error": str(e)}
 

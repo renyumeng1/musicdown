@@ -15,7 +15,13 @@ class DownloadManager:
     def __init__(self):
         self.log = logger.log_progress
 
-    async def download_with_progress(self, url: str, filepath: Path) -> bool:
+    async def download_with_progress(
+        self,
+        url: str,
+        filepath: Path,
+        *,
+        progress_callback=None,
+    ) -> bool:
         """带进度和速度显示的下载函数"""
         try:
             client = await network._ensure_async_client()
@@ -38,7 +44,17 @@ class DownloadManager:
                         if current_time - last_update_time >= config.PROGRESS_UPDATE_INTERVAL:
                             self._update_progress(
                                 downloaded, total_size, start_time, current_time)
+                            if progress_callback:
+                                try:
+                                    progress_callback(downloaded, total_size)
+                                except Exception:
+                                    pass
                             last_update_time = current_time
+                    if progress_callback:
+                        try:
+                            progress_callback(total_size, total_size)
+                        except Exception:
+                            pass
                 return True
 
         except Exception as e:
