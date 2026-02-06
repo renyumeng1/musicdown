@@ -7,13 +7,33 @@ from pathlib import Path
 
 from PySide6.QtCore import Qt, QThread, Signal, Slot, QObject, QPoint
 from PySide6.QtGui import QIcon, QPalette
-from PySide6.QtWidgets import (QComboBox, QFileDialog, QGridLayout,
-                             QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-                             QMainWindow, QMessageBox, QProgressBar, QPushButton,
-                             QRadioButton, QSizePolicy, QStyle, QStyleOptionTab,
-                             QStylePainter, QTabBar, QTabWidget,
-                             QTableWidget, QTableWidgetItem, QVBoxLayout,
-                             QWidget, QMenuBar, QMenu, QSpinBox)
+from PySide6.QtWidgets import (
+    QComboBox,
+    QFileDialog,
+    QGridLayout,
+    QHBoxLayout,
+    QHeaderView,
+    QLabel,
+    QLineEdit,
+    QMainWindow,
+    QMessageBox,
+    QProgressBar,
+    QPushButton,
+    QRadioButton,
+    QSizePolicy,
+    QStyle,
+    QStyleOptionTab,
+    QStylePainter,
+    QTabBar,
+    QTabWidget,
+    QTableWidget,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+    QMenuBar,
+    QMenu,
+    QSpinBox,
+)
 
 from api.qqmusic import QQMusicAPI
 from downloader.music_downloader import MusicDownloader
@@ -84,7 +104,9 @@ class HorizontalTextTabBar(QTabBar):
         metrics = self.fontMetrics()
         max_text_width = 0
         for i in range(self.count()):
-            max_text_width = max(max_text_width, metrics.horizontalAdvance(self.tabText(i) or ""))
+            max_text_width = max(
+                max_text_width, metrics.horizontalAdvance(self.tabText(i) or "")
+            )
 
         desired_width = max(132, min(max_text_width + 40, 210))
         desired_height = max(34, min(metrics.height() + 16, 44))
@@ -118,6 +140,7 @@ class HorizontalTextTabBar(QTabBar):
 
 class WorkerThread(QThread):
     """工作线程，处理异步任务"""
+
     update_signal = Signal(dict)
     error_signal = Signal(str)
     progress_signal = Signal(int, int)  # 当前进度, 总进度
@@ -141,11 +164,21 @@ class WorkerThread(QThread):
                 await self._handle_detail_task()
 
             # 下载相关任务
-            elif self.task_type in ["download_song", "download_multiple", "search_and_download", "batch_search_and_download"]:
+            elif self.task_type in [
+                "download_song",
+                "download_multiple",
+                "search_and_download",
+                "batch_search_and_download",
+            ]:
                 await self._handle_download_task()
 
             # 歌单链接相关任务
-            elif self.task_type in ["get_playlist_from_link", "get_daily_recommendations", "search_playlist_link_songs", "search_playlist_link_songs_one_by_one"]:
+            elif self.task_type in [
+                "get_playlist_from_link",
+                "get_daily_recommendations",
+                "search_playlist_link_songs",
+                "search_playlist_link_songs_one_by_one",
+            ]:
                 await self._handle_playlist_link_task()
 
         except Exception as e:
@@ -197,14 +230,16 @@ class WorkerThread(QThread):
 
         def progress_callback(downloaded: int, total: int) -> None:
             percent = int(downloaded / total * 100) if total else 0
-            self.update_signal.emit({
-                "type": "download_file_progress",
-                "data": {
-                    "song_name": song_name,
-                    "singer": singer_text,
-                    "percent": percent,
-                },
-            })
+            self.update_signal.emit(
+                {
+                    "type": "download_file_progress",
+                    "data": {
+                        "song_name": song_name,
+                        "singer": singer_text,
+                        "percent": percent,
+                    },
+                }
+            )
 
         result = await self.downloader.download_song(
             song_info,
@@ -215,20 +250,24 @@ class WorkerThread(QThread):
         )
         ok = bool(result and result.get("path"))
         path = str(result["path"]) if ok else None
-        quality_requested = result.get("quality_requested", filetype) if result else filetype
+        quality_requested = (
+            result.get("quality_requested", filetype) if result else filetype
+        )
         quality_used = result.get("quality_used") if result else None
 
-        self.update_signal.emit({
-            "type": "download_complete",
-            "data": {
-                "success": ok,
-                "path": path,
-                "song_name": song_info["name"],
-                "singer": self._get_singer_names(song_info.get("singer", [])),
-                "quality_requested": quality_requested,
-                "quality_used": quality_used,
+        self.update_signal.emit(
+            {
+                "type": "download_complete",
+                "data": {
+                    "success": ok,
+                    "path": path,
+                    "song_name": song_info["name"],
+                    "singer": self._get_singer_names(song_info.get("singer", [])),
+                    "quality_requested": quality_requested,
+                    "quality_used": quality_used,
+                },
             }
-        })
+        )
 
     async def _download_multiple_songs(self):
         """批量下载歌曲"""
@@ -247,16 +286,19 @@ class WorkerThread(QThread):
 
             async with semaphore:
                 try:
+
                     def progress_callback(downloaded: int, total: int) -> None:
                         percent = int(downloaded / total * 100) if total else 0
-                        self.update_signal.emit({
-                            "type": "download_file_progress",
-                            "data": {
-                                "song_name": song_name,
-                                "singer": singer_text,
-                                "percent": percent,
-                            },
-                        })
+                        self.update_signal.emit(
+                            {
+                                "type": "download_file_progress",
+                                "data": {
+                                    "song_name": song_name,
+                                    "singer": singer_text,
+                                    "percent": percent,
+                                },
+                            }
+                        )
 
                     result = await self.downloader.download_song(
                         song_info,
@@ -271,7 +313,9 @@ class WorkerThread(QThread):
 
             ok = bool(result and result.get("path"))
             path = str(result["path"]) if ok else None
-            quality_requested = result.get("quality_requested", filetype) if result else filetype
+            quality_requested = (
+                result.get("quality_requested", filetype) if result else filetype
+            )
             quality_used = result.get("quality_used") if result else None
 
             return {
@@ -303,7 +347,8 @@ class WorkerThread(QThread):
 
         if not search_result or not search_result.get("songs"):
             self._emit_download_failed(
-                self.params["song_name"], self.params["singer_name"])
+                self.params["song_name"], self.params["singer_name"]
+            )
             return
 
         song_info = search_result["songs"][0]
@@ -315,14 +360,16 @@ class WorkerThread(QThread):
 
         def progress_callback(downloaded: int, total: int) -> None:
             percent = int(downloaded / total * 100) if total else 0
-            self.update_signal.emit({
-                "type": "download_file_progress",
-                "data": {
-                    "song_name": song_name,
-                    "singer": singer_text,
-                    "percent": percent,
-                },
-            })
+            self.update_signal.emit(
+                {
+                    "type": "download_file_progress",
+                    "data": {
+                        "song_name": song_name,
+                        "singer": singer_text,
+                        "percent": percent,
+                    },
+                }
+            )
 
         result = await self.downloader.download_song(
             song_info,
@@ -333,20 +380,24 @@ class WorkerThread(QThread):
         )
         ok = bool(result and result.get("path"))
         path = str(result["path"]) if ok else None
-        quality_requested = result.get("quality_requested", filetype) if result else filetype
+        quality_requested = (
+            result.get("quality_requested", filetype) if result else filetype
+        )
         quality_used = result.get("quality_used") if result else None
 
-        self.update_signal.emit({
-            "type": "download_complete",
-            "data": {
-                "success": ok,
-                "path": path,
-                "song_name": self.params["song_name"],
-                "singer": self.params["singer_name"],
-                "quality_requested": quality_requested,
-                "quality_used": quality_used,
+        self.update_signal.emit(
+            {
+                "type": "download_complete",
+                "data": {
+                    "success": ok,
+                    "path": path,
+                    "song_name": self.params["song_name"],
+                    "singer": self.params["singer_name"],
+                    "quality_requested": quality_requested,
+                    "quality_used": quality_used,
+                },
             }
-        })
+        )
 
     async def _batch_search_and_download(self):
         """批量搜索并下载歌曲"""
@@ -369,18 +420,22 @@ class WorkerThread(QThread):
             if search_result and search_result.get("songs"):
                 song_info = search_result["songs"][0]
                 song_name = (song_info or {}).get("name", song.get("name", ""))
-                singer_text = self._get_singer_names((song_info or {}).get("singer", []))
+                singer_text = self._get_singer_names(
+                    (song_info or {}).get("singer", [])
+                )
 
                 def progress_callback(downloaded: int, total: int) -> None:
                     percent = int(downloaded / total * 100) if total else 0
-                    self.update_signal.emit({
-                        "type": "download_file_progress",
-                        "data": {
-                            "song_name": song_name,
-                            "singer": singer_text,
-                            "percent": percent,
-                        },
-                    })
+                    self.update_signal.emit(
+                        {
+                            "type": "download_file_progress",
+                            "data": {
+                                "song_name": song_name,
+                                "singer": singer_text,
+                                "percent": percent,
+                            },
+                        }
+                    )
 
                 result = await self.downloader.download_song(
                     song_info,
@@ -391,22 +446,26 @@ class WorkerThread(QThread):
                 )
                 success = bool(result and result.get("path"))
                 path = str(result["path"]) if success else None
-                quality_requested = result.get("quality_requested", filetype) if result else filetype
+                quality_requested = (
+                    result.get("quality_requested", filetype) if result else filetype
+                )
                 quality_used = result.get("quality_used") if result else None
 
-            self.update_signal.emit({
-                "type": "download_progress",
-                "data": {
-                    "current": i + 1,
-                    "total": total,
-                    "success": success,
-                    "path": path,
-                    "song_name": song["name"],
-                    "singer": song["artist"],
-                    "quality_requested": quality_requested,
-                    "quality_used": quality_used,
+            self.update_signal.emit(
+                {
+                    "type": "download_progress",
+                    "data": {
+                        "current": i + 1,
+                        "total": total,
+                        "success": success,
+                        "path": path,
+                        "song_name": song["name"],
+                        "singer": song["artist"],
+                        "quality_requested": quality_requested,
+                        "quality_used": quality_used,
+                    },
                 }
-            })
+            )
 
         self.update_signal.emit({"type": "download_all_complete"})
 
@@ -415,17 +474,21 @@ class WorkerThread(QThread):
         if self.task_type == "get_playlist_from_link":
             url = self.params.get("url", "")
             result = await self.api.playlist_from_link(url)
-            self.update_signal.emit({
-                "type": "playlist_link_result",
-                "data": result,
-            })
+            self.update_signal.emit(
+                {
+                    "type": "playlist_link_result",
+                    "data": result,
+                }
+            )
         elif self.task_type == "get_daily_recommendations":
             fallback_url = self.params.get("fallback_url") or ""
             result = await self.api.daily_recommendations(fallback_url)
-            self.update_signal.emit({
-                "type": "playlist_link_result",
-                "data": result,
-            })
+            self.update_signal.emit(
+                {
+                    "type": "playlist_link_result",
+                    "data": result,
+                }
+            )
         elif self.task_type == "search_playlist_link_songs":
             await self._search_playlist_link_songs()
         elif self.task_type == "search_playlist_link_songs_one_by_one":
@@ -442,10 +505,9 @@ class WorkerThread(QThread):
             song_info = await self._search_single_song_from_string(song_str)
             detailed_songs.append(song_info)
 
-        self.update_signal.emit({
-            "type": "playlist_link_songs_details",
-            "data": detailed_songs
-        })
+        self.update_signal.emit(
+            {"type": "playlist_link_songs_details", "data": detailed_songs}
+        )
 
     async def _search_playlist_link_songs_concurrent(self):
         """并发搜索歌单链接中的歌曲"""
@@ -454,33 +516,33 @@ class WorkerThread(QThread):
 
         async def search_single_song(index, song_str):
             song_info = await self._search_single_song_from_string(song_str)
-            self.update_signal.emit({
-                "type": "single_song_search_result",
-                "index": index,
-                "song_info": song_info,
-                "total": total,
-                "current": index + 1
-            })
+            self.update_signal.emit(
+                {
+                    "type": "single_song_search_result",
+                    "index": index,
+                    "song_info": song_info,
+                    "total": total,
+                    "current": index + 1,
+                }
+            )
             return song_info
 
         # 创建所有搜索任务
-        tasks = [search_single_song(i, song_str)
-                 for i, song_str in enumerate(songs)]
+        tasks = [search_single_song(i, song_str) for i, song_str in enumerate(songs)]
 
         # 控制并发数量
         concurrent_limit = 5
         completed = 0
 
         while completed < len(tasks):
-            batch = tasks[completed:completed+concurrent_limit]
+            batch = tasks[completed : completed + concurrent_limit]
             await asyncio.gather(*batch)
             completed += len(batch)
             self.progress_signal.emit(completed, total)
 
-        self.update_signal.emit({
-            "type": "playlist_link_search_complete",
-            "total": total
-        })
+        self.update_signal.emit(
+            {"type": "playlist_link_search_complete", "total": total}
+        )
 
     async def _search_single_song_from_string(self, song_str):
         """从字符串搜索单首歌曲"""
@@ -500,7 +562,11 @@ class WorkerThread(QThread):
         if isinstance(singers, list):
             return ", ".join(
                 [
-                    clean_html_tags(s.get("name", str(s))) if isinstance(s, dict) else clean_html_tags(str(s))
+                    (
+                        clean_html_tags(s.get("name", str(s)))
+                        if isinstance(s, dict)
+                        else clean_html_tags(str(s))
+                    )
                     for s in singers
                 ]
             )
@@ -510,15 +576,17 @@ class WorkerThread(QThread):
 
     def _emit_download_failed(self, song_name, singer_name):
         """发送下载失败信号"""
-        self.update_signal.emit({
-            "type": "download_complete",
-            "data": {
-                "success": False,
-                "path": None,
-                "song_name": song_name,
-                "singer": singer_name
+        self.update_signal.emit(
+            {
+                "type": "download_complete",
+                "data": {
+                    "success": False,
+                    "path": None,
+                    "song_name": song_name,
+                    "singer": singer_name,
+                },
             }
-        })
+        )
 
     def run(self):
         logger.info(f"Starting new thread for task: {self.task_type}")
@@ -529,6 +597,7 @@ class WorkerThread(QThread):
         except Exception as e:
             logger.error(f"Error in thread: {e}")
             import traceback
+
             traceback.print_exc()
         finally:
             # 不要关闭事件循环，仅清理它
@@ -657,10 +726,10 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table = QTableWidget()
         self.result_table.setStyleSheet("QTableWidget::item { padding: 4px 8px; }")
         self._setup_song_table()
-        self.result_table.setEditTriggers(
-            QTableWidget.EditTrigger.NoEditTriggers)
+        self.result_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.result_table.setSelectionBehavior(
-            QTableWidget.SelectionBehavior.SelectRows)
+            QTableWidget.SelectionBehavior.SelectRows
+        )
         self.result_table.setAlternatingRowColors(True)
         self.result_table.setShowGrid(False)
         self.result_table.verticalHeader().setVisible(False)
@@ -694,22 +763,18 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 下载路径设置
         settings_layout.addWidget(
-            QLabel("下载保存路径:"), 0, 0, Qt.AlignmentFlag.AlignTop)
+            QLabel("下载保存路径:"), 0, 0, Qt.AlignmentFlag.AlignTop
+        )
         self.path_input = QLineEdit(self.download_path)
         self.path_input.setReadOnly(True)
-        settings_layout.addWidget(
-            self.path_input, 0, 1, Qt.AlignmentFlag.AlignTop)
+        settings_layout.addWidget(self.path_input, 0, 1, Qt.AlignmentFlag.AlignTop)
 
         self.browse_btn = QPushButton("浏览...")
         self.browse_btn.clicked.connect(self.browse_path)
-        settings_layout.addWidget(
-            self.browse_btn, 0, 2, Qt.AlignmentFlag.AlignTop)
-
-
+        settings_layout.addWidget(self.browse_btn, 0, 2, Qt.AlignmentFlag.AlignTop)
 
         # 音质选择
-        settings_layout.addWidget(
-            QLabel("下载音质:"), 1, 0, Qt.AlignmentFlag.AlignTop)
+        settings_layout.addWidget(QLabel("下载音质:"), 1, 0, Qt.AlignmentFlag.AlignTop)
         quality_layout = QHBoxLayout()
         quality_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         quality_layout.setSpacing(8)
@@ -732,8 +797,7 @@ class QQMusicDownloaderGUI(QMainWindow):
             "ATMOS_2": self.quality_ATMOS_2,
             "MASTER": self.quality_MASTER,
         }
-        selected_quality = quality_map.get(
-            self._saved_quality, self.quality_320)
+        selected_quality = quality_map.get(self._saved_quality, self.quality_320)
         selected_quality.setChecked(True)
 
         # 添加音质变化的事件处理
@@ -781,16 +845,19 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.download_table = QTableWidget()
         self.download_table.setColumnCount(6)
         self.download_table.setHorizontalHeaderLabels(
-            ["歌曲名", "歌手", "音质", "进度", "状态", "保存路径"])
+            ["歌曲名", "歌手", "音质", "进度", "状态", "保存路径"]
+        )
         self.download_table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents)
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         self.download_table.horizontalHeader().setSectionResizeMode(
-            5, QHeaderView.ResizeMode.Stretch)
+            5, QHeaderView.ResizeMode.Stretch
+        )
         self.download_table.horizontalHeader().setSectionResizeMode(
-            3, QHeaderView.ResizeMode.Fixed)
+            3, QHeaderView.ResizeMode.Fixed
+        )
         self.download_table.setColumnWidth(3, 120)
-        self.download_table.setEditTriggers(
-            QTableWidget.EditTrigger.NoEditTriggers)
+        self.download_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.download_table.setAlternatingRowColors(True)
         self.download_table.setShowGrid(False)
         self.download_table.verticalHeader().setVisible(False)
@@ -828,8 +895,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.playlist_link_input = QLineEdit()
         self.playlist_link_input.setPlaceholderText("输入QQ音乐歌单链接...")
-        self.playlist_link_input.returnPressed.connect(
-            self.get_playlist_from_link)
+        self.playlist_link_input.returnPressed.connect(self.get_playlist_from_link)
         link_form_layout.addWidget(self.playlist_link_input, 1)
 
         self.get_playlist_btn = QPushButton("获取歌单")
@@ -847,10 +913,13 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 歌单歌曲列表
         self.playlist_link_table = QTableWidget()
-        self.playlist_link_table.setStyleSheet("QTableWidget::item { padding: 4px 8px; }")
+        self.playlist_link_table.setStyleSheet(
+            "QTableWidget::item { padding: 4px 8px; }"
+        )
         self.playlist_link_table.setColumnCount(7)
         self.playlist_link_table.setHorizontalHeaderLabels(
-            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"])
+            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"]
+        )
         self._clear_checkbox_column_header(self.playlist_link_table)
         playlist_header = self.playlist_link_table.horizontalHeader()
         playlist_header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
@@ -860,9 +929,11 @@ class QQMusicDownloaderGUI(QMainWindow):
         playlist_header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
         playlist_header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
         self.playlist_link_table.setEditTriggers(
-            QTableWidget.EditTrigger.NoEditTriggers)
+            QTableWidget.EditTrigger.NoEditTriggers
+        )
         self.playlist_link_table.setSelectionBehavior(
-            QTableWidget.SelectionBehavior.SelectRows)
+            QTableWidget.SelectionBehavior.SelectRows
+        )
         self.playlist_link_table.setAlternatingRowColors(True)
         self.playlist_link_table.setShowGrid(False)
         self.playlist_link_table.verticalHeader().setVisible(False)
@@ -876,16 +947,14 @@ class QQMusicDownloaderGUI(QMainWindow):
         batch_download_layout = QHBoxLayout()
         batch_download_layout.setSpacing(8)
         self.select_all_link_btn = QPushButton("全选")
-        self.select_all_link_btn.clicked.connect(
-            self.select_all_playlist_link_songs)
+        self.select_all_link_btn.clicked.connect(self.select_all_playlist_link_songs)
 
         self.download_all_link_btn = QPushButton("下载全部")
         self.download_all_link_btn.setProperty("primary", True)
         self.download_all_link_btn.clicked.connect(self.download_all_from_link)
 
         self.batch_download_link_btn = QPushButton("批量下载选中歌曲")
-        self.batch_download_link_btn.clicked.connect(
-            self.batch_download_from_link)
+        self.batch_download_link_btn.clicked.connect(self.batch_download_from_link)
 
         batch_download_layout.addWidget(self.select_all_link_btn)
         batch_download_layout.addWidget(self.download_all_link_btn)
@@ -931,7 +1000,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.daily_table.setStyleSheet("QTableWidget::item { padding: 4px 8px; }")
         self.daily_table.setColumnCount(7)
         self.daily_table.setHorizontalHeaderLabels(
-            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"])
+            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"]
+        )
         self._clear_checkbox_column_header(self.daily_table)
         daily_header = self.daily_table.horizontalHeader()
         daily_header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
@@ -940,10 +1010,8 @@ class QQMusicDownloaderGUI(QMainWindow):
         daily_header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
         daily_header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)
         daily_header.setSectionResizeMode(6, QHeaderView.ResizeMode.Fixed)
-        self.daily_table.setEditTriggers(
-            QTableWidget.EditTrigger.NoEditTriggers)
-        self.daily_table.setSelectionBehavior(
-            QTableWidget.SelectionBehavior.SelectRows)
+        self.daily_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self.daily_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.daily_table.setAlternatingRowColors(True)
         self.daily_table.setShowGrid(False)
         self.daily_table.verticalHeader().setVisible(False)
@@ -958,13 +1026,15 @@ class QQMusicDownloaderGUI(QMainWindow):
         daily_action_layout.setSpacing(8)
         self.select_all_daily_btn = QPushButton("全选")
         self.select_all_daily_btn.clicked.connect(
-            lambda: self.select_all_playlist_link_songs(source="daily"))
+            lambda: self.select_all_playlist_link_songs(source="daily")
+        )
         daily_action_layout.addWidget(self.select_all_daily_btn)
 
         self.download_selected_daily_btn = QPushButton("下载选中")
         self.download_selected_daily_btn.setProperty("primary", True)
         self.download_selected_daily_btn.clicked.connect(
-            lambda: self.batch_download_from_link(source="daily"))
+            lambda: self.batch_download_from_link(source="daily")
+        )
         daily_action_layout.addWidget(self.download_selected_daily_btn)
         daily_action_layout.addStretch()
 
@@ -981,9 +1051,11 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.log_table.setColumnCount(3)
         self.log_table.setHorizontalHeaderLabels(["时间", "歌曲", "错误"])
         self.log_table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.ResizeToContents)
+            QHeaderView.ResizeMode.ResizeToContents
+        )
         self.log_table.horizontalHeader().setSectionResizeMode(
-            2, QHeaderView.ResizeMode.Stretch)
+            2, QHeaderView.ResizeMode.Stretch
+        )
         self.log_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.log_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.log_table.setShowGrid(False)
@@ -1017,7 +1089,10 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
         if self.tabs.widget(index) != self.daily_tab:
             return
-        if not getattr(self, "_daily_auto_refresh_done", False) or self.daily_table.rowCount() == 0:
+        if (
+            not getattr(self, "_daily_auto_refresh_done", False)
+            or self.daily_table.rowCount() == 0
+        ):
             if hasattr(self, "get_daily_btn") and self.get_daily_btn.isEnabled():
                 self._daily_auto_refresh_done = True
                 self.fetch_daily_recommendations()
@@ -1047,12 +1122,12 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 创建并添加UI日志处理器
         ui_handler = UILogHandler(self)
-        formatter = logging.Formatter(
-            '[%(levelname)s] %(asctime)s - %(message)s')
+        formatter = logging.Formatter("[%(levelname)s] %(asctime)s - %(message)s")
         ui_handler.setFormatter(formatter)
 
         # 添加到logger
         from utils.logger import logger
+
         logger.add_handler(ui_handler)
 
     def update_log(self, message):
@@ -1060,7 +1135,9 @@ class QQMusicDownloaderGUI(QMainWindow):
         if hasattr(self, "log_table") and self.log_table is not None:
             row = self.log_table.rowCount()
             self.log_table.setRowCount(row + 1)
-            self.log_table.setItem(row, 0, QTableWidgetItem(datetime.now().strftime("%H:%M:%S")))
+            self.log_table.setItem(
+                row, 0, QTableWidgetItem(datetime.now().strftime("%H:%M:%S"))
+            )
             self.log_table.setItem(row, 1, QTableWidgetItem(""))
             self.log_table.setItem(row, 2, QTableWidgetItem(message))
 
@@ -1078,9 +1155,7 @@ class QQMusicDownloaderGUI(QMainWindow):
                 )
                 self.show_login_dialog()
         except Exception as e:
-            QMessageBox.warning(
-                self, "错误", f"检查登录状态时发生错误: {str(e)}"
-            )
+            QMessageBox.warning(self, "错误", f"检查登录状态时发生错误: {str(e)}")
 
     def clear_log(self):
         """清除日志显示"""
@@ -1137,13 +1212,16 @@ class QQMusicDownloaderGUI(QMainWindow):
         # 每次都创建新的工作线程
         if search_type_index == 0:  # 单曲搜索
             worker = WorkerThread(
-                "search_song", api=self.api, params={"query": query, "limit": limit})
+                "search_song", api=self.api, params={"query": query, "limit": limit}
+            )
         elif search_type_index == 1:  # 专辑搜索
             worker = WorkerThread(
-                "search_album", api=self.api, params={"query": query, "limit": limit})
+                "search_album", api=self.api, params={"query": query, "limit": limit}
+            )
         elif search_type_index == 2:  # 歌单搜索
             worker = WorkerThread(
-                "search_playlist", api=self.api, params={"query": query, "limit": limit})
+                "search_playlist", api=self.api, params={"query": query, "limit": limit}
+            )
 
         # 连接信号
         worker.update_signal.connect(self.handle_worker_update)
@@ -1264,7 +1342,8 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.result_table.setColumnCount(4)
         self.result_table.setHorizontalHeaderLabels(
-            ["专辑名", "歌手", "发行时间", "操作"])
+            ["专辑名", "歌手", "发行时间", "操作"]
+        )
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
@@ -1283,7 +1362,8 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.result_table.setColumnCount(4)
         self.result_table.setHorizontalHeaderLabels(
-            ["歌单名", "创建者", "歌曲数量", "操作"])
+            ["歌单名", "创建者", "歌曲数量", "操作"]
+        )
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
@@ -1300,7 +1380,8 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         self.result_table.setColumnCount(7)
         self.result_table.setHorizontalHeaderLabels(
-            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"])
+            ["", "歌曲名", "歌手", "专辑", "时长", "可用格式", "操作"]
+        )
         self._clear_checkbox_column_header(self.result_table)
         header = self.result_table.horizontalHeader()
         header.setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
@@ -1336,6 +1417,8 @@ class QQMusicDownloaderGUI(QMainWindow):
             probe_btn.setParent(table)
         probe_btn.ensurePolished()
         hint_width = probe_btn.sizeHint().width()
+        probe_btn.hide()
+        probe_btn.deleteLater()
         return max(148, min(hint_width + 56, 220))
 
     def _create_download_button(self, table: QTableWidget | None = None) -> QPushButton:
@@ -1345,10 +1428,14 @@ class QQMusicDownloaderGUI(QMainWindow):
         button_width = max(download_btn.sizeHint().width(), target_width - 16)
         download_btn.setMinimumWidth(button_width)
         download_btn.setFixedHeight(24)
-        download_btn.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        download_btn.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+        )
         return download_btn
 
-    def _create_download_cell_widget(self, table: QTableWidget | None = None) -> tuple[QWidget, QPushButton]:
+    def _create_download_cell_widget(
+        self, table: QTableWidget | None = None
+    ) -> tuple[QWidget, QPushButton]:
         """创建居中显示的下载按钮单元格，避免按钮贴顶显示。"""
         container = QWidget()
         container_layout = QHBoxLayout(container)
@@ -1364,8 +1451,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         """填充歌曲行数据"""
         # 复选框
         checkbox = QTableWidgetItem()
-        checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable |
-                          Qt.ItemFlag.ItemIsEnabled)
+        checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
         checkbox.setCheckState(Qt.CheckState.Unchecked)
         self.result_table.setItem(row, 0, checkbox)
 
@@ -1387,16 +1473,20 @@ class QQMusicDownloaderGUI(QMainWindow):
         duration = song.get("interval", 0)
         minutes, seconds = divmod(duration, 60)
         self.result_table.setItem(
-            row, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
+            row, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}")
+        )
 
         # 可用格式
         available_formats = self._get_available_formats(song)
         self.result_table.setItem(row, 5, QTableWidgetItem(available_formats))
 
         # 下载按钮
-        download_cell, download_btn = self._create_download_cell_widget(self.result_table)
+        download_cell, download_btn = self._create_download_cell_widget(
+            self.result_table
+        )
         download_btn.clicked.connect(
-            lambda _, song_index=row: self.download_song(song_list[song_index]))
+            lambda _, song_index=row: self.download_song(song_list[song_index])
+        )
         self.result_table.setCellWidget(row, 6, download_cell)
 
     def _fill_album_row(self, row, album):
@@ -1412,8 +1502,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table.setItem(row, 2, QTableWidgetItem(public_time))
 
         view_btn = QPushButton("查看歌曲")
-        view_btn.clicked.connect(
-            lambda _, mid=album_mid: self.get_album_songs(mid))
+        view_btn.clicked.connect(lambda _, mid=album_mid: self.get_album_songs(mid))
         self.result_table.setCellWidget(row, 3, view_btn)
 
     def _fill_playlist_row(self, row, playlist):
@@ -1429,15 +1518,20 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.result_table.setItem(row, 2, QTableWidgetItem(str(song_count)))
 
         view_btn = QPushButton("查看歌曲")
-        view_btn.clicked.connect(lambda _, pid=int(
-            playlist_id): self.get_playlist(pid))
+        view_btn.clicked.connect(lambda _, pid=int(playlist_id): self.get_playlist(pid))
         self.result_table.setCellWidget(row, 3, view_btn)
 
     def _get_singer_names(self, singers):
         """获取歌手名称字符串"""
         if isinstance(singers, list):
-            names = [clean_html_tags(s.get("name", str(s))) if isinstance(
-                s, dict) else clean_html_tags(str(s)) for s in singers]
+            names = [
+                (
+                    clean_html_tags(s.get("name", str(s)))
+                    if isinstance(s, dict)
+                    else clean_html_tags(str(s))
+                )
+                for s in singers
+            ]
             return ", ".join(names)
         elif isinstance(singers, dict):
             return clean_html_tags(singers.get("name", "未知歌手"))
@@ -1503,7 +1597,9 @@ class QQMusicDownloaderGUI(QMainWindow):
                 size_new = file_info.get("size_new", [])
                 index_map = {"MASTER": 0, "ATMOS_2": 1, "ATMOS_51": 2}
                 idx = index_map.get(fmt)
-                return bool(idx is not None and len(size_new) > idx and size_new[idx] > 0)
+                return bool(
+                    idx is not None and len(size_new) > idx and size_new[idx] > 0
+                )
 
             size_key = format_size_map.get(fmt)
             return bool(size_key and file_info.get(size_key, 0) > 0)
@@ -1516,8 +1612,13 @@ class QQMusicDownloaderGUI(QMainWindow):
         if len(candidates) == 1:
             return False, f"该歌曲不支持{self._get_format_display_name(requested)}格式"
 
-        fallback_names = " / ".join([self._get_format_display_name(c) for c in candidates[1:] if c])
-        return False, f"该歌曲不支持{self._get_format_display_name(requested)}格式，且其它音质（{fallback_names}）也不可用"
+        fallback_names = " / ".join(
+            [self._get_format_display_name(c) for c in candidates[1:] if c]
+        )
+        return (
+            False,
+            f"该歌曲不支持{self._get_format_display_name(requested)}格式，且其它音质（{fallback_names}）也不可用",
+        )
 
     def _get_format_display_name(self, format_code):
         """获取格式的显示名称"""
@@ -1528,11 +1629,13 @@ class QQMusicDownloaderGUI(QMainWindow):
             "flac": "FLAC无损",
             "ATMOS_51": "臻品音质2.0",
             "ATMOS_2": "臻品全景声2.0",
-            "MASTER": "臻品母带2.0"
+            "MASTER": "臻品母带2.0",
         }
         return format_names.get(format_code, format_code)
 
-    def _format_quality_cell(self, quality_requested: str | None, quality_used: str | None) -> str:
+    def _format_quality_cell(
+        self, quality_requested: str | None, quality_used: str | None
+    ) -> str:
         req = canonical_quality(quality_requested or "") or (quality_requested or "")
         used = canonical_quality(quality_used or "") or (quality_used or "")
         if used and req and used != req:
@@ -1550,7 +1653,10 @@ class QQMusicDownloaderGUI(QMainWindow):
             return False
 
         if q == "m4a":
-            return any(int(file_info.get(k, 0) or 0) > 0 for k in ("size_192aac", "size_96aac", "size_48aac"))
+            return any(
+                int(file_info.get(k, 0) or 0) > 0
+                for k in ("size_192aac", "size_96aac", "size_48aac")
+            )
         if q == "128":
             return int(file_info.get("size_128mp3", 0) or 0) > 0
         if q == "320":
@@ -1562,11 +1668,15 @@ class QQMusicDownloaderGUI(QMainWindow):
             size_new = file_info.get("size_new", []) or []
             idx_map = {"MASTER": 0, "ATMOS_2": 1, "ATMOS_51": 2}
             idx = idx_map.get(q)
-            return bool(idx is not None and len(size_new) > idx and int(size_new[idx] or 0) > 0)
+            return bool(
+                idx is not None and len(size_new) > idx and int(size_new[idx] or 0) > 0
+            )
 
         return False
 
-    def _predict_quality_for_song(self, song_info: dict, requested_quality: str) -> str | None:
+    def _predict_quality_for_song(
+        self, song_info: dict, requested_quality: str
+    ) -> str | None:
         requested = canonical_quality(requested_quality) or requested_quality
         file_info = song_info.get("file")
         if not isinstance(file_info, dict):
@@ -1577,7 +1687,9 @@ class QQMusicDownloaderGUI(QMainWindow):
                 return canonical_quality(q) or q
         return ""
 
-    def _confirm_quality_plan(self, songs: list[dict], requested_quality: str) -> list[tuple[dict, str | None]]:
+    def _confirm_quality_plan(
+        self, songs: list[dict], requested_quality: str
+    ) -> list[tuple[dict, str | None]]:
         requested = canonical_quality(requested_quality) or requested_quality
         planned: list[tuple[dict, str | None]] = []
         replace_lines: list[str] = []
@@ -1596,7 +1708,9 @@ class QQMusicDownloaderGUI(QMainWindow):
 
             planned.append((song, predicted))
             if predicted is None:
-                unknown_lines.append(f"{title}: 无法预判，将在下载时自动选择最高可用音质")
+                unknown_lines.append(
+                    f"{title}: 无法预判，将在下载时自动选择最高可用音质"
+                )
             else:
                 pred_c = canonical_quality(predicted) or predicted
                 if pred_c != requested:
@@ -1624,7 +1738,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             text_parts.append(f"将自动替换（{len(replace_lines)} 首）：")
             text_parts.extend(lines_preview or replace_lines[:6])
         if unknown_lines:
-            text_parts.append(f"无法预判（{len(unknown_lines)} 首）：下载时自动选择最高可用音质")
+            text_parts.append(
+                f"无法预判（{len(unknown_lines)} 首）：下载时自动选择最高可用音质"
+            )
         if unavailable_lines:
             text_parts.append(f"将跳过（{len(unavailable_lines)} 首）：未发现可用格式")
         text_parts.append("是否继续下载？")
@@ -1637,7 +1753,9 @@ class QQMusicDownloaderGUI(QMainWindow):
         box.setText("\n".join(text_parts))
         if details:
             box.setDetailedText(details)
-        box.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        box.setStandardButtons(
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
         box.setDefaultButton(QMessageBox.StandardButton.Yes)
         ret = box.exec()
         if ret != QMessageBox.StandardButton.Yes:
@@ -1646,23 +1764,34 @@ class QQMusicDownloaderGUI(QMainWindow):
 
     def _get_album_name(self, album):
         """获取专辑名称"""
-        name = (album.get("name") or album.get("albumName") or
-                album.get("album_name") or "未知专辑")
+        name = (
+            album.get("name")
+            or album.get("albumName")
+            or album.get("album_name")
+            or "未知专辑"
+        )
         return clean_html_tags(name)
 
     def _get_album_singer_name(self, album):
         """获取专辑歌手名称"""
         # 优先从singer_list获取
         if album.get("singer_list"):
-            names = [clean_html_tags(s.get("name", str(s)))
-                     for s in album["singer_list"]]
+            names = [
+                clean_html_tags(s.get("name", str(s))) for s in album["singer_list"]
+            ]
             return ", ".join(names)
 
         # 其次从singer字段获取
         singer = album.get("singer")
         if isinstance(singer, list):
-            names = [clean_html_tags(s.get("name", str(s))) if isinstance(
-                s, dict) else clean_html_tags(str(s)) for s in singer]
+            names = [
+                (
+                    clean_html_tags(s.get("name", str(s)))
+                    if isinstance(s, dict)
+                    else clean_html_tags(str(s))
+                )
+                for s in singer
+            ]
             return ", ".join(names)
         elif isinstance(singer, dict):
             return clean_html_tags(singer.get("name", "未知歌手"))
@@ -1675,18 +1804,32 @@ class QQMusicDownloaderGUI(QMainWindow):
 
     def _get_album_publish_time(self, album):
         """获取专辑发行时间"""
-        return (album.get("publish_date") or album.get("publicTime") or
-                album.get("public_time") or album.get("time") or "")
+        return (
+            album.get("publish_date")
+            or album.get("publicTime")
+            or album.get("public_time")
+            or album.get("time")
+            or ""
+        )
 
     def _get_album_mid(self, album):
         """获取专辑MID"""
-        return (album.get("albummid") or album.get("albumMID") or
-                album.get("album_mid") or album.get("mid") or "")
+        return (
+            album.get("albummid")
+            or album.get("albumMID")
+            or album.get("album_mid")
+            or album.get("mid")
+            or ""
+        )
 
     def _get_playlist_name(self, playlist):
         """获取歌单名称"""
-        name = (playlist.get("dissname") or playlist.get("name") or
-                playlist.get("title") or "未知歌单")
+        name = (
+            playlist.get("dissname")
+            or playlist.get("name")
+            or playlist.get("title")
+            or "未知歌单"
+        )
         return clean_html_tags(name)
 
     def _get_playlist_creator_name(self, playlist):
@@ -1707,18 +1850,25 @@ class QQMusicDownloaderGUI(QMainWindow):
 
     def _get_playlist_song_count(self, playlist):
         """获取歌单歌曲数量"""
-        return (playlist.get("songnum") or playlist.get("song_count") or
-                playlist.get("song_num") or playlist.get("total") or 0)
+        return (
+            playlist.get("songnum")
+            or playlist.get("song_count")
+            or playlist.get("song_num")
+            or playlist.get("total")
+            or 0
+        )
 
     def _get_playlist_id(self, playlist):
         """获取歌单ID"""
-        return (playlist.get("dissid") or playlist.get("id") or
-                playlist.get("disstid") or 0)
+        return (
+            playlist.get("dissid") or playlist.get("id") or playlist.get("disstid") or 0
+        )
 
     def get_album_songs(self, album_mid):
         """获取专辑歌曲"""
-        self.current_worker = WorkerThread("get_album_songs", api=self.api, params={
-            "album_mid": album_mid})
+        self.current_worker = WorkerThread(
+            "get_album_songs", api=self.api, params={"album_mid": album_mid}
+        )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
         self.current_worker.start()
@@ -1766,7 +1916,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 从搜索结果中查找匹配的专辑
         album_mid = album_data.get("albumMid") or album_data.get("album_mid")
-        if album_mid and hasattr(self, 'search_results'):
+        if album_mid and hasattr(self, "search_results"):
             for album in self.search_results:
                 if self._get_album_mid(album) == album_mid:
                     return self._get_album_name(album)
@@ -1785,8 +1935,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.batch_download_btn.clicked.connect(self.batch_download)
 
         self.download_album_btn = QPushButton("下载专辑所有歌曲")
-        self.download_album_btn.clicked.connect(
-            lambda: self.batch_download(songs))
+        self.download_album_btn.clicked.connect(lambda: self.batch_download(songs))
 
         album_download_layout.addWidget(self.select_all_btn)
         album_download_layout.addWidget(self.batch_download_btn)
@@ -1822,8 +1971,7 @@ class QQMusicDownloaderGUI(QMainWindow):
         """填充专辑歌曲行数据"""
         # 复选框
         checkbox = QTableWidgetItem()
-        checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable |
-                          Qt.ItemFlag.ItemIsEnabled)
+        checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
         checkbox.setCheckState(Qt.CheckState.Unchecked)
         self.result_table.setItem(row, 0, checkbox)
 
@@ -1842,22 +1990,27 @@ class QQMusicDownloaderGUI(QMainWindow):
         duration = song.get("interval", 0)
         minutes, seconds = divmod(duration, 60)
         self.result_table.setItem(
-            row, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
+            row, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}")
+        )
 
         # 可用格式
         available_formats = self._get_available_formats(song)
         self.result_table.setItem(row, 5, QTableWidgetItem(available_formats))
 
         # 下载按钮
-        download_cell, download_btn = self._create_download_cell_widget(self.result_table)
+        download_cell, download_btn = self._create_download_cell_widget(
+            self.result_table
+        )
         download_btn.clicked.connect(
-            lambda _, song_index=row: self.download_song(song_list[song_index]))
+            lambda _, song_index=row: self.download_song(song_list[song_index])
+        )
         self.result_table.setCellWidget(row, 6, download_cell)
 
     def get_playlist(self, disstid: int):
         """获取歌单歌曲"""
         self.current_worker = WorkerThread(
-            "get_playlist", api=self.api, params={"disstid": disstid})
+            "get_playlist", api=self.api, params={"disstid": disstid}
+        )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
         self.current_worker.start()
@@ -1881,10 +2034,11 @@ class QQMusicDownloaderGUI(QMainWindow):
         row = self.download_table.rowCount()
         self.download_table.setRowCount(row + 1)
 
+        self.download_table.setItem(row, 0, QTableWidgetItem(song_info["name"]))
         self.download_table.setItem(
-            row, 0, QTableWidgetItem(song_info["name"]))
-        self.download_table.setItem(
-            row, 1, QTableWidgetItem(self._get_singer_names(song_info.get("singer", [])))
+            row,
+            1,
+            QTableWidgetItem(self._get_singer_names(song_info.get("singer", []))),
         )
         self.download_table.setItem(
             row,
@@ -1902,8 +2056,8 @@ class QQMusicDownloaderGUI(QMainWindow):
             params={
                 "song_info": song_info,
                 "filetype": filetype,
-                "download_dir": download_dir
-            }
+                "download_dir": download_dir,
+            },
         )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
@@ -1957,7 +2111,11 @@ class QQMusicDownloaderGUI(QMainWindow):
             # 收集选中的歌曲
             for row in range(self.result_table.rowCount()):
                 item = self.result_table.item(row, 0)
-                if item and item.checkState() == Qt.CheckState.Checked and row < len(current_songs):
+                if (
+                    item
+                    and item.checkState() == Qt.CheckState.Checked
+                    and row < len(current_songs)
+                ):
                     selected_songs.append(current_songs[row])
 
         if not selected_songs:
@@ -1986,7 +2144,11 @@ class QQMusicDownloaderGUI(QMainWindow):
                 row, 1, QTableWidgetItem(self._get_singer_names(song.get("singer", [])))
             )
             self.download_table.setItem(
-                row, 2, QTableWidgetItem(self._format_quality_cell(filetype, predicted_quality))
+                row,
+                2,
+                QTableWidgetItem(
+                    self._format_quality_cell(filetype, predicted_quality)
+                ),
             )
             self.download_table.setCellWidget(row, 3, self._create_table_progress_bar())
             self.download_table.setItem(row, 4, QTableWidgetItem("等待下载..."))
@@ -2005,12 +2167,11 @@ class QQMusicDownloaderGUI(QMainWindow):
                 "filetype": filetype,
                 "download_dir": download_dir,
                 "concurrency": self.get_concurrent_downloads(),
-            }
+            },
         )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
-        self.current_worker.progress_signal.connect(
-            self.handle_progress_update)
+        self.current_worker.progress_signal.connect(self.handle_progress_update)
         self.current_worker.start()
 
     def _create_table_progress_bar(self):
@@ -2034,7 +2195,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
         row = self.log_table.rowCount()
         self.log_table.setRowCount(row + 1)
-        self.log_table.setItem(row, 0, QTableWidgetItem(datetime.now().strftime("%H:%M:%S")))
+        self.log_table.setItem(
+            row, 0, QTableWidgetItem(datetime.now().strftime("%H:%M:%S"))
+        )
         display_name = f"{song_name} - {singer}".strip(" -")
         self.log_table.setItem(row, 1, QTableWidgetItem(display_name))
         self.log_table.setItem(row, 2, QTableWidgetItem(message))
@@ -2046,21 +2209,23 @@ class QQMusicDownloaderGUI(QMainWindow):
             singer_item = self.download_table.item(row, 1)
             status_item = self.download_table.item(row, 4)
 
-            if (song_name_item and song_name_item.text() == data["song_name"] and
-                    singer_item and singer_item.text() == data.get("singer", "") and
-                    status_item and status_item.text() in ["正在下载...", "等待下载..."]):
+            if (
+                song_name_item
+                and song_name_item.text() == data["song_name"]
+                and singer_item
+                and singer_item.text() == data.get("singer", "")
+                and status_item
+                and status_item.text() in ["正在下载...", "等待下载..."]
+            ):
 
                 progress_bar = self._get_download_progress_bar(row)
                 # 更新状态和路径
                 if data["success"]:
-                    self.download_table.setItem(
-                        row, 4, QTableWidgetItem("下载成功"))
-                    self.download_table.setItem(
-                        row, 5, QTableWidgetItem(data["path"]))
+                    self.download_table.setItem(row, 4, QTableWidgetItem("下载成功"))
+                    self.download_table.setItem(row, 5, QTableWidgetItem(data["path"]))
                     progress_bar.setValue(100)
                 else:
-                    self.download_table.setItem(
-                        row, 4, QTableWidgetItem("下载失败"))
+                    self.download_table.setItem(row, 4, QTableWidgetItem("下载失败"))
                     progress_bar.setValue(0)
                     self._append_download_error(
                         data.get("song_name", ""),
@@ -2079,7 +2244,9 @@ class QQMusicDownloaderGUI(QMainWindow):
                     self.download_table.setItem(
                         row,
                         2,
-                        QTableWidgetItem(self._format_quality_cell(quality_requested, quality_used)),
+                        QTableWidgetItem(
+                            self._format_quality_cell(quality_requested, quality_used)
+                        ),
                     )
 
                 break
@@ -2096,21 +2263,23 @@ class QQMusicDownloaderGUI(QMainWindow):
             singer_item = self.download_table.item(row, 1)
             status_item = self.download_table.item(row, 4)
 
-            if (song_name_item and song_name_item.text() == data["song_name"] and
-                    singer_item and singer_item.text() == data.get("singer", "") and
-                    status_item and status_item.text() in ["等待下载...", "正在下载..."]):
+            if (
+                song_name_item
+                and song_name_item.text() == data["song_name"]
+                and singer_item
+                and singer_item.text() == data.get("singer", "")
+                and status_item
+                and status_item.text() in ["等待下载...", "正在下载..."]
+            ):
 
                 progress_bar = self._get_download_progress_bar(row)
                 # 更新状态和路径
                 if data["success"]:
-                    self.download_table.setItem(
-                        row, 4, QTableWidgetItem("下载成功"))
-                    self.download_table.setItem(
-                        row, 5, QTableWidgetItem(data["path"]))
+                    self.download_table.setItem(row, 4, QTableWidgetItem("下载成功"))
+                    self.download_table.setItem(row, 5, QTableWidgetItem(data["path"]))
                     progress_bar.setValue(100)
                 else:
-                    self.download_table.setItem(
-                        row, 4, QTableWidgetItem("下载失败"))
+                    self.download_table.setItem(row, 4, QTableWidgetItem("下载失败"))
                     progress_bar.setValue(0)
                     self._append_download_error(
                         data.get("song_name", ""),
@@ -2129,7 +2298,9 @@ class QQMusicDownloaderGUI(QMainWindow):
                     self.download_table.setItem(
                         row,
                         2,
-                        QTableWidgetItem(self._format_quality_cell(quality_requested, quality_used)),
+                        QTableWidgetItem(
+                            self._format_quality_cell(quality_requested, quality_used)
+                        ),
                     )
 
                 break
@@ -2145,8 +2316,12 @@ class QQMusicDownloaderGUI(QMainWindow):
             singer_item = self.download_table.item(row, 1)
             status_item = self.download_table.item(row, 4)
 
-            if (song_name_item and song_name_item.text() == song_name and
-                    singer_item and singer_item.text() == singer):
+            if (
+                song_name_item
+                and song_name_item.text() == song_name
+                and singer_item
+                and singer_item.text() == singer
+            ):
                 progress_bar = self._get_download_progress_bar(row)
                 progress_bar.setValue(max(0, min(percent, 100)))
                 if status_item and status_item.text() == "等待下载...":
@@ -2156,7 +2331,8 @@ class QQMusicDownloaderGUI(QMainWindow):
     def browse_path(self):
         """浏览并选择下载保存路径"""
         dir_path = QFileDialog.getExistingDirectory(
-            self, "选择下载保存位置", self.download_path)
+            self, "选择下载保存位置", self.download_path
+        )
         if dir_path:
             self.download_path = dir_path
             self.path_input.setText(dir_path)
@@ -2169,15 +2345,18 @@ class QQMusicDownloaderGUI(QMainWindow):
             self.config_dir.mkdir(parents=True, exist_ok=True)
 
             if self.config_file.exists():
-                with open(self.config_file, 'r', encoding='utf-8') as f:
+                with open(self.config_file, "r", encoding="utf-8") as f:
                     config = json.loads(f.read())
                     # 只读取需要的配置，不影响其他配置
                     self.download_path = config.get(
-                        'download_path', str(Path.home() / "Downloads"))
-                    self._saved_quality = config.get('quality', '320')
+                        "download_path", str(Path.home() / "Downloads")
+                    )
+                    self._saved_quality = config.get("quality", "320")
                     try:
                         self.concurrent_downloads = int(
-                            config.get("concurrent_downloads", self.concurrent_downloads)
+                            config.get(
+                                "concurrent_downloads", self.concurrent_downloads
+                            )
                         )
                     except Exception:
                         self.concurrent_downloads = int(self.concurrent_downloads or 4)
@@ -2190,18 +2369,20 @@ class QQMusicDownloaderGUI(QMainWindow):
             # 首先读取现有配置
             existing_config = {}
             if self.config_file.exists():
-                with open(self.config_file, 'r', encoding='utf-8') as f:
+                with open(self.config_file, "r", encoding="utf-8") as f:
                     existing_config = json.loads(f.read())
 
             # 更新需要保存的配置项
-            existing_config.update({
-                'download_path': self.download_path,
-                'quality': self.get_selected_quality(),
-                'concurrent_downloads': self.get_concurrent_downloads(),
-            })
+            existing_config.update(
+                {
+                    "download_path": self.download_path,
+                    "quality": self.get_selected_quality(),
+                    "concurrent_downloads": self.get_concurrent_downloads(),
+                }
+            )
 
             # 保存完整配置
-            with open(self.config_file, 'w', encoding='utf-8') as f:
+            with open(self.config_file, "w", encoding="utf-8") as f:
                 json.dump(existing_config, f, ensure_ascii=False, indent=2)
         except Exception as e:
             logger.warning(f"保存配置文件失败: {e}")
@@ -2209,11 +2390,7 @@ class QQMusicDownloaderGUI(QMainWindow):
     async def search_song_for_download(self, song_name, singer_name):
         """搜索单首歌曲用于下载"""
         query = f"{song_name} {singer_name}"
-        result = await self.api.search(
-            query,
-            1,    # 限制为1个结果
-            1     # 页码
-        )
+        result = await self.api.search(query, 1, 1)  # 限制为1个结果  # 页码
         if result and result.get("songs") and len(result["songs"]) > 0:
             return result["songs"][0]
         return None
@@ -2238,7 +2415,11 @@ class QQMusicDownloaderGUI(QMainWindow):
         return "daily_songs" if source == "daily" else "playlist_link_songs"
 
     def _get_playlist_original_songs_attr(self, source):
-        return "daily_original_songs" if source == "daily" else "playlist_link_original_songs"
+        return (
+            "daily_original_songs"
+            if source == "daily"
+            else "playlist_link_original_songs"
+        )
 
     def _get_playlist_songs(self, source):
         return getattr(self, self._get_playlist_songs_attr(source), None)
@@ -2274,12 +2455,9 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 启动线程获取歌单
         self.current_worker = WorkerThread(
-            "get_playlist_from_link",
-            api=self.api,
-            params={"url": link}
+            "get_playlist_from_link", api=self.api, params={"url": link}
         )
-        self.current_worker.update_signal.connect(
-            self.handle_playlist_link_result)
+        self.current_worker.update_signal.connect(self.handle_playlist_link_result)
         self.current_worker.error_signal.connect(self.handle_worker_error)
         self.current_worker.start()
 
@@ -2327,7 +2505,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             return
 
         playlist_data = data["data"]
-        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(self, "_last_playlist_source", "link")
+        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(
+            self, "_last_playlist_source", "link"
+        )
         if playlist_data["code"] != 1:
             error_text = playlist_data.get("error", "未知错误")
             title = "每日推荐" if source == "daily" else "歌单信息"
@@ -2357,7 +2537,10 @@ class QQMusicDownloaderGUI(QMainWindow):
             self._render_playlist_link_songs(source)
 
             # 若是“一键下载每日推荐”，则自动触发下载
-            if self._auto_download_after_playlist_fetch and self._last_playlist_source == "daily":
+            if (
+                self._auto_download_after_playlist_fetch
+                and self._last_playlist_source == "daily"
+            ):
                 self._auto_download_after_playlist_fetch = False
                 self.download_all_from_link(source="daily")
 
@@ -2387,14 +2570,20 @@ class QQMusicDownloaderGUI(QMainWindow):
         for i, song_info in enumerate(songs):
             # 复选框
             checkbox = QTableWidgetItem()
-            checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled)
+            checkbox.setFlags(
+                Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
+            )
             checkbox.setCheckState(Qt.CheckState.Unchecked)
             table.setItem(i, 0, checkbox)
 
             # 歌曲信息
             table.setItem(i, 1, QTableWidgetItem(song_info.get("name", "")))
             singers = song_info.get("singer", []) or []
-            singer_text = ", ".join([s.get("name", "") for s in singers if isinstance(s, dict)]) if isinstance(singers, list) else ""
+            singer_text = (
+                ", ".join([s.get("name", "") for s in singers if isinstance(s, dict)])
+                if isinstance(singers, list)
+                else ""
+            )
             table.setItem(i, 2, QTableWidgetItem(singer_text))
             album_name = ""
             if isinstance(song_info.get("album"), dict):
@@ -2413,7 +2602,9 @@ class QQMusicDownloaderGUI(QMainWindow):
             # 下载按钮
             download_cell, download_btn = self._create_download_cell_widget(table)
             download_btn.clicked.connect(
-                lambda _, song_index=i, song_source=source: self.download_playlist_link_song(song_index, song_source)
+                lambda _, song_index=i, song_source=source: self.download_playlist_link_song(
+                    song_index, song_source
+                )
             )
             table.setCellWidget(i, 6, download_cell)
 
@@ -2452,15 +2643,11 @@ class QQMusicDownloaderGUI(QMainWindow):
         self.current_worker = WorkerThread(
             "search_playlist_link_songs_one_by_one",
             api=self.api,
-            params={
-                "songs": original_songs
-            }
+            params={"songs": original_songs},
         )
-        self.current_worker.update_signal.connect(
-            self.handle_single_song_search_result)
+        self.current_worker.update_signal.connect(self.handle_single_song_search_result)
         self.current_worker.error_signal.connect(self.handle_worker_error)
-        self.current_worker.progress_signal.connect(
-            self.handle_progress_update)
+        self.current_worker.progress_signal.connect(self.handle_progress_update)
         self.current_worker.start()
 
     @Slot(dict)
@@ -2469,7 +2656,9 @@ class QQMusicDownloaderGUI(QMainWindow):
         if data["type"] != "single_song_search_result":
             return
 
-        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(self, "_last_playlist_source", "link")
+        source = getattr(self, "_active_playlist_fetch_source", "") or getattr(
+            self, "_last_playlist_source", "link"
+        )
         table = self._get_playlist_table(source)
 
         index = data["index"]
@@ -2484,8 +2673,7 @@ class QQMusicDownloaderGUI(QMainWindow):
 
         # 由于是并发执行，不再使用current_count作为进度
         # 而是使用已完成的搜索数量计算进度
-        completed_count = sum(
-            1 for s in songs if s is not None)
+        completed_count = sum(1 for s in songs if s is not None)
         self.progress_bar.setValue(int(completed_count / total_count * 100))
 
         # 移除行合并
@@ -2494,34 +2682,37 @@ class QQMusicDownloaderGUI(QMainWindow):
         if song_info:
             # 复选框
             checkbox = QTableWidgetItem()
-            checkbox.setFlags(Qt.ItemFlag.ItemIsUserCheckable |
-                              Qt.ItemFlag.ItemIsEnabled)
+            checkbox.setFlags(
+                Qt.ItemFlag.ItemIsUserCheckable | Qt.ItemFlag.ItemIsEnabled
+            )
             checkbox.setCheckState(Qt.CheckState.Unchecked)
             table.setItem(index, 0, checkbox)
 
             # 歌曲信息
+            table.setItem(index, 1, QTableWidgetItem(song_info["name"]))
             table.setItem(
-                index, 1, QTableWidgetItem(song_info["name"]))
-            table.setItem(index, 2, QTableWidgetItem(
-                ", ".join([s["name"] for s in song_info["singer"]])))
-            table.setItem(
-                index, 3, QTableWidgetItem(song_info["album"]["name"]))
+                index,
+                2,
+                QTableWidgetItem(", ".join([s["name"] for s in song_info["singer"]])),
+            )
+            table.setItem(index, 3, QTableWidgetItem(song_info["album"]["name"]))
 
             # 时长
             duration = song_info.get("interval", 0)
             minutes, seconds = divmod(duration, 60)
-            table.setItem(
-                index, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
+            table.setItem(index, 4, QTableWidgetItem(f"{minutes:02d}:{seconds:02d}"))
 
             # 可用格式
             available_formats = self._get_available_formats(song_info)
-            table.setItem(
-                index, 5, QTableWidgetItem(available_formats))
+            table.setItem(index, 5, QTableWidgetItem(available_formats))
 
             # 下载按钮
             download_cell, download_btn = self._create_download_cell_widget(table)
             download_btn.clicked.connect(
-                lambda _, song_index=index, song_source=source: self.download_playlist_link_song(song_index, song_source))
+                lambda _, song_index=index, song_source=source: self.download_playlist_link_song(
+                    song_index, song_source
+                )
+            )
             table.setCellWidget(index, 6, download_cell)
         else:
             # 搜索失败时显示"未找到"
@@ -2564,13 +2755,16 @@ class QQMusicDownloaderGUI(QMainWindow):
         row = self.download_table.rowCount()
         self.download_table.setRowCount(row + 1)
 
+        self.download_table.setItem(row, 0, QTableWidgetItem(song_info["name"]))
         self.download_table.setItem(
-            row, 0, QTableWidgetItem(song_info["name"]))
-        self.download_table.setItem(
-            row, 1, QTableWidgetItem(self._get_singer_names(song_info.get("singer", [])))
+            row,
+            1,
+            QTableWidgetItem(self._get_singer_names(song_info.get("singer", []))),
         )
         self.download_table.setItem(
-            row, 2, QTableWidgetItem(self._format_quality_cell(filetype, predicted_quality))
+            row,
+            2,
+            QTableWidgetItem(self._format_quality_cell(filetype, predicted_quality)),
         )
         self.download_table.setCellWidget(row, 3, self._create_table_progress_bar())
         self.download_table.setItem(row, 4, QTableWidgetItem("正在下载..."))
@@ -2583,8 +2777,8 @@ class QQMusicDownloaderGUI(QMainWindow):
             params={
                 "song_info": song_info,
                 "filetype": filetype,
-                "download_dir": download_dir
-            }
+                "download_dir": download_dir,
+            },
         )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
@@ -2637,7 +2831,11 @@ class QQMusicDownloaderGUI(QMainWindow):
                 row, 1, QTableWidgetItem(self._get_singer_names(song.get("singer", [])))
             )
             self.download_table.setItem(
-                row, 2, QTableWidgetItem(self._format_quality_cell(filetype, predicted_quality))
+                row,
+                2,
+                QTableWidgetItem(
+                    self._format_quality_cell(filetype, predicted_quality)
+                ),
             )
             self.download_table.setCellWidget(row, 3, self._create_table_progress_bar())
             self.download_table.setItem(row, 4, QTableWidgetItem("等待下载..."))
@@ -2655,12 +2853,11 @@ class QQMusicDownloaderGUI(QMainWindow):
                 "filetype": filetype,
                 "download_dir": download_dir,
                 "concurrency": self.get_concurrent_downloads(),
-            }
+            },
         )
         self.current_worker.update_signal.connect(self.handle_worker_update)
         self.current_worker.error_signal.connect(self.handle_worker_error)
-        self.current_worker.progress_signal.connect(
-            self.handle_progress_update)
+        self.current_worker.progress_signal.connect(self.handle_progress_update)
         self.current_worker.start()
 
     def download_all_from_link(self, source=None):
@@ -2716,30 +2913,30 @@ class QQMusicDownloaderGUI(QMainWindow):
         menubar = self.menuBar()
 
         # 账户菜单
-        account_menu = menubar.addMenu('账户')
+        account_menu = menubar.addMenu("账户")
 
         # 登录动作
-        login_action = account_menu.addAction('登录')
+        login_action = account_menu.addAction("登录")
         login_action.triggered.connect(self.show_login_dialog)
 
         # 登出动作
-        logout_action = account_menu.addAction('登出')
+        logout_action = account_menu.addAction("登出")
         logout_action.triggered.connect(self.logout)
 
         # 用户信息动作
-        user_info_action = account_menu.addAction('用户信息')
+        user_info_action = account_menu.addAction("用户信息")
         user_info_action.triggered.connect(self.show_user_info)
 
         account_menu.addSeparator()
 
         # API设置动作
-        api_settings_action = account_menu.addAction('API设置')
+        api_settings_action = account_menu.addAction("API设置")
         api_settings_action.triggered.connect(self.show_api_settings)
 
         # 帮助菜单
-        help_menu = menubar.addMenu('帮助')
+        help_menu = menubar.addMenu("帮助")
 
-        about_action = help_menu.addAction('关于')
+        about_action = help_menu.addAction("关于")
         about_action.triggered.connect(self.show_about)
 
         # 更新菜单状态
@@ -2748,15 +2945,14 @@ class QQMusicDownloaderGUI(QMainWindow):
     async def update_menu_status(self):
         """更新菜单状态"""
         # 检查是否支持登录功能
-        has_login_support = hasattr(self.api, 'is_logged_in')
+        has_login_support = hasattr(self.api, "is_logged_in")
 
         # 这里可以根据登录状态更新菜单项的可用性
         if has_login_support:
             try:
                 is_logged_in = await self.api.is_logged_in()
                 # 可以根据登录状态启用/禁用相关菜单项
-                logger.info(
-                    f"登录状态: {'已登录' if is_logged_in else '未登录'}")
+                logger.info(f"登录状态: {'已登录' if is_logged_in else '未登录'}")
             except Exception as e:
                 logger.warning(f"检查登录状态时出错: {e}")
                 is_logged_in = False
@@ -2767,39 +2963,35 @@ class QQMusicDownloaderGUI(QMainWindow):
             from ui.login_dialog import LoginDialog
 
             # 检查是否支持登录功能
-            if not hasattr(self.api, 'login_with_qr'):
+            if not hasattr(self.api, "login_with_qr"):
                 QMessageBox.information(
-                    self, "提示",
-                    "当前API不支持登录功能。\n请在API设置中启用新版API。"
+                    self, "提示", "当前API不支持登录功能。\n请在API设置中启用新版API。"
                 )
                 return
 
             dialog = LoginDialog(self.api, self)
             if dialog.exec() == dialog.DialogCode.Accepted:
                 user_info = dialog.get_user_info()
-                if user_info.get('logged_in'):
+                if user_info.get("logged_in"):
                     QMessageBox.information(
-                        self, "登录成功",
-                        f"欢迎! 用户ID: {user_info.get('musicid', 'Unknown')}"
+                        self,
+                        "登录成功",
+                        f"欢迎! 用户ID: {user_info.get('musicid', 'Unknown')}",
                     )
                     # 登录后更新菜单状态
                     asyncio.run(self.update_menu_status())
 
         except ImportError as e:
             QMessageBox.warning(
-                self, "错误",
-                f"无法加载登录对话框: {str(e)}\n请确保已安装相关依赖。"
+                self, "错误", f"无法加载登录对话框: {str(e)}\n请确保已安装相关依赖。"
             )
         except Exception as e:
-            QMessageBox.critical(
-                self, "错误",
-                f"登录过程中发生错误: {str(e)}"
-            )
+            QMessageBox.critical(self, "错误", f"登录过程中发生错误: {str(e)}")
 
     def logout(self):
         """登出"""
         try:
-            if hasattr(self.api, 'logout'):
+            if hasattr(self.api, "logout"):
                 self.api.logout()
                 QMessageBox.information(self, "提示", "已成功登出")
                 # 登出后更新菜单状态
@@ -2812,9 +3004,9 @@ class QQMusicDownloaderGUI(QMainWindow):
     def show_user_info(self):
         """显示用户信息"""
         try:
-            if hasattr(self.api, 'get_user_info'):
+            if hasattr(self.api, "get_user_info"):
                 user_info = self.api.get_user_info()
-                if user_info.get('logged_in'):
+                if user_info.get("logged_in"):
                     info_text = f"""
 用户信息:
 - 用户ID: {user_info.get('musicid', 'Un known')}
@@ -2867,14 +3059,14 @@ class QQMusicDownloaderGUI(QMainWindow):
             # 读取现有配置
             existing_config = {}
             if self.config_file.exists():
-                with open(self.config_file, 'r', encoding='utf-8') as f:
+                with open(self.config_file, "r", encoding="utf-8") as f:
                     existing_config = json.loads(f.read())
 
             # 更新API设置
-            existing_config['auto_login'] = auto_login
+            existing_config["auto_login"] = auto_login
 
             # 保存配置
-            with open(self.config_file, 'w', encoding='utf-8') as f:
+            with open(self.config_file, "w", encoding="utf-8") as f:
                 json.dump(existing_config, f, ensure_ascii=False, indent=2)
         except Exception as e:
             logger.warning(f"保存API设置失败: {e}")

@@ -2822,7 +2822,7 @@
         "kind": 6,
         "importPath": "ui.mainui",
         "description": "ui.mainui",
-        "peekOfCode": "class HorizontalTextTabBar(QTabBar):\n    \"\"\"西侧标签栏使用横向文本展示，避免中文竖排。\"\"\"\n    def tabSizeHint(self, index):\n        size = super().tabSizeHint(index)\n        size.transpose()\n        metrics = self.fontMetrics()\n        max_text_width = 0\n        for i in range(self.count()):\n            max_text_width = max(max_text_width, metrics.horizontalAdvance(self.tabText(i) or \"\"))\n        desired_width = max(132, min(max_text_width + 40, 210))",
+        "peekOfCode": "class HorizontalTextTabBar(QTabBar):\n    \"\"\"西侧标签栏使用横向文本展示，避免中文竖排。\"\"\"\n    def tabSizeHint(self, index):\n        size = super().tabSizeHint(index)\n        size.transpose()\n        metrics = self.fontMetrics()\n        max_text_width = 0\n        for i in range(self.count()):\n            max_text_width = max(\n                max_text_width, metrics.horizontalAdvance(self.tabText(i) or \"\")",
         "detail": "ui.mainui",
         "documentation": {}
     },
